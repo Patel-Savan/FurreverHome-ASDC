@@ -8,6 +8,7 @@ public class FurreverHomeApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(FurreverHomeApplication.class, args);
+//		System.out.println("hello");
 	}
 
 }
