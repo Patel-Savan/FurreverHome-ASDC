@@ -1,6 +1,9 @@
 package com.furreverhome.Furrever_Home.services.impl;
 
 
+import com.furreverhome.Furrever_Home.dto.JwtAuthenticationResponse;
+import com.furreverhome.Furrever_Home.dto.RefreshTokenRequest;
+import com.furreverhome.Furrever_Home.dto.SigninRequest;
 import com.furreverhome.Furrever_Home.dto.SignupRequest;
 import com.furreverhome.Furrever_Home.entities.User;
 import com.furreverhome.Furrever_Home.enums.Role;
@@ -11,9 +14,15 @@ import com.furreverhome.Furrever_Home.services.emailservice.EmailService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 @Service
@@ -46,7 +55,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setLastname("admin");
             user.setRole(Role.ADMIN);
             user.setVerified(Boolean.TRUE);
-            user.setPassword("admin1234");
+            user.setPassword(new BCryptPasswordEncoder().encode("admin"));
             userRepository.save(user);
             System.out.println("Admin successfully created..");
         }
@@ -80,6 +89,51 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return true;
         }
         return false;
+    }
+
+    public JwtAuthenticationResponse signin(SigninRequest signinRequest) throws
+            BadCredentialsException,
+            DisabledException,
+            UsernameNotFoundException {
+
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signinRequest.getEmail(),
+                    signinRequest.getPassword()));
+        } catch (BadCredentialsException e) {
+            throw new BadCredentialsException("Incorrect username or password");
+        }
+
+        var user = userRepository.findByEmail(signinRequest.getEmail()).orElseThrow(() -> new IllegalArgumentException("Invalid email and password"));
+        JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
+        if(user.getVerified()) {
+            var jwt = jwtService.generateToken(user);
+            var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
+
+            jwtAuthenticationResponse.setToken(jwt);
+            jwtAuthenticationResponse.setRefreshToken(refreshToken);
+            jwtAuthenticationResponse.setUserRole(user.getRole());
+            jwtAuthenticationResponse.setUserId(user.getId());
+            jwtAuthenticationResponse.setVerified(user.getVerified());
+            return jwtAuthenticationResponse;
+        }
+        jwtAuthenticationResponse.setVerified(user.getVerified());
+        return jwtAuthenticationResponse;
+    }
+
+    public JwtAuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
+        String userEmail = jwtService.extractUserName(refreshTokenRequest.getToken());
+        User user = userRepository.findByEmail(userEmail).orElseThrow();
+
+        if(jwtService.isTokenValid(refreshTokenRequest.getToken(), user)) {
+            var jwt = jwtService.generateToken(user);
+
+            JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
+
+            jwtAuthenticationResponse.setToken(jwt);
+            jwtAuthenticationResponse.setRefreshToken(refreshTokenRequest.getToken());
+            return jwtAuthenticationResponse;
+        }
+        return null;
     }
 
 

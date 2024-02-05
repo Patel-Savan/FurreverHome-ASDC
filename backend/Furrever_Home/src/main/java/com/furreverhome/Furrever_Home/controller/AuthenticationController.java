@@ -2,6 +2,9 @@ package com.furreverhome.Furrever_Home.controller;
 
 
 import com.furreverhome.Furrever_Home.dto.SignupRequest;
+import com.furreverhome.Furrever_Home.dto.JwtAuthenticationResponse;
+import com.furreverhome.Furrever_Home.dto.RefreshTokenRequest;
+import com.furreverhome.Furrever_Home.dto.SigninRequest;
 import com.furreverhome.Furrever_Home.entities.User;
 import com.furreverhome.Furrever_Home.services.AuthenticationService;
 import lombok.RequiredArgsConstructor;
@@ -29,5 +32,14 @@ public class AuthenticationController {
         return ResponseEntity.notFound();
     }
 
+    @PostMapping("/signin")
+    public ResponseEntity<JwtAuthenticationResponse> signin (@RequestBody SigninRequest signinRequest) {
+        return ResponseEntity.ok(authenticationService.signin(signinRequest));
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<JwtAuthenticationResponse> refresh (@RequestBody RefreshTokenRequest refreshTokenRequest) {
+        return ResponseEntity.ok(authenticationService.refreshToken(refreshTokenRequest));
+    }
 
 }
