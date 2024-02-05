@@ -6,4 +6,6 @@ import com.furreverhome.Furrever_Home.entities.User;
 public interface AuthenticationService {
     User signup(SignupRequest signUpRequest);
 
+    public boolean verifyByEmail(String email);
+
 }

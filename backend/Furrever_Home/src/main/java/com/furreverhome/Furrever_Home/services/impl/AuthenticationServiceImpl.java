@@ -6,15 +6,29 @@ import com.furreverhome.Furrever_Home.entities.User;
 import com.furreverhome.Furrever_Home.enums.Role;
 import com.furreverhome.Furrever_Home.repository.UserRepository;
 import com.furreverhome.Furrever_Home.services.AuthenticationService;
+import com.furreverhome.Furrever_Home.services.JwtService;
+import com.furreverhome.Furrever_Home.services.emailservice.EmailService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository userRepository;
+
+    private final PasswordEncoder passwordEncoder;
+
+    private final AuthenticationManager authenticationManager;
+
+    private final JwtService jwtService;
+
+    private final EmailService emailService;
 
 
     @PostConstruct
@@ -49,9 +63,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setAddress(signupRequest.getAddress());
         user.setVerified(Boolean.FALSE);
         user.setRole(Role.PETADOPTER);
-        user.setPassword(signupRequest.getPassword());
+        user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
+
+        emailService.sendEmail(signupRequest.getEmail(), "Email Verification", "http://localhost:8080/api/auth/verify/"+signupRequest.getEmail());
 
         return userRepository.save(user);
+    }
+
+    public boolean verifyByEmail(String email) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+
+        if(optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setVerified(Boolean.TRUE);
+            userRepository.save(user);
+            return true;
+        }
+        return false;
     }
 
 
