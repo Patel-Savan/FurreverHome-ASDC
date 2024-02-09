@@ -5,7 +5,6 @@ import com.furreverhome.Furrever_Home.dto.GenericResponse;
 import com.furreverhome.Furrever_Home.dto.JwtAuthenticationResponse;
 import com.furreverhome.Furrever_Home.dto.RefreshTokenRequest;
 import com.furreverhome.Furrever_Home.dto.SigninRequest;
-import com.furreverhome.Furrever_Home.dto.SignupRequest;
 import com.furreverhome.Furrever_Home.dto.user.PasswordDto;
 import com.furreverhome.Furrever_Home.entities.PasswordResetToken;
 import com.furreverhome.Furrever_Home.entities.User;
@@ -18,6 +17,9 @@ import com.furreverhome.Furrever_Home.services.emailservice.EmailService;
 import jakarta.annotation.PostConstruct;
 import jakarta.mail.MessagingException;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -28,14 +30,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository userRepository;
+
+    private final PetAdopterRepository petAdopterRepository;
 
     private final PasswordTokenRepository passwordTokenRepository;
 
@@ -55,12 +56,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if(adminAccount == null) {
             User user = new User();
 
-            user.setV_id("admin1234");
-            user.setAddress("admin st");
-            user.setPhone_number("499992222");
             user.setEmail("admin@gmail.com");
-            user.setFirstname("admin");
-            user.setLastname("admin");
             user.setRole(Role.ADMIN);
             user.setVerified(Boolean.TRUE);
             user.setPassword(new BCryptPasswordEncoder().encode("admin"));
@@ -69,22 +65,41 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
-    public User signup(SignupRequest signupRequest) {
-        User user = new User();
+    public PetAdopterDto signup(PetAdopterSignupRequest petAdopterSignupRequest) {
 
-        user.setEmail(signupRequest.getEmail());
-        user.setFirstname(signupRequest.getFirstName());
-        user.setLastname(signupRequest.getLastName());
-        user.setV_id(signupRequest.getV_id());
-        user.setPhone_number(signupRequest.getPhone_number());
-        user.setAddress(signupRequest.getAddress());
+        if(userRepository.existsByEmail(petAdopterSignupRequest.getEmail())) {
+            try {
+                throw new EmailExistsException("User Already Exists");
+            } catch (EmailExistsException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        User user = new User();
+        user.setEmail(petAdopterSignupRequest.getEmail());
         user.setVerified(Boolean.FALSE);
         user.setRole(Role.PETADOPTER);
-        user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
+        user.setPassword(passwordEncoder.encode(petAdopterSignupRequest.getPassword()));
+        User result = userRepository.save(user);
+        PetAdopter petAdopter = new PetAdopter();
+        if (Objects.equals(petAdopterSignupRequest.getRole(), "petadopter")) {
 
-        emailService.sendEmail(signupRequest.getEmail(), "Email Verification", "http://localhost:8080/api/auth/verify/"+signupRequest.getEmail());
+            petAdopter.setFirstname(petAdopterSignupRequest.getFirstName());
+            petAdopter.setLastname(petAdopterSignupRequest.getLastName());
+            petAdopter.setPhone_number(petAdopterSignupRequest.getPhone_number());
+            petAdopter.setAddress(petAdopterSignupRequest.getAddress());
+            petAdopter.setUser(result);
 
-        return userRepository.save(user);
+            emailService.sendEmail(petAdopterSignupRequest.getEmail(), "Email Verification", "http://localhost:8080/api/auth/verify/"+petAdopterSignupRequest.getEmail());
+
+            petAdopterRepository.save(petAdopter);
+        }
+        PetAdopterDto petAdopterDto = new PetAdopterDto();
+        petAdopterDto.setId(result.getId());
+        petAdopterDto.setFirstname(petAdopter.getFirstname());
+        petAdopterDto.setEmail(result.getEmail());
+        petAdopterDto.setUserRole(result.getRole());
+        return petAdopterDto;
     }
 
     public boolean verifyByEmail(String email) {
