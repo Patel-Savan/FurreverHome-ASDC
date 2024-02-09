@@ -1,26 +1,28 @@
 package com.furreverhome.Furrever_Home.controller;
 
 
-import com.furreverhome.Furrever_Home.dto.PetAdopterSignupRequest;
 import com.furreverhome.Furrever_Home.config.FrontendConfigurationProperties;
 import com.furreverhome.Furrever_Home.dto.GenericResponse;
-import com.furreverhome.Furrever_Home.dto.SignupRequest;
 import com.furreverhome.Furrever_Home.dto.JwtAuthenticationResponse;
+import com.furreverhome.Furrever_Home.dto.PetAdopterSignupRequest;
 import com.furreverhome.Furrever_Home.dto.RefreshTokenRequest;
 import com.furreverhome.Furrever_Home.dto.SigninRequest;
 import com.furreverhome.Furrever_Home.dto.user.PasswordDto;
 import com.furreverhome.Furrever_Home.dto.user.ResetEmailRequest;
-import com.furreverhome.Furrever_Home.entities.User;
 import com.furreverhome.Furrever_Home.services.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
 @RestController

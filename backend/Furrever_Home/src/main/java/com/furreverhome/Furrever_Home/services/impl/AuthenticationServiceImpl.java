@@ -1,7 +1,12 @@
 package com.furreverhome.Furrever_Home.services.impl;
 
 
-import com.furreverhome.Furrever_Home.dto.*;
+import com.furreverhome.Furrever_Home.dto.GenericResponse;
+import com.furreverhome.Furrever_Home.dto.JwtAuthenticationResponse;
+import com.furreverhome.Furrever_Home.dto.PetAdopterDto;
+import com.furreverhome.Furrever_Home.dto.PetAdopterSignupRequest;
+import com.furreverhome.Furrever_Home.dto.RefreshTokenRequest;
+import com.furreverhome.Furrever_Home.dto.SigninRequest;
 import com.furreverhome.Furrever_Home.dto.user.PasswordDto;
 import com.furreverhome.Furrever_Home.entities.PasswordResetToken;
 import com.furreverhome.Furrever_Home.entities.PetAdopter;
@@ -29,10 +34,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -168,32 +169,26 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Optional<User> optionalUser = userRepository.findByEmail(email);
 
         System.out.println("USER HERE IS " + optionalUser.get());
-        if(optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            String token  = jwtService.generateToken(user);
+      User user = optionalUser.get();
+      String token  = jwtService.generateToken(user);
 
-            PasswordResetToken myToken = new PasswordResetToken(token, user);
-            passwordTokenRepository.save(myToken);
+      PasswordResetToken myToken = new PasswordResetToken(token, user);
+      passwordTokenRepository.save(myToken);
 
-            String url = contextPath + "/api/auth/redirectChangePassword?token=" + token;
-            String linkText = "Click here to reset your password";
-            String message = "<p>Password reset successfully. Please use the link below to reset your password. Note that the link is valid for " + PasswordResetToken.EXPIRATION + " minutes.</p>"
-                + "<a href=\"" + url + "\">" + linkText + "</a>";
+      String url = contextPath + "/api/auth/redirectChangePassword?token=" + token;
+      String linkText = "Click here to reset your password";
+      String message = "<p>Password reset successfully. Please use the link below to reset your password. Note that the link is valid for " + PasswordResetToken.EXPIRATION + " minutes.</p>"
+          + "<a href=\"" + url + "\">" + linkText + "</a>";
 
-            try {
-            emailService.sendEmail(user.getEmail(), "Password Reset", message, true);
-          } catch (MessagingException e) {
-              emailService.sendEmail(user.getEmail(), "Password Reset", message);
-          }
+      try {
+      emailService.sendEmail(user.getEmail(), "Password Reset", message, true);
+    } catch (MessagingException e) {
+        emailService.sendEmail(user.getEmail(), "Password Reset", message);
+    }
 
-          return new GenericResponse(
-                "A password reset email has been sent. Follow the instructions inside\n" + message
-          );
-        }
-        return new GenericResponse(
-            null,
-            "Couldn't find a user with that email."
-        );
+      return new GenericResponse(
+            "A password reset email has been sent. Follow the instructions inside\n" + message
+      );
     }
 
     @Override
@@ -204,7 +199,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return new GenericResponse(result);
         }
 
-        Optional user = getUserByPasswordResetToken(passwordDto.getToken());
+        Optional<User> user = getUserByPasswordResetToken(passwordDto.getToken());
         if(user.isPresent()) {
             changeUserPassword((User) user.get(), passwordDto.getNewPassword());
             invalidateResetToken(passwordDto.getToken());
