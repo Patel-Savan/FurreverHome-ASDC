@@ -1,13 +1,9 @@
 package com.furreverhome.Furrever_Home.services;
 
-import com.furreverhome.Furrever_Home.dto.JwtAuthenticationResponse;
-import com.furreverhome.Furrever_Home.dto.RefreshTokenRequest;
-import com.furreverhome.Furrever_Home.dto.SigninRequest;
-import com.furreverhome.Furrever_Home.dto.SignupRequest;
-import com.furreverhome.Furrever_Home.entities.User;
+import com.furreverhome.Furrever_Home.dto.*;
 
 public interface AuthenticationService {
-    User signup(SignupRequest signUpRequest);
+    PetAdopterDto signup(PetAdopterSignupRequest signUpRequest);
 
     JwtAuthenticationResponse signin(SigninRequest signinRequest);
 

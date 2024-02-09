@@ -15,4 +15,5 @@ public class JwtAuthenticationResponse {
     private Long userId;
 
     private Boolean verified;
+
 }

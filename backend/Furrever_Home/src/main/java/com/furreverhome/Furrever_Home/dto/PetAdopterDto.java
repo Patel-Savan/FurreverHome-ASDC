@@ -4,12 +4,13 @@ import com.furreverhome.Furrever_Home.enums.Role;
 import lombok.Data;
 
 @Data
-public class UserDto {
+public class PetAdopterDto {
     private Long id;
 
-    private String name;
+    private String firstname;
 
     private String email;
 
     private Role userRole;
+
 }

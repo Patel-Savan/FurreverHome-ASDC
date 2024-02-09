@@ -1,7 +1,7 @@
 package com.furreverhome.Furrever_Home.controller;
 
 
-import com.furreverhome.Furrever_Home.dto.SignupRequest;
+import com.furreverhome.Furrever_Home.dto.PetAdopterSignupRequest;
 import com.furreverhome.Furrever_Home.dto.JwtAuthenticationResponse;
 import com.furreverhome.Furrever_Home.dto.RefreshTokenRequest;
 import com.furreverhome.Furrever_Home.dto.SigninRequest;
@@ -20,8 +20,8 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/signup")
-    public ResponseEntity<User> signup(@RequestBody SignupRequest signupRequest) {
-        return ResponseEntity.ok(authenticationService.signup(signupRequest));
+    public ResponseEntity<?> signup(@RequestBody PetAdopterSignupRequest petAdopterSignupRequest) {
+        return ResponseEntity.ok(authenticationService.signup(petAdopterSignupRequest));
     }
 
     @GetMapping("/verify/{email}")
