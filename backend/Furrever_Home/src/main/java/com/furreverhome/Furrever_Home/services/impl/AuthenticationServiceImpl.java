@@ -1,15 +1,15 @@
 package com.furreverhome.Furrever_Home.services.impl;
 
 
-import com.furreverhome.Furrever_Home.dto.GenericResponse;
-import com.furreverhome.Furrever_Home.dto.JwtAuthenticationResponse;
-import com.furreverhome.Furrever_Home.dto.RefreshTokenRequest;
-import com.furreverhome.Furrever_Home.dto.SigninRequest;
+import com.furreverhome.Furrever_Home.dto.*;
 import com.furreverhome.Furrever_Home.dto.user.PasswordDto;
 import com.furreverhome.Furrever_Home.entities.PasswordResetToken;
+import com.furreverhome.Furrever_Home.entities.PetAdopter;
 import com.furreverhome.Furrever_Home.entities.User;
 import com.furreverhome.Furrever_Home.enums.Role;
+import com.furreverhome.Furrever_Home.exception.EmailExistsException;
 import com.furreverhome.Furrever_Home.repository.PasswordTokenRepository;
+import com.furreverhome.Furrever_Home.repository.PetAdopterRepository;
 import com.furreverhome.Furrever_Home.repository.UserRepository;
 import com.furreverhome.Furrever_Home.services.AuthenticationService;
 import com.furreverhome.Furrever_Home.services.JwtService;
@@ -29,6 +29,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -163,6 +167,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public GenericResponse resetByEmail(final String contextPath, String email) {
         Optional<User> optionalUser = userRepository.findByEmail(email);
 
+        System.out.println("USER HERE IS " + optionalUser.get());
         if(optionalUser.isPresent()) {
             User user = optionalUser.get();
             String token  = jwtService.generateToken(user);
@@ -179,17 +184,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             emailService.sendEmail(user.getEmail(), "Password Reset", message, true);
           } catch (MessagingException e) {
               emailService.sendEmail(user.getEmail(), "Password Reset", message);
-            throw new RuntimeException(e);
           }
 
           return new GenericResponse(
-                "A password reset email has been sent. Follow the instructions inside\n" + message,
-               ""
-            );
+                "A password reset email has been sent. Follow the instructions inside\n" + message
+          );
         }
         return new GenericResponse(
-            "Couldn't find a user with that email.",
-            ""
+            null,
+            "Couldn't find a user with that email."
         );
     }
 
@@ -198,16 +201,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String result = validatePasswordResetToken(passwordDto.getToken());
 
         if(result != null) {
-            return new GenericResponse(result, "");
+            return new GenericResponse(result);
         }
 
         Optional user = getUserByPasswordResetToken(passwordDto.getToken());
         if(user.isPresent()) {
             changeUserPassword((User) user.get(), passwordDto.getNewPassword());
             invalidateResetToken(passwordDto.getToken());
-            return new GenericResponse("Password reset successfully", "");
+            return new GenericResponse("Password reset successfully");
         } else {
-            return new GenericResponse("This username is invalid, or does not exist", "");
+            return new GenericResponse(null, "This username is invalid, or does not exist");
         }
     }
 
@@ -225,13 +228,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         final Optional<User> user = userRepository.findByEmail(passwordDto.getEmail());
         if (user.isPresent()) {
             if (!checkIfValidOldPassword(user.get(), passwordDto.getOldPassword())) {
-                return new GenericResponse("", "Invalid Old Password.");
+                return new GenericResponse(null, "Invalid Old Password.");
             }
 
             changeUserPassword(user.get(), passwordDto.getNewPassword());
             return new GenericResponse("Password updated successfully");
         } else {
-            return new GenericResponse("", "Not a valid user.");
+            return new GenericResponse(null, "Not a valid user.");
         }
     }
 

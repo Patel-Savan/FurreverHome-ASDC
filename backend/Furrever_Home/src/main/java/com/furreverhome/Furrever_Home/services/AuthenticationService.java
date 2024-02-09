@@ -1,9 +1,6 @@
 package com.furreverhome.Furrever_Home.services;
 
-import com.furreverhome.Furrever_Home.dto.GenericResponse;
-import com.furreverhome.Furrever_Home.dto.JwtAuthenticationResponse;
-import com.furreverhome.Furrever_Home.dto.RefreshTokenRequest;
-import com.furreverhome.Furrever_Home.dto.SigninRequest;
+import com.furreverhome.Furrever_Home.dto.*;
 import com.furreverhome.Furrever_Home.dto.user.PasswordDto;
 
 public interface AuthenticationService {

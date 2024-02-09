@@ -55,7 +55,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.refreshToken(refreshTokenRequest));
     }
 
-    @PostMapping("/reset")
+    @PostMapping("/forgetPassword")
     public ResponseEntity<GenericResponse> reset (
         final HttpServletRequest request,
         @Valid @RequestBody ResetEmailRequest resetEmailRequest
