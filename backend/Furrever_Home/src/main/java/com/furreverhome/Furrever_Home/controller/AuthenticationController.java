@@ -1,12 +1,10 @@
 package com.furreverhome.Furrever_Home.controller;
 
 
-import com.furreverhome.Furrever_Home.dto.PetAdopterSignupRequest;
-import com.furreverhome.Furrever_Home.dto.JwtAuthenticationResponse;
-import com.furreverhome.Furrever_Home.dto.RefreshTokenRequest;
-import com.furreverhome.Furrever_Home.dto.SigninRequest;
-import com.furreverhome.Furrever_Home.entities.User;
+import com.furreverhome.Furrever_Home.dto.*;
 import com.furreverhome.Furrever_Home.services.AuthenticationService;
+import com.furreverhome.Furrever_Home.services.PetAdopterAuthenticationService;
+import com.furreverhome.Furrever_Home.services.ShelterAuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +17,18 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
+    private final PetAdopterAuthenticationService petAdopterAuthenticationService;
+
+    private final ShelterAuthenticationService shelterAuthenticationService;
+
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody PetAdopterSignupRequest petAdopterSignupRequest) {
-        return ResponseEntity.ok(authenticationService.signup(petAdopterSignupRequest));
+    public ResponseEntity<?> signup(@RequestBody SignupRequest signupRequest) {
+        if (signupRequest instanceof PetAdopterSignupRequest) {
+            return ResponseEntity.ok(petAdopterAuthenticationService.signup((PetAdopterSignupRequest) signupRequest));
+        } else if (signupRequest instanceof ShelterSignupRequest) {
+            return ResponseEntity.ok(shelterAuthenticationService.signup((ShelterSignupRequest) signupRequest));
+        }
+        return ResponseEntity.ok(null);
     }
 
     @GetMapping("/verify/{email}")
