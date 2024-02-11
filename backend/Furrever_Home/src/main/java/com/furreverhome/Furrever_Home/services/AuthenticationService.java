@@ -34,13 +34,70 @@ public class AuthenticationService {
         if(adminAccount == null) {
             User user = new User();
 
-public interface AuthenticationService {
-    PetAdopterDto signup(PetAdopterSignupRequest signUpRequest);
+            user.setEmail("admin@gmail.com");
+            user.setRole(Role.ADMIN);
+            user.setVerified(Boolean.TRUE);
+            user.setPassword(new BCryptPasswordEncoder().encode("admin"));
+            userRepository.save(user);
+            System.out.println("Admin successfully created..");
+        }
+    }
 
-    JwtAuthenticationResponse signin(SigninRequest signinRequest);
+    public JwtAuthenticationResponse signin(SigninRequest signinRequest) throws
+            BadCredentialsException,
+            DisabledException,
+            UsernameNotFoundException {
 
-    JwtAuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest);
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signinRequest.getEmail(),
+                    signinRequest.getPassword()));
+        } catch (BadCredentialsException e) {
+            throw new BadCredentialsException("Incorrect username or password");
+        }
 
-    public boolean verifyByEmail(String email);
+        var user = userRepository.findByEmail(signinRequest.getEmail()).orElseThrow(() -> new IllegalArgumentException("Invalid email and password"));
+        JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
+        if(user.getVerified()) {
+            var jwt = jwtService.generateToken(user);
+            var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
+
+            jwtAuthenticationResponse.setToken(jwt);
+            jwtAuthenticationResponse.setRefreshToken(refreshToken);
+            jwtAuthenticationResponse.setUserRole(user.getRole());
+            jwtAuthenticationResponse.setUserId(user.getId());
+            jwtAuthenticationResponse.setVerified(user.getVerified());
+            return jwtAuthenticationResponse;
+        }
+        jwtAuthenticationResponse.setVerified(user.getVerified());
+        return jwtAuthenticationResponse;
+    }
+
+    public JwtAuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
+        String userEmail = jwtService.extractUserName(refreshTokenRequest.getToken());
+        User user = userRepository.findByEmail(userEmail).orElseThrow();
+
+        if(jwtService.isTokenValid(refreshTokenRequest.getToken(), user)) {
+            var jwt = jwtService.generateToken(user);
+
+            JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
+
+            jwtAuthenticationResponse.setToken(jwt);
+            jwtAuthenticationResponse.setRefreshToken(refreshTokenRequest.getToken());
+            return jwtAuthenticationResponse;
+        }
+        return null;
+    }
+
+    public boolean verifyByEmail(String email) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+
+        if(optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setVerified(Boolean.TRUE);
+            userRepository.save(user);
+            return true;
+        }
+        return false;
+    }
 
 }
