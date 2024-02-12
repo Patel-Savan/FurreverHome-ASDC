@@ -26,16 +26,4 @@ public class ShelterSignupRequest extends SignupRequest{
 
     private String message;
 
-    public ShelterSignupRequest(String email, String password, String role, String name, String location, Long capacity,
-                                String contact, byte[] image, byte[] license, String message) {
-        super(email, password, role);
-        this.name = name;
-        this.location = location;
-        this.capacity = capacity;
-        this.contact = contact;
-        this.image = image;
-        this.license = license;
-//        this.createdAt = createdAt;
-        this.message = message;
-    }
 }
