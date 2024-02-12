@@ -1,9 +1,10 @@
-package com.furreverhome.Furrever_Home.services;
+package com.furreverhome.Furrever_Home.services.authenticationServices;
 
 import com.furreverhome.Furrever_Home.dto.*;
 import com.furreverhome.Furrever_Home.entities.User;
 import com.furreverhome.Furrever_Home.enums.Role;
 import com.furreverhome.Furrever_Home.repository.UserRepository;
+import com.furreverhome.Furrever_Home.services.JwtService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;

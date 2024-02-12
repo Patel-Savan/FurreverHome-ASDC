@@ -2,9 +2,9 @@ package com.furreverhome.Furrever_Home.controller;
 
 
 import com.furreverhome.Furrever_Home.dto.*;
-import com.furreverhome.Furrever_Home.services.AuthenticationService;
-import com.furreverhome.Furrever_Home.services.PetAdopterAuthenticationService;
-import com.furreverhome.Furrever_Home.services.ShelterAuthenticationService;
+import com.furreverhome.Furrever_Home.services.authenticationServices.AuthenticationService;
+import com.furreverhome.Furrever_Home.services.authenticationServices.PetAdopterAuthenticationService;
+import com.furreverhome.Furrever_Home.services.authenticationServices.ShelterAuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
