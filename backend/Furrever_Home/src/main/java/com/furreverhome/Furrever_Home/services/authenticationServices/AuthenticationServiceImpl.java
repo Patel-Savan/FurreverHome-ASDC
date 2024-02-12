@@ -4,6 +4,7 @@ import com.furreverhome.Furrever_Home.dto.*;
 import com.furreverhome.Furrever_Home.entities.User;
 import com.furreverhome.Furrever_Home.enums.Role;
 import com.furreverhome.Furrever_Home.repository.UserRepository;
+import com.furreverhome.Furrever_Home.services.AuthenticationService;
 import com.furreverhome.Furrever_Home.services.JwtService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationService {
+public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserRepository userRepository;
 
     private final AuthenticationManager authenticationManager;

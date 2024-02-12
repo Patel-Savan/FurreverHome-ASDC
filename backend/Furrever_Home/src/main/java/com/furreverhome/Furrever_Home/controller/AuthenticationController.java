@@ -2,7 +2,7 @@ package com.furreverhome.Furrever_Home.controller;
 
 
 import com.furreverhome.Furrever_Home.dto.*;
-import com.furreverhome.Furrever_Home.services.authenticationServices.AuthenticationService;
+import com.furreverhome.Furrever_Home.services.authenticationServices.AuthenticationServiceImpl;
 import com.furreverhome.Furrever_Home.services.authenticationServices.PetAdopterAuthenticationService;
 import com.furreverhome.Furrever_Home.services.authenticationServices.ShelterAuthenticationService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import org.springframework.web.servlet.view.RedirectView;
 @RequiredArgsConstructor
 public class AuthenticationController {
 
-    private final AuthenticationService authenticationService;
+    private final AuthenticationServiceImpl authenticationService;
 
     private final PetAdopterAuthenticationService petAdopterAuthenticationService;
 
