@@ -1,18 +1,14 @@
-package com.furreverhome.Furrever_Home.services.impl;
+package com.furreverhome.Furrever_Home.services.authenticationServices;
 
 
 import com.furreverhome.Furrever_Home.dto.GenericResponse;
 import com.furreverhome.Furrever_Home.dto.JwtAuthenticationResponse;
-import com.furreverhome.Furrever_Home.dto.PetAdopterDto;
-import com.furreverhome.Furrever_Home.dto.PetAdopterSignupRequest;
 import com.furreverhome.Furrever_Home.dto.RefreshTokenRequest;
 import com.furreverhome.Furrever_Home.dto.SigninRequest;
 import com.furreverhome.Furrever_Home.dto.user.PasswordDto;
 import com.furreverhome.Furrever_Home.entities.PasswordResetToken;
-import com.furreverhome.Furrever_Home.entities.PetAdopter;
 import com.furreverhome.Furrever_Home.entities.User;
 import com.furreverhome.Furrever_Home.enums.Role;
-import com.furreverhome.Furrever_Home.exception.EmailExistsException;
 import com.furreverhome.Furrever_Home.repository.PasswordTokenRepository;
 import com.furreverhome.Furrever_Home.repository.PetAdopterRepository;
 import com.furreverhome.Furrever_Home.repository.UserRepository;
@@ -21,10 +17,6 @@ import com.furreverhome.Furrever_Home.services.JwtService;
 import com.furreverhome.Furrever_Home.services.emailservice.EmailService;
 import jakarta.annotation.PostConstruct;
 import jakarta.mail.MessagingException;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -35,13 +27,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository userRepository;
-
-    private final PetAdopterRepository petAdopterRepository;
 
     private final PasswordTokenRepository passwordTokenRepository;
 
@@ -68,55 +62,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             userRepository.save(user);
             System.out.println("Admin successfully created..");
         }
-    }
-
-    public PetAdopterDto signup(PetAdopterSignupRequest petAdopterSignupRequest) {
-
-        if(userRepository.existsByEmail(petAdopterSignupRequest.getEmail())) {
-            try {
-                throw new EmailExistsException("User Already Exists");
-            } catch (EmailExistsException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        User user = new User();
-        user.setEmail(petAdopterSignupRequest.getEmail());
-        user.setVerified(Boolean.FALSE);
-        user.setRole(Role.PETADOPTER);
-        user.setPassword(passwordEncoder.encode(petAdopterSignupRequest.getPassword()));
-        User result = userRepository.save(user);
-        PetAdopter petAdopter = new PetAdopter();
-        if (Objects.equals(petAdopterSignupRequest.getRole(), "petadopter")) {
-
-            petAdopter.setFirstname(petAdopterSignupRequest.getFirstName());
-            petAdopter.setLastname(petAdopterSignupRequest.getLastName());
-            petAdopter.setPhone_number(petAdopterSignupRequest.getPhone_number());
-            petAdopter.setAddress(petAdopterSignupRequest.getAddress());
-            petAdopter.setUser(result);
-
-            emailService.sendEmail(petAdopterSignupRequest.getEmail(), "Email Verification", "http://localhost:8080/api/auth/verify/"+petAdopterSignupRequest.getEmail());
-
-            petAdopterRepository.save(petAdopter);
-        }
-        PetAdopterDto petAdopterDto = new PetAdopterDto();
-        petAdopterDto.setId(result.getId());
-        petAdopterDto.setFirstname(petAdopter.getFirstname());
-        petAdopterDto.setEmail(result.getEmail());
-        petAdopterDto.setUserRole(result.getRole());
-        return petAdopterDto;
-    }
-
-    public boolean verifyByEmail(String email) {
-        Optional<User> optionalUser = userRepository.findByEmail(email);
-
-        if(optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            user.setVerified(Boolean.TRUE);
-            userRepository.save(user);
-            return true;
-        }
-        return false;
     }
 
     public JwtAuthenticationResponse signin(SigninRequest signinRequest) throws
@@ -162,6 +107,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return jwtAuthenticationResponse;
         }
         return null;
+    }
+
+    public boolean verifyByEmail(String email) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+
+        if(optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setVerified(Boolean.TRUE);
+            userRepository.save(user);
+            return true;
+        }
+        return false;
     }
 
     @Override
