@@ -1,18 +1,14 @@
-package com.furreverhome.Furrever_Home.services.impl;
+package com.furreverhome.Furrever_Home.services.authenticationServices;
 
 
 import com.furreverhome.Furrever_Home.dto.GenericResponse;
 import com.furreverhome.Furrever_Home.dto.JwtAuthenticationResponse;
-import com.furreverhome.Furrever_Home.dto.PetAdopterDto;
-import com.furreverhome.Furrever_Home.dto.PetAdopterSignupRequest;
 import com.furreverhome.Furrever_Home.dto.RefreshTokenRequest;
 import com.furreverhome.Furrever_Home.dto.SigninRequest;
 import com.furreverhome.Furrever_Home.dto.user.PasswordDto;
 import com.furreverhome.Furrever_Home.entities.PasswordResetToken;
-import com.furreverhome.Furrever_Home.entities.PetAdopter;
 import com.furreverhome.Furrever_Home.entities.User;
 import com.furreverhome.Furrever_Home.enums.Role;
-import com.furreverhome.Furrever_Home.exception.EmailExistsException;
 import com.furreverhome.Furrever_Home.repository.PasswordTokenRepository;
 import com.furreverhome.Furrever_Home.repository.PetAdopterRepository;
 import com.furreverhome.Furrever_Home.repository.UserRepository;
@@ -21,10 +17,6 @@ import com.furreverhome.Furrever_Home.services.JwtService;
 import com.furreverhome.Furrever_Home.services.emailservice.EmailService;
 import jakarta.annotation.PostConstruct;
 import jakarta.mail.MessagingException;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -35,8 +27,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -45,8 +37,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository userRepository;
 
-    private final PetAdopterRepository petAdopterRepository;
-
     private final PasswordTokenRepository passwordTokenRepository;
 
     private final PasswordEncoder passwordEncoder;
@@ -54,6 +44,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     private final JwtService jwtService;
+
+    private final EmailService emailService;
 
 
     @PostConstruct

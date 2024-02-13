@@ -1,7 +1,6 @@
 package com.furreverhome.Furrever_Home.controller;
 
 import com.furreverhome.Furrever_Home.dto.*;
-import com.furreverhome.Furrever_Home.services.authenticationServices.AuthenticationServiceImpl;
 import com.furreverhome.Furrever_Home.services.authenticationServices.PetAdopterAuthenticationService;
 import com.furreverhome.Furrever_Home.services.authenticationServices.ShelterAuthenticationService;
 import lombok.RequiredArgsConstructor;
