@@ -7,7 +7,8 @@ import ShelterRegister from '../components/Register/ShelterRegister'
 import Login from '../pages/login'
 import ForgotPassword from '../pages/ForgotPassword'
 import ResetPassword from '../pages/ResetPassword'
-
+import PetAdopterHome from '../../../../../../Development/Final/src/pages/PetAdopterHome'
+import ShelterHome from '../../../../../../Development/Final/src/pages/ShelterHome'
 const Router = () => {
     return (
         /* All the Routes for Frontend */
@@ -59,6 +60,22 @@ const Router = () => {
             Route for ForgotPassword
             */}
             <Route path="/forgot-password" element={<ForgotPassword />} />
+
+             {/* 
+            @Route
+            @Component Returns PetAdopterHome Component
+
+            Route for PetAdopter Home
+            */}
+            <Route path="/PetAdopterHome" element={<PetAdopterHome />} />
+
+             {/* 
+            @Route
+            @Component Returns ShelterHome Component
+
+            Route for Shelter Home
+            */}
+            <Route path='/ShelterHome' element={<ShelterHome />} />
 
         </Routes>
     )
