@@ -10,7 +10,7 @@ ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} app.jar
 
 # Expose the port on which your Spring Boot application will run (adjust as needed)
-EXPOSE 8000
+EXPOSE 8080
 
 # Define the command to run your Spring Boot application when the container starts
 ENTRYPOINT ["java", "-jar", "app.jar"]
