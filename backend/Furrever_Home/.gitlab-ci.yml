@@ -1,3 +1,6 @@
+variables:
+  SPRING_PROFILES_ACTIVE: dev
+
 stages:          # List of stages for jobs, and their order of execution
   - build
   - test
@@ -12,14 +15,14 @@ build:
     - pwd
     - ls
     - cd backend/Furrever_Home
-    - mvn clean package
+    - mvn clean package -Dspring-boot.run.profiles=dev
 
 test:
   stage: test
   image: maven:latest
   script:
     - cd backend/Furrever_Home
-    - mvn test
+    - mvn test -Dspring-boot.run.profiles=dev
 
 # quality:
 #   stage: quality
