@@ -6,6 +6,45 @@ import Logo from '../components/Logo'
 
 const Login = () => {
 
+  const [email,setEmail] = useState('');
+  const [password,setPassword] = useState('');
+
+  const navigate = useNavigate();
+
+  const handleEmailChange = (event) => {
+      setEmail(event.target.value);
+  }
+
+  const handlePasswordChange =(event) =>{
+    setPassword(event.target.value);
+  }
+  
+  const handleSubmit = async(event) => {
+    event.preventDefault();
+
+    axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/signin`,{email,password})
+      .then(response=>{
+
+        console.log(response);
+          saveLocalStorage("token",response.data.token);
+          saveLocalStorage("role",response.data.userRole);
+
+            if(response.data.verified == false)
+                alert("User is not verified")
+
+            else if(response.data.userRole == "PETADOPTER")
+                navigate("/PetAdopterHome");
+
+            else
+                navigate("/ShelterHome");
+        
+      })
+      .catch(error =>{
+        alert("Incorrect Email or Paassword");
+      })
+      
+  }
+
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col m-8 justify-center px-6 py-12 lg:px-8">
