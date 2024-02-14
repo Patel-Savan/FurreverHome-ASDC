@@ -5,6 +5,40 @@ import Logo from '../components/Logo'
 
 const ResetPassword = () => {
 
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const token = queryParams.get("token");
+    const navigate = useNavigate();
+
+    const [newPassword,setNewPassword] = useState('');
+    const [verifyNewPassword,setVerifyNewPassword] = useState('');
+
+    const handleNewPasswordChange=(event) =>{
+        setNewPassword(event.target.value);
+    }
+
+    const handleVerifyNewPasswordChange=(event) =>{
+        setVerifyNewPassword(event.target.value);
+    }
+
+    const handleSubmit = (event) =>{
+        event.preventDefault();
+
+        if(newPassword == verifyNewPassword ){
+            axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/resetPassword`,{newPassword,verifyNewPassword,token})
+                .then(response =>{
+                  alert("Password Successfully reset.");
+                  navigate('/login');
+                })
+                .catch(error =>{
+                    alert(error.message);
+                })
+        }
+        else{
+          alert("Password and Confirm Password doesn't macth");
+        }
+    }
+
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col m-8 justify-center px-6 py-12 lg:px-8">

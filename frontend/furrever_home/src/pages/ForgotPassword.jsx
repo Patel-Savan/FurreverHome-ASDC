@@ -4,6 +4,27 @@ import Logo from '../components/Logo'
 
 const ForgotPassword = () => {
 
+    const [email,setEmail] = useState('');
+
+    const handleEmailChange = (event) => {
+        setEmail(event.target.value);
+    }
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+    
+        axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/forgetPassword`,{email})
+            .then(response =>{
+                
+                    alert("A mail has been sent to your Email");
+                
+            })
+            .catch(error =>{
+                console.log(error);
+            });
+
+    }
+
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col m-8 justify-center px-6 py-12 lg:px-8">
