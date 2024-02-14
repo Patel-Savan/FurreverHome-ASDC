@@ -7,8 +7,9 @@ import ShelterRegister from '../components/Register/ShelterRegister'
 import Login from '../pages/login'
 import ForgotPassword from '../pages/ForgotPassword'
 import ResetPassword from '../pages/ResetPassword'
-import PetAdopterHome from '../../../../../../Development/Final/src/pages/PetAdopterHome'
-import ShelterHome from '../../../../../../Development/Final/src/pages/ShelterHome'
+import PetAdopterHome from '../pages/PetAdopterHome'
+import ShelterHome from '../pages/ShelterHome'
+
 const Router = () => {
     return (
         /* All the Routes for Frontend */
