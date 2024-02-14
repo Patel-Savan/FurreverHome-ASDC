@@ -7,6 +7,52 @@ import axios from 'axios';
 
 const PetAdopterRegister = () => {
 
+  const [response, setResponse] = useState({})
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState({})
+  const navigate = useNavigate();
+
+
+  const [formData, setFormData] = useState({
+    email: "",
+    firstName: "",
+    lastName: "",
+    password: "",
+    address: "",
+    phone_number: "",
+    role: "petadopter"
+  })
+
+  const handleChange = (event) => {
+
+    const newData = { ...formData }
+    newData[event.target.id] = event.target.value
+
+    setFormData(newData)
+  }
+
+  const handleSubmit = (event) => {
+
+    event.preventDefault();
+
+
+    axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/signup`, {
+      ...formData
+    })
+      .then((res) => {
+        console.log(res)
+        setResponse(res)
+        setLoading(false)
+        toast.info("Verify Your Email!");
+        navigate("/login")
+      })
+      .catch((err) => {
+        console.log(err)
+        setError(err)
+        toast.error(err.message)
+      })
+
+  }
 
   return (
     <>
