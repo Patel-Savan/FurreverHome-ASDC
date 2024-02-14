@@ -1,12 +1,11 @@
 # Use an official OpenJDK runtime as a parent image
 FROM amazoncorretto:17-al2023-jdk
-MAINTAINER furrever.ca
 
 # Set the working directory in the container
 WORKDIR /usr/app
 
 # Copy the compiled JAR file from your target directory into the container
-ARG JAR_FILE=target/*.jar
+ARG JAR_FILE=backend/Furrever_Home/target/*.jar
 COPY ${JAR_FILE} app.jar
 
 # Expose the port on which your Spring Boot application will run (adjust as needed)
