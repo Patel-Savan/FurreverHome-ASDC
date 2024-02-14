@@ -5,6 +5,7 @@ FROM amazoncorretto:17-al2023-jdk
 WORKDIR /usr/app
 
 # Copy the compiled JAR file from your target directory into the container
+
 COPY target/*.jar app.jar
 
 # Expose the port on which your Spring Boot application will run (adjust as needed)

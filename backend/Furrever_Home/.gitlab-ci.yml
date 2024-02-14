@@ -13,6 +13,9 @@ build:
     - cd backend/Furrever_Home
     - mvn clean package
     - ls -l target/
+  artifacts:
+    paths:
+      - backend/Furrever_Home/target/*.jar
 
 test:
   stage: test
