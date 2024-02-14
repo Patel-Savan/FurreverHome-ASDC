@@ -34,6 +34,14 @@ const Router = () => {
             */}
             <Route path="/register/shelter" element={<ShelterRegister />} />
 
+            {/* 
+            @Route
+            @Component Returns Login Component
+
+            Route for Login
+            */}
+            <Route path="/login" element={<Login />} />
+
         </Routes>
     )
 }
