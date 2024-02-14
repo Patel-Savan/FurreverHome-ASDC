@@ -9,18 +9,16 @@ build:
   stage: build
   image: maven:latest
   script:
-    - cd ../../../../../../../../  # Navigate to the backend directory where pom.xml is located
     - pwd
     - ls
+    - cd backend/Furrever_Home
     - mvn clean package
 
 test:
   stage: test
   image: maven:latest
   script:
-    - cd ../../../../  # Navigate to the backend directory where pom.xml is located
-    - pwd
-    - ls
+    - cd backend/Furrever_Home
     - mvn test
 
 # quality:
