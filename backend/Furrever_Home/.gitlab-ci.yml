@@ -6,6 +6,16 @@ stages:
   - publish
   - deploy
 
+variables:
+  EMAIL_HOST: EMAIL_HOST
+  EMAIL_PORT: $EMAIL_PORT
+  EMAIL_USERNAME: $EMAIL_USERNAME
+  EMAIL_PASSWORD: $EMAIL_PASSWORD
+  DEVINT_DB_URL: $DEVINT_DB_URL
+  DEVINT_DB_USER: $DEVINT_DB_USER
+  DEVINT_DB_PASSWORD: $DEVINT_DB_PASSWORD
+
+
 build:
   stage: build
   image: maven:latest
