@@ -12,6 +12,7 @@ build:
   script:
     - cd backend/Furrever_Home
     - mvn clean package
+    - ls -l target/
 
 test:
   stage: test
