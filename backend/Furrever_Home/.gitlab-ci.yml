@@ -1,5 +1,13 @@
-#variables:
-#  SPRING_PROFILES_ACTIVE: dev
+variables:
+  variables:
+    EMAIL_HOST: $EMAIL_HOST
+    EMAIL_PORT: $EMAIL_PORT
+    EMAIL_USERNAME: $EMAIL_USERNAME
+    EMAIL_PASSWORD: $EMAIL_PASSWORD
+    DB_URL: $DB_URL
+    DB_USER: $DB_USER
+    DB_PASSWORD: $DB_PASSWORD
+
 
 # List of stages for jobs, and their order of execution
 stages:
