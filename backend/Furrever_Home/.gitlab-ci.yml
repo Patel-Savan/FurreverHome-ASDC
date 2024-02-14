@@ -85,7 +85,7 @@ deploy:
       -e DEVINT_DB_URL=$DEVINT_DB_URL \
       -e DEVINT_DB_USER=$DEVINT_DB_USER \
       -e DEVINT_DB_PASSWORD=$DEVINT_DB_PASSWORD \
-      em492028/furrever-backend-api:$CI_COMMIT_SHORT_SHA
+      em492028/furrever-backend-api:$CI_COMMIT_SHORT_SHA"
   environment:
     name: development
     url: http://172.17.0.170:8080
