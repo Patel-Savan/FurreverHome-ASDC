@@ -10,6 +10,8 @@ build:
   image: maven:latest
   script:
     - cd ../../  # Navigate to the backend directory where pom.xml is located
+    - pwd
+    - ls
     - mvn clean package
 
 test:
@@ -17,6 +19,8 @@ test:
   image: maven:latest
   script:
     - cd ../../  # Navigate to the backend directory where pom.xml is located
+    - pwd
+    - ls
     - mvn test
 
 # quality:
