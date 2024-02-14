@@ -3,8 +3,8 @@ stages:
   - build
   - test
   # - quality
-#  - publish
-#  - deploy
+  - publish
+  - deploy
 
 build:
   stage: build
@@ -54,8 +54,7 @@ publish:
     - docker push em492028/furrever-backend-api:$CI_COMMIT_SHORT_SHA
 #  only:
 #    - main
-#
-#
+
 deploy:
   image: alpine:latest
   stage: deploy
