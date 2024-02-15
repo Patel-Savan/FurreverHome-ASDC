@@ -60,6 +60,7 @@ publish:
     - docker push em492028/furrever-backend-api:$IMAGE_TAG
 #  only:
 #    - main
+
 deploy:
   image: alpine:latest
   stage: deploy
