@@ -58,8 +58,6 @@ publish:
     - IMAGE_TAG="$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
     - docker build -t em492028/furrever-backend-api:$IMAGE_TAG .
     - docker push em492028/furrever-backend-api:$IMAGE_TAG
-#  only:
-#    - main
 
 deploy:
   image: alpine:latest
@@ -88,7 +86,7 @@ deploy:
   environment:
     name: development
     url: http://172.17.0.170:$SERVER_PORT
-#  only:
-#    - branches
+  only:
+    - branches
 
 
