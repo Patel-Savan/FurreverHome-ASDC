@@ -55,8 +55,9 @@ publish:
     - echo $SERVER_IP
     - docker --version
     - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PWD docker.io
-    - docker build -t em492028/furrever-backend-api:$CI_COMMIT_SHORT_SHA .
-    - docker push em492028/furrever-backend-api:$CI_COMMIT_SHORT_SHA
+    - IMAGE_TAG="$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
+    - docker build -t em492028/furrever-backend-api:$IMAGE_TAG .
+    - docker push em492028/furrever-backend-api:$IMAGE_TAG
 #  only:
 #    - main
 deploy:
@@ -75,13 +76,14 @@ deploy:
     - DB_URL=""
     - DB_USER=""
     - DB_PASSWORD=""
+    - IMAGE_TAG="$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
     - if [ "$CI_COMMIT_REF_NAME" == "dev" ]; then CONTAINER_NAME="furrever-dev-app"; SERVER_PORT=8080; DB_URL=$DEVINT_DB_URL; DB_USER=$DEVINT_DB_USER; DB_PASSWORD=$DEVINT_DB_PASSWORD; fi
     - if [ "$CI_COMMIT_REF_NAME" == "main" ]; then CONTAINER_NAME="furrever-prod-app"; SERVER_PORT=8073; DB_URL=$PROD_DB_URL; DB_USER=$PROD_DB_USER; DB_PASSWORD=$PROD_DB_PASSWORD; fi
     - if [ "$CI_COMMIT_REF_NAME" != "main" ] && [ "$CI_COMMIT_REF_NAME" != "dev" ]; then CONTAINER_NAME="furrever-test-app"; SERVER_PORT=8000; DB_URL=$TEST_DB_URL; DB_USER=$TEST_DB_USER; DB_PASSWORD=$TEST_DB_PASSWORD; fi
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PWD docker.io"
-    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker pull em492028/furrever-backend-api:$CI_COMMIT_SHORT_SHA"
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker pull em492028/furrever-backend-api:$IMAGE_TAG"
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker container rm -f $CONTAINER_NAME || true"
-    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker run -d -p $SERVER_PORT:$SERVER_PORT --name $CONTAINER_NAME -e SPRING_DATASOURCE_URL=$DB_URL -e SPRING_DATASOURCE_USERNAME=$DB_USER -e SPRING_DATASOURCE_PASSWORD=$DB_PASSWORD -e EMAIL_HOST=$EMAIL_HOST -e EMAIL_PORT=$EMAIL_PORT -e EMAIL_USERNAME=$EMAIL_USERNAME -e EMAIL_PASSWORD=$EMAIL_PASSWORD em492028/furrever-backend-api:$CI_COMMIT_SHORT_SHA"
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker run -d -p $SERVER_PORT:$SERVER_PORT --name $CONTAINER_NAME -e SPRING_DATASOURCE_URL=$DB_URL -e SPRING_DATASOURCE_USERNAME=$DB_USER -e SPRING_DATASOURCE_PASSWORD=$DB_PASSWORD -e EMAIL_HOST=$EMAIL_HOST -e EMAIL_PORT=$EMAIL_PORT -e EMAIL_USERNAME=$EMAIL_USERNAME -e EMAIL_PASSWORD=$EMAIL_PASSWORD em492028/furrever-backend-api:$IMAGE_TAG"
   environment:
     name: development
     url: http://172.17.0.170:$SERVER_PORT
