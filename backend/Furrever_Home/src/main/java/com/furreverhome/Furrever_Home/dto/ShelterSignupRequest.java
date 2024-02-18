@@ -18,9 +18,9 @@ public class ShelterSignupRequest extends SignupRequest{
 
     private String contact;
 
-    private byte[] image;
+    private String imageBase64;
 
-    private byte[] license;
+    private String license;
 
 //    private LocalDateTime createdAt;
 

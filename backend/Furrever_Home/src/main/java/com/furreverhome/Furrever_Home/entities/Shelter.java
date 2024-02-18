@@ -23,11 +23,13 @@ public class Shelter {
 
     private String contact;
 
-    @Column(columnDefinition = "longblob")
-    private byte[] image;
+    @Lob
+    @Column(length = 100000)
+    private String imageBase64;
 
-    @Column(columnDefinition = "longblob")
-    private byte[] license;
+    @Lob
+    @Column(length = 100000)
+    private String license;
 
 //    @CreationTimestamp
 //    private LocalDateTime createdAt;
