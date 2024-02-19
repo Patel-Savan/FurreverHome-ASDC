@@ -7,6 +7,100 @@ import axios from 'axios';
 
 const ShelterRegister = () => {
 
+  const [response, setResponse] = useState({})
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState({})
+
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: "",
+    name: "",
+    password: "",
+    contact: "",
+    role: "shelter",
+    capacity: "",
+    location: ""
+  })
+
+  const [image, setImage] = useState([])
+  const [license, setLicense] = useState([])
+
+  const handleChange = (event) => {
+
+    const newData = { ...formData }
+    newData[event.target.id] = event.target.value
+
+    setFormData(newData)
+  }
+
+  const handleImage = (image) => {
+
+    const reader = new FileReader();
+    reader.readAsDataURL(image);
+    reader.onload = function (e) {
+      console.log(e.target.result)
+      setImage(e.target.result)
+      console.log(typeof(image))
+    };
+
+    reader.onerror = function () {
+      console.log(reader.error);
+    };
+  }
+
+  const handleLicense = (image) => {
+
+    console.log(image)
+
+
+    const reader = new FileReader();
+    setLicense(image)
+    reader.readAsDataURL(image);
+    reader.onload = function (e) {
+      setLicense(e.target.result)
+    };
+
+    reader.onerror = function () {
+      console.log(reader.error);
+    };
+  }
+
+  const handleSubmit = (event) => {
+
+    event.preventDefault();
+
+
+    const data = {
+      email: formData.email,
+      name: formData.name,
+      password: formData.password,
+      contact: formData.contact,
+      role: formData.role,
+      capacity: formData.capacity,
+      location: formData.location,
+      imageBase64:image,
+      license:license
+    }
+
+    
+
+
+    axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/signup`,data)
+      .then((res) => {
+        console.log(res)
+        setResponse(res)
+        setLoading(false)
+        toast.info("Verify Your Email!");
+        navigate("/login")
+      })
+      .catch((err) => {
+        console.log(err)
+        setError(err)
+        toast.error(err.message)
+      })
+
+  }
+
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col m-8 justify-center px-6 py-12 lg:px-8">
@@ -18,7 +112,7 @@ const ShelterRegister = () => {
         </div>
 
         <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" method="POST" onSubmit={handleSubmit} encType="multipart/form-data">
+          <form className="space-y-6" method="POST" onSubmit={handleSubmit}>
 
             <div>
 
@@ -118,6 +212,25 @@ const ShelterRegister = () => {
               </div>
             </div>
 
+            <div>
+              <label htmlFor="contact" className="text-sm font-medium leading-6 text-gray-900 flex">
+                Shelter Location
+              </label>
+              <div className="mt-1">
+                <input
+                  id="location"
+                  name="location"
+                  type="text"
+                  value={formData.location}
+                  autoComplete="text"
+                  onChange={handleChange}
+                  required
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  placeholder='Shelter Location'
+                />
+              </div>
+            </div>
+
             <div className="">
               <label className="block text-sm font-medium leading-6 text-gray-900" >Upload Shelter Image</label>
               <input type="file"
@@ -137,25 +250,6 @@ const ShelterRegister = () => {
                 className="w-full text-black text-sm bg-white border file:cursor-pointer cursor-pointer file:border-0 file:py-2.5 file:px-4 file:bg-gray-100 file:hover:bg-gray-200 file:text-black rounded" />
               <p className="text-xs text-gray-400 mt-2">PNG, JPG are Allowed.</p>
             </div>
-
-            {/* <div>
-              <div className="flex items-center justify-between">
-                <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
-                  Confirm Password
-                </label>
-              </div>
-              <div className="mt-1">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  placeholder='Confirm Your Password'
-                />
-              </div>
-            </div> */}
 
             <div>
               <button
@@ -181,7 +275,6 @@ const ShelterRegister = () => {
           </p>
         </div>
       </div>
-      {/* </div> */}
     </>
   )
 }
