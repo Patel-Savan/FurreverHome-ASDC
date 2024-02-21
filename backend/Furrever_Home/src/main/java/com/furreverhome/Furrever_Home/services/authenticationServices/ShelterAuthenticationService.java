@@ -54,7 +54,7 @@ public class ShelterAuthenticationService {
         shelter.setLicense(((ShelterSignupRequest) signupRequest).getLicense());
         shelter.setLocation(((ShelterSignupRequest) signupRequest).getLocation());
         shelter.setCapacity(((ShelterSignupRequest) signupRequest).getCapacity());
-        shelter.setImage(((ShelterSignupRequest) signupRequest).getImage());
+        shelter.setImageBase64(((ShelterSignupRequest) signupRequest).getImageBase64());
         shelter.setUser(result);
 
         // TODO: Separate the logic for the code to send email from here.

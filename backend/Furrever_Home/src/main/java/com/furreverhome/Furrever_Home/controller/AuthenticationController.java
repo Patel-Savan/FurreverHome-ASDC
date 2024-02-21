@@ -78,7 +78,7 @@ public class AuthenticationController {
     @GetMapping("/verify/{email}")
     public Object verifyByEmail(@PathVariable String email) {
         if (authenticationService.verifyByEmail(email)) {
-            return new RedirectView("https://www.google.com/");
+            return new RedirectView(frontendConfigurationProperties.getLoginUrl());
         }
         return ResponseEntity.notFound();
     }
