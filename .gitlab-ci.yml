@@ -3,8 +3,8 @@ stages:
   - build
   - test
   # - quality
-  - publish
-  - deploy
+  # - publish
+  # - deploy
 
 build:
   stage: build
