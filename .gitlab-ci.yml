@@ -68,7 +68,7 @@ publish:
     - docker --version
     - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PWD docker.io
     - IMAGE_TAG="$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
-    - docker build -t em492028/furrever-backend-api:$IMAGE_TAG . -f backend/Furrever_Home/Dockerfile
+    - docker build -t em492028/furrever-backend-api:$IMAGE_TAG . -f Dockerfile
     - docker push em492028/furrever-backend-api:$IMAGE_TAG
 
 publish-frontend:
@@ -91,7 +91,7 @@ publish-frontend:
     - docker --version
     - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PWD docker.io
     - IMAGE_TAG="$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
-    - docker build -t em492028/furrever-frontend:$IMAGE_TAG . -f frontend/furrever_home/Dockerfile
+    - docker build -t em492028/furrever-frontend:$IMAGE_TAG . -f Dockerfile
     - docker push em492028/furrever-frontend:$IMAGE_TAG
 
 
