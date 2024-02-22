@@ -27,16 +27,16 @@ build-frontend:
   artifacts:
     paths:
       - frontend/furrever_home/dist
-  # tags:
-  #     - furrever-gl-runner
+  tags:
+      - furrever-gl-runner
 
 
-# test:
-#   stage: test
-#   image: maven:latest
-#   script:
-#     - cd backend/Furrever_Home
-#     - mvn test
+test:
+  stage: test
+  image: maven:latest
+  script:
+    - cd backend/Furrever_Home
+    - mvn test
 
 # # quality:
 # #   stage: quality
@@ -50,51 +50,51 @@ build-frontend:
 # #       - smells/
 # #       - $CI_PROJECT_DIR
 
-# publish:
-#   image: docker:latest
-#   stage: publish
-#   tags:
-#     - furrever-gl-runner
-#   variables:
-#     # these values may need to be different if using TLS, k8s, etc.
-#     # You can alternatively set defaults in your runner config
-#     DOCKER_TLS_CERTDIR: ""
-#     DOCKER_HOST: "tcp://docker:2375"
-#   services:
-#     - docker:dind
-#   script:
-#     - cd backend/Furrever_Home
-#     - pwd
-#     - ls
-#     - echo $SERVER_IP
-#     - docker --version
-#     - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PWD docker.io
-#     - IMAGE_TAG="$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
-#     - docker build -t em492028/furrever-backend-api:$IMAGE_TAG . -f backend/Furrever_Home/Dockerfile
-#     - docker push em492028/furrever-backend-api:$IMAGE_TAG
+publish:
+  image: docker:latest
+  stage: publish
+  tags:
+    - furrever-gl-runner
+  variables:
+    # these values may need to be different if using TLS, k8s, etc.
+    # You can alternatively set defaults in your runner config
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: "tcp://docker:2375"
+  services:
+    - docker:dind
+  script:
+    - cd backend/Furrever_Home
+    - pwd
+    - ls
+    - echo $SERVER_IP
+    - docker --version
+    - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PWD docker.io
+    - IMAGE_TAG="$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
+    - docker build -t em492028/furrever-backend-api:$IMAGE_TAG . -f backend/Furrever_Home/Dockerfile
+    - docker push em492028/furrever-backend-api:$IMAGE_TAG
 
-# publish-frontend:
-#   image: docker:latest
-#   stage: publish
-#   tags:
-#     - furrever-gl-runner
-#   variables:
-#     # these values may need to be different if using TLS, k8s, etc.
-#     # You can alternatively set defaults in your runner config
-#     DOCKER_TLS_CERTDIR: ""
-#     DOCKER_HOST: "tcp://docker:2375"
-#   services:
-#     - docker:dind
-#   script:
-#     - cd frontend/Furrever_Home
-#     - pwd
-#     - ls
-#     - echo $SERVER_IP
-#     - docker --version
-#     - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PWD docker.io
-#     - IMAGE_TAG="$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
-#     - docker build -t em492028/furrever-frontend:$IMAGE_TAG . -f frontend/furrever_home/Dockerfile
-#     - docker push em492028/furrever-frontend:$IMAGE_TAG
+publish-frontend:
+  image: docker:latest
+  stage: publish
+  tags:
+    - furrever-gl-runner
+  variables:
+    # these values may need to be different if using TLS, k8s, etc.
+    # You can alternatively set defaults in your runner config
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: "tcp://docker:2375"
+  services:
+    - docker:dind
+  script:
+    - cd frontend/Furrever_Home
+    - pwd
+    - ls
+    - echo $SERVER_IP
+    - docker --version
+    - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PWD docker.io
+    - IMAGE_TAG="$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
+    - docker build -t em492028/furrever-frontend:$IMAGE_TAG . -f frontend/furrever_home/Dockerfile
+    - docker push em492028/furrever-frontend:$IMAGE_TAG
 
 
 # deploy:
