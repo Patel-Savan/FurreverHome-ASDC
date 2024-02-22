@@ -3,6 +3,7 @@ package com.furreverhome.Furrever_Home.controller;
 import com.furreverhome.Furrever_Home.dto.*;
 import com.furreverhome.Furrever_Home.services.authenticationServices.PetAdopterAuthenticationService;
 import com.furreverhome.Furrever_Home.services.authenticationServices.ShelterAuthenticationService;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -66,11 +67,11 @@ public class AuthenticationController {
 
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody SignupRequest signupRequest) {
+    public ResponseEntity<?> signup(HttpServletRequest request, @RequestBody SignupRequest signupRequest) throws MessagingException {
         if (signupRequest instanceof PetAdopterSignupRequest) {
-            return ResponseEntity.ok(petAdopterAuthenticationService.signup((PetAdopterSignupRequest) signupRequest));
+            return ResponseEntity.ok(petAdopterAuthenticationService.signup(getAppUrl(request), (PetAdopterSignupRequest) signupRequest));
         } else if (signupRequest instanceof ShelterSignupRequest) {
-            return ResponseEntity.ok(shelterAuthenticationService.signup((ShelterSignupRequest) signupRequest));
+            return ResponseEntity.ok(shelterAuthenticationService.signup(getAppUrl(request), (ShelterSignupRequest) signupRequest));
         }
         return ResponseEntity.ok(null);
     }
