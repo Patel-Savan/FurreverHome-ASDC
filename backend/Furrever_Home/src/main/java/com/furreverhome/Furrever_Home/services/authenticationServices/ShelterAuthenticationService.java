@@ -1,24 +1,17 @@
 package com.furreverhome.Furrever_Home.services.authenticationServices;
 
 import com.furreverhome.Furrever_Home.dto.*;
-import com.furreverhome.Furrever_Home.entities.PetAdopter;
 import com.furreverhome.Furrever_Home.entities.Shelter;
 import com.furreverhome.Furrever_Home.entities.User;
 import com.furreverhome.Furrever_Home.enums.Role;
 import com.furreverhome.Furrever_Home.exception.EmailExistsException;
-import com.furreverhome.Furrever_Home.repository.PetAdopterRepository;
 import com.furreverhome.Furrever_Home.repository.ShelterRepository;
 import com.furreverhome.Furrever_Home.repository.UserRepository;
 import com.furreverhome.Furrever_Home.services.emailservice.EmailService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +25,7 @@ public class ShelterAuthenticationService {
 
     private final ShelterRepository shelterRepository;
 
-    public ShelterDto signup(SignupRequest signupRequest) {
+    public ShelterDto signup(String appUrl, SignupRequest signupRequest) throws MessagingException {
         if(userRepository.existsByEmail(signupRequest.getEmail())) {
             try {
                 throw new EmailExistsException("User Already Exists");
@@ -54,12 +47,16 @@ public class ShelterAuthenticationService {
         shelter.setLicense(((ShelterSignupRequest) signupRequest).getLicense());
         shelter.setLocation(((ShelterSignupRequest) signupRequest).getLocation());
         shelter.setCapacity(((ShelterSignupRequest) signupRequest).getCapacity());
-        shelter.setImage(((ShelterSignupRequest) signupRequest).getImage());
+        shelter.setImageBase64(((ShelterSignupRequest) signupRequest).getImageBase64());
         shelter.setUser(result);
 
+        String url = appUrl + "/api/auth/verify/" + signupRequest.getEmail();
+        String linkText = "Click here to verify your email.";
+        String message = "<p>Please use the link below to verify your email.</p>"
+                + "<a href=\"" + url + "\">" + linkText + "</a>";
         // TODO: Separate the logic for the code to send email from here.
         emailService.sendEmail(signupRequest.getEmail(), "Email Verification",
-                "http://localhost:8080/api/auth/verify/" + signupRequest.getEmail());
+                message, true);
 
         shelterRepository.save(shelter);
 
