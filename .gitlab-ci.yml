@@ -94,7 +94,7 @@ publish-frontend:
     - docker --version
     - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PWD docker.io
     - IMAGE_TAG="$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
-    - docker build --build-arg VITE_BACKEND_BASE_URL=$VITE_BACKEND_TEST_BASE_URL -t em492028/furrever-frontend:$IMAGE_TAG . -f Dockerfile
+    - docker build --build-arg -t em492028/furrever-frontend:$IMAGE_TAG . -f Dockerfile
     - docker push em492028/furrever-frontend:$IMAGE_TAG
 
 
