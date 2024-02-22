@@ -8,7 +8,7 @@ function App() {
     @Component Router
     @Return All the routes from Router Component
     */
-  //  test
+
     <Router />
   )
 

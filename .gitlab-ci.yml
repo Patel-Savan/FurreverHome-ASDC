@@ -124,8 +124,8 @@ deploy:
   environment:
     name: development
     url: http://172.17.0.170:$SERVER_PORT
-  only:
-    - branches
+  # only:
+  #   - branches
 
 deploy-frontend:
   image: alpine:latest
@@ -154,8 +154,8 @@ deploy-frontend:
   environment:
     name: development
     url: http://172.17.0.170:$SERVER_PORT
-  only:
-    - branches
+  # only:
+  #   - branches
 
 
 
