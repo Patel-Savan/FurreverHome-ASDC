@@ -27,8 +27,8 @@ build-frontend:
   artifacts:
     paths:
       - frontend/furrever_home/dist
-  tags:
-      - furrever-gl-runner
+  # tags:
+  #     - furrever-gl-runner
 
 
 # test:
