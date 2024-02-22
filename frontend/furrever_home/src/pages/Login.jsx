@@ -23,6 +23,7 @@ const Login = () => {
   const handleSubmit = async(event) => {
     event.preventDefault();
 
+    console.log(`CONSOLE: ${import.meta.env.VITE_BACKEND_BASE_URL}`);
     axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/signin`,{email,password})
       .then(response=>{
 
