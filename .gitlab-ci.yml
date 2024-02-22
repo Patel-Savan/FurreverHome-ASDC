@@ -24,6 +24,7 @@ build-frontend:
     - cd frontend/furrever_home
     - npm install
     - npm run build
+    - ls frontend/furrever_home/dist
   artifacts:
     paths:
       - frontend/furrever_home/dist
