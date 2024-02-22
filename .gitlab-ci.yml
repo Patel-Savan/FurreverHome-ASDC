@@ -21,7 +21,7 @@ build-frontend:
   stage: build
   image: node:latest
   script:
-    - cd frontend/Furrever_Home
+    - cd frontend/furrever_home
     - npm install
     - npm run build
   artifacts:
