@@ -35,6 +35,7 @@ public class SecurityConfiguration {
                         .permitAll()
                         .requestMatchers("/api/admin/**").hasAnyAuthority(Role.ADMIN.name())
                         .requestMatchers("/api/petadopter/**").hasAnyAuthority(Role.PETADOPTER.name())
+                        .requestMatchers("/api/shelter/**").hasAnyAuthority(Role.SHELTER.name())
                         .anyRequest().authenticated())
 
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
