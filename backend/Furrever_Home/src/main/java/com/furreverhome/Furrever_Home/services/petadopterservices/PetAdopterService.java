@@ -12,4 +12,6 @@ public interface PetAdopterService {
 
     ShelterResponseDtoListDto searchShelter(SearchShelterDto searchShelterDto);
 
+    PetResponseDtoListDto searchPet(SearchPetDto searchPetDto);
+
 }

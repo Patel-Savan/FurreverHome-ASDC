@@ -1,5 +1,6 @@
 package com.furreverhome.Furrever_Home.entities;
 
+import com.furreverhome.Furrever_Home.dto.petadopter.PetResponseDto;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,6 +20,8 @@ public class Pet {
     private String gender;
     private Date birthdate;
 
+    private Integer age;
+
     @Lob
     @Column(length = 100000)
     private String petImage;
@@ -26,4 +29,22 @@ public class Pet {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shelterID", referencedColumnName = "id")
     private Shelter shelter;
+
+    public PetResponseDto getPetResponseDto() {
+        PetResponseDto petResponseDto = new PetResponseDto();
+
+        petResponseDto.setPetId(petID);
+        petResponseDto.setAge(age);
+        petResponseDto.setBreed(breed);
+        petResponseDto.setType(type);
+        petResponseDto.setPetImage(petImage);
+        petResponseDto.setShelterName(shelter.getName());
+        petResponseDto.setShelterCity(shelter.getCity());
+        petResponseDto.setShelterContact(shelter.getContact());
+//        petResponseDto.setShelter(shelter);
+        petResponseDto.setColor(colour);
+        petResponseDto.setGender(gender);
+
+        return petResponseDto;
+    }
 }

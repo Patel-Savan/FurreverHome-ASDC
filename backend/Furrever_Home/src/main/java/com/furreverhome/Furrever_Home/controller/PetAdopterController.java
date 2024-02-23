@@ -35,4 +35,9 @@ public class PetAdopterController {
         return ResponseEntity.ok(petAdopterService.searchShelter(searchShelterDto));
     }
 
+    @PostMapping("/searchpet")
+    public ResponseEntity<?> searchPet(@RequestBody SearchPetDto searchPetDto) {
+        return ResponseEntity.ok(petAdopterService.searchPet(searchPetDto));
+    }
+
 }

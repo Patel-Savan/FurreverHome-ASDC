@@ -2,11 +2,13 @@ package com.furreverhome.Furrever_Home.services.petadopterservices.impl;
 
 import com.furreverhome.Furrever_Home.dto.PetAdopterDto;
 import com.furreverhome.Furrever_Home.dto.petadopter.*;
+import com.furreverhome.Furrever_Home.entities.Pet;
 import com.furreverhome.Furrever_Home.entities.PetAdopter;
 import com.furreverhome.Furrever_Home.entities.Shelter;
 import com.furreverhome.Furrever_Home.entities.User;
 import com.furreverhome.Furrever_Home.exception.UserNotFoundException;
 import com.furreverhome.Furrever_Home.repository.PetAdopterRepository;
+import com.furreverhome.Furrever_Home.repository.PetRepository;
 import com.furreverhome.Furrever_Home.repository.ShelterRepository;
 import com.furreverhome.Furrever_Home.repository.UserRepository;
 import com.furreverhome.Furrever_Home.services.petadopterservices.PetAdopterService;
@@ -29,7 +31,7 @@ public class PetAdopterServiceImpl implements PetAdopterService {
 
     private final UserRepository userRepository;
 
-//    private final PetRepository petRepository;
+    private final PetRepository petRepository;
 
     @Override
     public List<ShelterResponseDto> getAllShelter() {
@@ -73,5 +75,29 @@ public class PetAdopterServiceImpl implements PetAdopterService {
         ShelterResponseDtoListDto shelterResponseDtoListDto = new ShelterResponseDtoListDto();
         shelterResponseDtoListDto.setShelterResponseDtoList(shelterList.stream().map(Shelter::getShelterResponseDto).collect(Collectors.toList()));
         return shelterResponseDtoListDto;
+    }
+
+    @Override
+    public PetResponseDtoListDto searchPet(SearchPetDto searchPetDto) {
+        Pet pet = new Pet();
+        pet.setAge(searchPetDto.getAge());
+        pet.setBreed(searchPetDto.getBreed());
+        pet.setType(searchPetDto.getType());
+        pet.setGender(searchPetDto.getGender());
+        pet.setColour(searchPetDto.getColor());
+
+        ExampleMatcher exampleMatcher =
+                ExampleMatcher.matchingAll()
+                        .withMatcher("type", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                        .withMatcher("breed", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                        .withMatcher("age", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                        .withMatcher("color", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                        .withMatcher("gender", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
+
+        Example<Pet> petExample = Example.of(pet, exampleMatcher);
+        List<Pet> petList = petRepository.findAll(petExample);
+        PetResponseDtoListDto petResponseDtoListDto = new PetResponseDtoListDto();
+        petResponseDtoListDto.setPetResponseDtoList(petList.stream().map(Pet::getPetResponseDto).collect(Collectors.toList()));
+        return petResponseDtoListDto;
     }
 }
