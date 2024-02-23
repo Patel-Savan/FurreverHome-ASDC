@@ -15,4 +15,9 @@ public class PetAdopterSignupRequest extends SignupRequest{
 
     private String address;
 
+    private String city;
+
+    private String country;
+
+    private String zipcode;
 }

@@ -48,6 +48,9 @@ public class PetAdopterAuthenticationService {
         petAdopter.setLastname(((PetAdopterSignupRequest) signupRequest).getLastName());
         petAdopter.setPhone_number(((PetAdopterSignupRequest) signupRequest).getPhone_number());
         petAdopter.setAddress(((PetAdopterSignupRequest) signupRequest).getAddress());
+        petAdopter.setCity(((PetAdopterSignupRequest) signupRequest).getCity());
+        petAdopter.setCountry(((PetAdopterSignupRequest) signupRequest).getCountry());
+        petAdopter.setZipcode(((PetAdopterSignupRequest) signupRequest).getZipcode());
         petAdopter.setUser(result);
 
         String url = appUrl + "/api/auth/verify/" + signupRequest.getEmail();
