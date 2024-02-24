@@ -1,5 +1,6 @@
 package com.furreverhome.Furrever_Home.exception;
 import com.furreverhome.Furrever_Home.utils.ErrorDetails;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -37,5 +38,11 @@ public class GlobalExceptionHandler {
 //        ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
 //        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
 //    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException ex, WebRequest request) {
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
 }
 
