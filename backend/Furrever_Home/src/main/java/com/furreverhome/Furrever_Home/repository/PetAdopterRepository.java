@@ -8,4 +8,5 @@ import java.util.Optional;
 
 public interface PetAdopterRepository extends JpaRepository<PetAdopter, Long> {
     Optional<PetAdopter> findByUser(User user);
+    Optional<PetAdopter> findByUserId(Long userId);
 }
