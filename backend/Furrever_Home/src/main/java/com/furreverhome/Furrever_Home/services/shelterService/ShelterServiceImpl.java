@@ -1,6 +1,6 @@
 package com.furreverhome.Furrever_Home.services.shelterService;
 
-import com.furreverhome.Furrever_Home.dto.JwtAuthenticationResponse;
+import com.furreverhome.Furrever_Home.dto.GenericResponse;
 import com.furreverhome.Furrever_Home.dto.PetDto;
 import com.furreverhome.Furrever_Home.dto.shelter.RegisterPetRequest;
 import com.furreverhome.Furrever_Home.entities.Pet;
@@ -49,5 +49,53 @@ public class ShelterServiceImpl implements ShelterService{
         petDto.setPetImage(pet.getPetImage());
         petDto.setShelter(pet.getShelter());
         return petDto;
+    }
+
+    public PetDto editPet(Long petID, RegisterPetRequest updatePetRequest){
+        Optional<Pet> optionalPet = petRepository.findById(petID);
+        if (optionalPet.isPresent()){
+            Pet pet = optionalPet.get();
+
+            if (updatePetRequest.getType()!=null){
+                pet.setType(updatePetRequest.getType());
+            }
+            if (updatePetRequest.getBreed()!=null){
+                pet.setBreed(updatePetRequest.getBreed());
+            }
+            if (updatePetRequest.getColour()!=null){
+                pet.setColour(updatePetRequest.getColour());
+            }
+            if (updatePetRequest.getGender()!=null){
+                pet.setGender(updatePetRequest.getGender());
+            }
+            if (updatePetRequest.getBirthdate()!=null){
+                pet.setBirthdate(updatePetRequest.getBirthdate());
+            }
+            if (updatePetRequest.getPetImage()!=null){
+                pet.setPetImage(updatePetRequest.getPetImage());
+            }
+            petRepository.save(pet);
+            PetDto petDto = new PetDto();
+            petDto.setPetID(pet.getPetID());
+            petDto.setType(pet.getType());
+            petDto.setBreed(pet.getBreed());
+            petDto.setColour(pet.getColour());
+            petDto.setGender(pet.getGender());
+            petDto.setBirthdate(pet.getBirthdate());
+            petDto.setPetImage(pet.getPetImage());
+            petDto.setShelter(pet.getShelter());
+            return petDto;
+        }else {
+            throw new RuntimeException("Pet with ID "+petID+" not found");
+        }
+    }
+
+    public GenericResponse deletePet(Long petId) {
+        if (petRepository.existsById(petId)) {
+            petRepository.deleteById(petId);
+            return new GenericResponse("Pet deleted.");
+        } else {
+            throw new RuntimeException("Pet with ID " + petId + " not found");
+        }
     }
 }
