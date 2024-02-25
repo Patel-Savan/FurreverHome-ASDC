@@ -58,7 +58,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setEmail("admin@gmail.com");
             user.setRole(Role.ADMIN);
             user.setVerified(Boolean.TRUE);
-            user.setPassword(new BCryptPasswordEncoder().encode("admin"));
+            user.setPassword(new BCryptPasswordEncoder().encode("Jp@32padhiyar"));
             userRepository.save(user);
             System.out.println("Admin successfully created..");
         }

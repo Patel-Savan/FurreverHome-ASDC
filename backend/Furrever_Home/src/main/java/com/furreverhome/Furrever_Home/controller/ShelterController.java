@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/shelter")
 @RequiredArgsConstructor
@@ -27,5 +29,10 @@ public class ShelterController {
     @DeleteMapping("/deletePet/{petID}")
     public ResponseEntity<GenericResponse> deletePetInShelter(@PathVariable Long petID){
         return ResponseEntity.ok(shelterService.deletePet(petID));
+    }
+
+    @GetMapping("/{shelterID}/pets")
+    public ResponseEntity<List<PetDto>> getPetInShelter(@PathVariable Long shelterID){
+        return ResponseEntity.ok(shelterService.getPetsForShelter(shelterID));
     }
 }
