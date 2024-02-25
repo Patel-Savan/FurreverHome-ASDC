@@ -32,6 +32,7 @@ public class ShelterServiceImpl implements ShelterService{
         pet.setColour(registerPetRequest.getColour());
         pet.setGender(registerPetRequest.getGender());
         pet.setBirthdate(registerPetRequest.getBirthdate());
+        pet.setAdopted(registerPetRequest.getAdopted());
         pet.setPetImage(registerPetRequest.getPetImage());
 
         Shelter shelter = shelterRepository.findById(registerPetRequest.getShelter()).orElse(null);
@@ -63,6 +64,9 @@ public class ShelterServiceImpl implements ShelterService{
             }
             if (updatePetRequest.getBirthdate()!=null){
                 pet.setBirthdate(updatePetRequest.getBirthdate());
+            }
+            if (updatePetRequest.getAdopted()!=null){
+                pet.setAdopted(updatePetRequest.getAdopted());
             }
             if (updatePetRequest.getPetImage()!=null){
                 pet.setPetImage(updatePetRequest.getPetImage());
@@ -105,6 +109,7 @@ public class ShelterServiceImpl implements ShelterService{
         petDto.setColour(pet.getColour());
         petDto.setGender(pet.getGender());
         petDto.setBirthdate(pet.getBirthdate());
+        petDto.setAdopted(pet.getAdopted());
         petDto.setPetImage(pet.getPetImage());
         petDto.setShelter(pet.getShelter());
         return petDto;

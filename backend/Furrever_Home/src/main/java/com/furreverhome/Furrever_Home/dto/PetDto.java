@@ -16,6 +16,7 @@ public class PetDto {
     private String colour;
     private String gender;
     private Date birthdate;
+    private Boolean adopted;
     private String petImage;
     private Shelter shelter;
 }
