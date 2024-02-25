@@ -21,7 +21,7 @@ const ShelterHome = ({children}) => {
 
     axios.get(`${baseurl}/${id}`,{
       headers: {
-        Authorization: `Bearer ${token} `,
+        Authorization: `Bearer ${token}`,
       }
     })
       .then(response => {
@@ -49,7 +49,7 @@ const ShelterHome = ({children}) => {
 
         <div className=' sm:w-full'>
 
-          <PetsTable pets={pets} sid={id} token={token}/>
+          <PetsTable />
 
         </div>
 

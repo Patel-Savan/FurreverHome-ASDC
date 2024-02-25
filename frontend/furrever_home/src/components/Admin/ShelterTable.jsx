@@ -1,5 +1,6 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import axios from "axios"
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
 import {
     Card,
@@ -18,86 +19,8 @@ import {
     Tooltip,
 } from "@material-tailwind/react";
 import { DataGrid } from '@mui/x-data-grid';
-
-
-const columns = [
-    { field: 'id', headerName: 'PetID', width: 90 },
-    {
-        field: 'petImage',
-        headerName: 'Pet',
-        width: 150,
-        editable: true,
-        renderCell: (params) => <Avatar src={params.value} />
-    },
-    {
-        field: 'petStatus',
-        headerName: 'Status',
-        width: 150,
-        editable: true,
-        renderCell: (param) => {
-            return(
-                param?<Chip color="green" value="Adopted" />:<Chip color="cyan" value="blue" /> 
-            )
-        
-    }
-    },
-    {
-        field: 'age',
-        headerName: 'Age',
-        width: 150,
-        editable: true,
-    },
-    {
-        field: 'type',
-        headerName: 'Type',
-        width: 110,
-        editable: true,
-    },
-    {
-        field: 'breed',
-        headerName: 'Breed',
-        width: 110,
-        editable: true,
-    },
-    {
-        field: 'colour',
-        headerName: 'Colour',
-        width: 110,
-        editable: true,
-    },
-    {
-        field: 'gender',
-        headerName: 'Gender',
-        width: 110,
-        editable: true,
-    },
-    {
-        field: 'birthdate',
-        headerName: 'BirthDate',
-        width: 110,
-        editable: true,
-    },
-    {
-
-        headerName: 'Action',
-        width: 110,
-        renderCell: () => {
-            return (
-
-                <div className="flex">
-                    <IconButton variant="text">
-                        <PencilIcon className="h-4 w-4" />
-                    </IconButton>
-                    <IconButton variant="text">
-                        <TrashIcon className="h-4 w-4 text-red-600" />
-                    </IconButton>
-                </div>
-
-            )
-
-        }
-    },
-];
+import { deleteLocalStorage, readLocalStorage, saveLocalStorage } from '../../utils/helper'
+import { toast } from 'react-toastify';
 
 
 
@@ -105,14 +28,156 @@ const columns = [
 
 
 
-const ShelterTable = ({ shelters }) => {
 
-    console.log(shelters)
+
+const ShelterTable = () => {
+
+    
+    const [shelters,setShelters] = useState([])
+    const [loading,setLoading] =useState(false)
+    const baseurl = `${import.meta.env.VITE_BACKEND_BASE_URL}/admin`;
+    const token = readLocalStorage("token")
+    const id = readLocalStorage("id");
+    console.log(id)
 
     const [search, setSearch] = useState('');
     const handleChange = (e) => {
         setSearch(e.target.value)
     }
+
+    const columns = [
+        { field: 'id', headerName: 'ShelterID', width: 90 },
+        {
+            field: 'name',
+            headerName: 'name',
+            width: 150,
+            editable: true,
+        },
+        {
+            field: 'verified',
+            headerName: 'Status',
+            width: 150,
+            editable: true,
+            renderCell: (param) => {
+                return(
+                    param.value?<Chip color="green" value="Verified" />:<Chip color="blue" value="Pending" /> 
+                )
+            
+        }
+        },
+        {
+            field: 'rejected',
+            headerName: 'Status',
+            width: 150,
+            editable: true,
+            renderCell: (param) => {
+                return(
+                    
+                    param.value?<Chip color="red" value="Rejected" />:<Chip color="blue" value="Pending" /> 
+                )
+            
+        }
+        },
+        {
+            field: 'contact',
+            headerName: 'Contact',
+            width: 150,
+            editable: true,
+        },
+        {
+            field: 'email',
+            headerName: 'Email',
+            width: 110,
+            editable: true,
+        },
+        {
+            field: 'image',
+            headerName: 'Image',
+            width: 110,
+            renderCell: (param) => {
+                return(
+                    <img src={param.value} width="50px" height="50px" /> 
+                )}
+        },
+        {
+            field: 'license',
+            headerName: 'Licence',
+            width: 110,
+            renderCell: (param) => {
+                return(
+                    <img src={param.value} width="50px" height="50px" /> 
+                )}
+        },
+        {
+            field: 'city',
+            headerName: 'City',
+            width: 110,
+            editable: true,
+        },
+        {
+    
+            headerName: 'Action',
+            width: 400,
+            renderCell: (prop) => {
+                return (
+    
+                    <div className="flex gap-2">
+                        <button className='btn btn-primary' onClick={()=>{approve(prop.row.id)}}>Approve</button>
+                        <button className='btn btn-outline' onClick={()=>{reject(prop.row.id)}}>Reject</button>
+                    </div>
+    
+                )
+    
+            }
+        },
+    ];
+    
+
+    const approve=(id)=>{
+        axios.get(`${baseurl}/shelter/${shelters[id-1].email}/Approve}`,{
+            headers: {
+              Authorization: `Bearer ${token}`,
+            }
+          })
+            .then(response => {
+              toast.info("Status Approved")
+            })
+            .catch(error => {
+              console.log(error);
+            })
+    }
+
+    const reject=(id)=>{
+        axios.get(`${baseurl}/shelter/${shelters[id-1].email}/Reject}`,{
+            headers: {
+              Authorization: `Bearer ${token}`,
+            }
+          })
+            .then(response => {
+              toast.info("Status Approved")
+            })
+            .catch(error => {
+              console.log(error);
+            })
+    }
+
+    useEffect(()=>{
+
+        axios.get(`${baseurl}/shelters`,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        })
+          .then(response => {
+            setShelters(response.data)
+            setLoading(true)
+            saveLocalStorage("User",JSON.stringify(response.data));
+          })
+          .catch(error => {
+            console.log(error);
+          })
+    
+      },[shelters.length])
 
     return (
         <Card className=" h-[calc(100vh-2rem)]  mx-5 my-2">
@@ -140,21 +205,29 @@ const ShelterTable = ({ shelters }) => {
             </CardHeader>
 
             {/* <Card className=""> */}
-            <DataGrid
-                rows={shelters}
-                columns={columns}
-                initialState={{
-                    pagination: {
-                        paginationModel: {
-                            pageSize: 10,
+            {
+                loading?
+                (<DataGrid
+                    rows={shelters}
+                    columns={columns}
+                    initialState={{
+                        pagination: {
+                            paginationModel: {
+                                pageSize: 10,
+                            },
                         },
-                    },
-                }}
-                pageSizeOptions={[10]}
-                checkboxSelection
-                disableRowSelectionOnClick
-
-            />
+                    }}
+                    pageSizeOptions={[10]}
+                    checkboxSelection
+                    disableRowSelectionOnClick
+    
+                />)
+                : (
+                    <h1>Loading</h1>
+                )
+                
+            }
+            
         </Card>
     );
 }
