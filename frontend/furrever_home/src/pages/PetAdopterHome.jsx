@@ -18,17 +18,117 @@ const PetAdopterHome = () => {
   const token = readLocalStorage("token")
   const id = readLocalStorage("id");
 
-  const handleFilterChange = (event) => {
-    setFilter(event.target.value);
-  }
+  useEffect(()=>{
+
+    axios.get(`${baseurl}/${id}`,{
+      headers: {
+        Authorization: `Bearer ${token} `,
+      }
+    })
+      .then(response => {
+        console.log(response.data)
+        saveLocalStorage("User",JSON.stringify(response.data));
+        setSearchQuery(response.data.city)
+        // console.log(filter + "=" + searchQuery);
+        return response.data.city
+      })
+      .then((city) => {
+        console.log(city)
+        axios.post(`${baseurl}/searchshelter`,{
+          city : city
+        },{
+        headers: {
+          Authorization: `Bearer ${token} `,
+        }})
+         .then(response => {
+            setData(response.data.shelterResponseDtoList)
+            console.log(response.data)
+         })
+         .catch(error => {
+            toast.error("Cannot load data")
+         })
+      })
+      .catch(error => {
+        toast.error("Cannot get User details");
+      })
+
+  },[])
+
 
   const handleTypeChange = (event) => {
     setType(event.target.value);
   }
 
+  const handleSearch =(event) => {
+    event.preventDefault();
+
+    if(filter === "Shelter"){
+      if(type === "All"){
+
+        axios.get(`${baseurl}/shelters`,{
+          headers: {
+            Authorization: `Bearer ${token} `,
+        }})
+          .then(response => {
+            setData(response.data)
+            console.log(response.data)
+          })
+          .catch(error => {
+            toast.error("Cannot get All Shelters")
+          })
+      }
+      else{
+        axios.post(`${baseurl}/searchshelter`,{
+          [type] : searchQuery
+        },{
+        headers: {
+          Authorization: `Bearer ${token} `,
+        }})
+         .then(response => {
+            setData(response.data.shelterResponseDtoList)
+            console.log(response.data.shelterResponseDtoList)
+         })
+         .catch(error => {
+            toast.error("Cannot load data")
+         })
+    
+        console.log(type + "=" + searchQuery)
+      }
+    }
+    else{
+      axios.post(`${baseurl}/searchpet`,{
+        [type] : searchQuery
+      },{
+      headers: {
+        Authorization: `Bearer ${token} `,
+      }})
+       .then(response => {
+          setData(response.data.petResponseDtoList)
+          console.log(response.data.petResponseDtoList)
+       })
+       .catch(error => {
+          toast.error("Cannot load data")
+       })
+      console.log(type + "=" + searchQuery)
+    }
+
+    
+  }
+
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value);
+  }
+
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   }
+
+  const handleShelterClick = (id) => {
+    navigate("/shelter?id=" + id)
+  }
+
+  const handlePetClick = (id) => {
+  navigate("pet?id=" + id)}
 
   return (
 
@@ -110,6 +210,8 @@ const PetAdopterHome = () => {
                 capacity ={shelter.capacity}
                 contact = {shelter.contact}
                 key={shelter.id}
+                id={shelter.id}
+                onClick = {handleShelterClick}
               />
             )
           }) 
@@ -124,7 +226,9 @@ const PetAdopterHome = () => {
              shelter={pet.shelter}
              city={pet.city}
              contact={pet.contact}
-             key={pet.id} 
+             key={pet.id}
+             id={pet.id}
+             onClick={handlePetClick}
             />
           }) 
         }
@@ -135,3 +239,9 @@ const PetAdopterHome = () => {
 }
 
 export default PetAdopterHome
+//searchQuery.toLowerCase() === ''
+/*         .filter((item) => {
+  return true
+  ? item
+  : item.city.toLowerCase().includes(searchQuery)
+})*/
