@@ -78,7 +78,7 @@ public class UserProfileManagementControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.firstName").value("John"))
+                .andExpect(jsonPath("$.firstName").value("Jane"))
                 .andExpect(jsonPath("$.lastName").value("Doe"));
 
         verify(userProfileManagementService).updateUserProfile(anyLong(), any(UpdateUserProfileRequestDto.class));
@@ -103,7 +103,7 @@ public class UserProfileManagementControllerTest {
         mockMvc.perform(get("/api/users/{userId}", userId))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.firstName").value("John"))
+                .andExpect(jsonPath("$.firstName").value("Jane"))
                 .andExpect(jsonPath("$.lastName").value("Doe"));
 
         verify(userProfileManagementService).getUserProfile(eq(userId));
@@ -155,8 +155,8 @@ public class UserProfileManagementControllerTest {
                         .content(objectMapper.writeValueAsString(requestDto)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Shelter"))
-                .andExpect(jsonPath("$.location").value("Location"));
+                .andExpect(jsonPath("$.name").value("Happy Paws Shelter"))
+                .andExpect(jsonPath("$.address").value("1234 Bark St"));
 
         verify(userProfileManagementService).updateShelterProfile(eq(shelterId), any(UpdateShelterProfileRequestDto.class));
     }
