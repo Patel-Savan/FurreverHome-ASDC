@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
-import { useLocation, useNavigate} from 'react-router-dom'
+import {Link, useLocation, useNavigate} from 'react-router-dom'
+import { toast } from "react-toastify";
 import axios from 'axios'
 import Logo from '../components/Logo'
+import { validatePassword } from '../utils/helper';
+
 
 const ResetPassword = () => {
 
@@ -12,6 +15,9 @@ const ResetPassword = () => {
 
     const [newPassword,setNewPassword] = useState('');
     const [verifyNewPassword,setVerifyNewPassword] = useState('');
+    const [isError,setIsError] = useState();
+
+    let errors =[];
 
     const handleNewPasswordChange=(event) =>{
         setNewPassword(event.target.value);
@@ -24,18 +30,25 @@ const ResetPassword = () => {
     const handleSubmit = (event) =>{
         event.preventDefault();
 
-        if(newPassword == verifyNewPassword ){
-            axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/resetPassword`,{newPassword,verifyNewPassword,token})
+        errors = validatePassword();
+
+        if(errors.length === 0){
+          if(newPassword == verifyNewPassword ){
+            axios.post("http://localhost:8080/api/auth/resetPassword",{newPassword,verifyNewPassword,token})
                 .then(response =>{
-                  alert("Password Successfully reset.");
+                  toast.info("Password Successfully Reset")
                   navigate('/login');
                 })
                 .catch(error =>{
-                    alert(error.message);
+                  toast.error("Cannot Reset Password ! Please try again")
                 })
+          }
+          else{
+            toast.error("Password and Confirm Password does not match")
+          }
         }
         else{
-          alert("Password and Confirm Password doesn't macth");
+          setIsError(true);
         }
     }
 
@@ -90,6 +103,12 @@ const ResetPassword = () => {
                   onChange={handleVerifyNewPasswordChange}
                 />
               </div>
+              <div className='text-red-500 text-sm'>
+              {isError && <p>
+                * Your Password must be 8 characters long,should contain a digit, Uppercase Letter, Special and should not contain numerical sequence, alphabetical sequence,keyboard sequence and empty space. 
+                </p>
+              }
+              </div>
             </div>
 
             <div>
@@ -104,6 +123,7 @@ const ResetPassword = () => {
          
         </div>
       </div>
+      {/* </div> */}
     </>
   )
 }

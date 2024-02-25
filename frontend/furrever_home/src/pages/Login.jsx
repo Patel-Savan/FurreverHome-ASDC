@@ -1,14 +1,17 @@
-import React, { useState, } from 'react'
+import React, { useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import { ToastContainer, toast } from "react-toastify";
+import { saveLocalStorage, validatePassword } from '../utils/helper'
 import Logo from '../components/Logo'
-import { saveLocalStorage } from '../utils/helper'
 
 const Login = () => {
 
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState('');
+  const [isError,setIsError] = useState(false);
+  let errors = [];
 
   const navigate = useNavigate();
 
@@ -19,31 +22,55 @@ const Login = () => {
   const handlePasswordChange =(event) =>{
     setPassword(event.target.value);
   }
-  
+ 
   const handleSubmit = async(event) => {
     event.preventDefault();
 
-    axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/signin`,{email,password})
+    errors = validatePassword(password);
+    console.log(errors)
+
+    if(errors.length === 0){
+      axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/signin`,{email,password})
       .then(response=>{
 
-        console.log(response);
+        if(response.data.token === null){
+          toast.info("Verification Pending");
+        }
+        else{
+          console.log(response);
+          toast.success("Login Successfull");
+          saveLocalStorage("id",response.data.userId);
           saveLocalStorage("token",response.data.token);
           saveLocalStorage("role",response.data.userRole);
+          console.log(response.data)
 
-            if(response.data.verified == false)
-                alert("User is not verified")
+            if(response.data.userRole == "PETADOPTER")
+            {
+              navigate("/adopter/home");
+            }
+            else if(response.data.userRole == "SHELTER")
+            {
 
-            else if(response.data.userRole == "PETADOPTER")
-                navigate("/PetAdopterHome");
+              navigate("/shelter/home");
+            }
+            else if(response.data.userRole == "ADMIN") {
 
-            else
-                navigate("/ShelterHome");
+              navigate("/admin/home")
+            }
+
+        }
+
+          
         
       })
       .catch(error =>{
-        alert("Incorrect Email or Paassword");
+        toast.error("Incorrect Username or Password");
       })
-      
+    }
+    else{
+      toast.error("Invalid Password")
+      setIsError(true);
+    }
   }
 
   return (
@@ -100,6 +127,15 @@ const Login = () => {
                   onChange={handlePasswordChange}
                 />
               </div>
+
+
+              <div className='text-red-500 text-sm'>
+              {isError && <p>
+                * Your Password must be 8 characters long,should contain a digit, Uppercase Letter, Special and should not contain numerical sequence, alphabetical sequence,keyboard sequence and empty space. 
+                </p>
+              }
+              </div>
+              
             </div>
 
             <div>
@@ -126,9 +162,16 @@ const Login = () => {
           </p>
         </div>
       </div>
+      {/* </div> */}
     </>
   )
- 
+  
+  /*if(user === "adopter"){
+    return(<PetAdopterLogin/>)
+  }
+  else{
+    return(<ShelterLogin/>)
+  }*/
 
 }
 

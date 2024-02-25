@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from 'axios';
+import { validatePassword } from '../../utils/helper';
 
 const PetAdopterRegister = () => {
 
@@ -11,7 +12,8 @@ const PetAdopterRegister = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState({})
   const navigate = useNavigate();
-
+  let errors = []
+  const [isError, setIsError] = useState(false);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -19,6 +21,9 @@ const PetAdopterRegister = () => {
     lastName: "",
     password: "",
     address: "",
+    city: "",
+    country: "",
+    zipcode: "",
     phone_number: "",
     role: "petadopter"
   })
@@ -35,24 +40,37 @@ const PetAdopterRegister = () => {
 
     event.preventDefault();
 
+    errors = validatePassword(formData.password)
 
-    axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/signup`, {
-      ...formData
-    })
-      .then((res) => {
-        console.log(res)
-        setResponse(res)
-        setLoading(false)
-        toast.info("Verify Your Email!");
-        navigate("/login")
+    if (errors.length === 0) {
+
+      axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/signup`, {
+        ...formData
       })
-      .catch((err) => {
-        console.log(err)
-        setError(err)
-        toast.error(err.message)
-      })
+        .then((res) => {
+          console.log(res)
+          setResponse(res)
+          setLoading(false)
+          toast.info("Verify Your Email!");
+          navigate("/login")
+        })
+        .catch((err) => {
+          console.log(err)
+          setError(err)
+          toast.error(err.message)
+        })
+    }
+    else {
+      toast.error("Invalid Password")
+      setIsError(true)
+    }
 
   }
+
+  // useEffect(()=>{
+  //   fetchData()
+  // },[])
+
 
   return (
     <>
@@ -160,14 +178,78 @@ const PetAdopterRegister = () => {
                   value={formData.address}
                   onChange={handleChange}
                   type="text"
-                  rows="3"
+                  rows="2"
                   autoComplete="text"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  placeholder='Enter Your Last Name'
+                  placeholder='Enter Your Address'
                 />
               </div>
             </div>
+
+            <div className='flex gap-2'>
+              <div>
+
+                <label htmlFor="city" className="text-sm font-medium leading-6 text-gray-900 flex">
+                  City
+                </label>
+                <div className="mt-1">
+                  <input
+                    id="city"
+                    name="city"
+                    value={formData.city}
+                    onChange={handleChange}
+                    type="text"
+                    autoComplete="text"
+                    required
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    placeholder='City'
+                  />
+                </div>
+              </div>
+
+              <div>
+
+              <label htmlFor="country" className="text-sm font-medium leading-6 text-gray-900 flex">
+                Country
+              </label>
+              <div className="mt-1">
+                <input
+                  id="country"
+                  name="country"
+                  value={formData.country}
+                  onChange={handleChange}
+                  type="text"
+                  autoComplete="text"
+                  required
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  placeholder='Country'
+                />
+              </div>
+            </div>
+
+            <div>
+
+              <label htmlFor="zipcode" className="text-sm font-medium leading-6 text-gray-900 flex">
+                Zipcode
+              </label>
+              <div className="mt-1">
+                <input
+                  id="zipcode"
+                  name="zipcode"
+                  value={formData.zipcode}
+                  onChange={handleChange}
+                  type="text"
+                  autoComplete="text"
+                  required
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  placeholder='Zipcode'
+                />
+              </div>
+            </div>
+            </div>
+
+
 
             <div>
               <div className="flex items-center justify-between">
@@ -187,6 +269,12 @@ const PetAdopterRegister = () => {
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   placeholder='Enter a Password'
                 />
+              </div>
+              <div className='text-red-500 text-sm'>
+                {isError && <p>
+                  * Your Password must be 8 characters long,should contain a digit, Uppercase Letter, Special and should not contain numerical sequence, alphabetical sequence,keyboard sequence and empty space.
+                </p>
+                }
               </div>
             </div>
 
