@@ -8,10 +8,11 @@ import { validatePassword } from '../../utils/helper';
 
 const ShelterRegister = () => {
 
+
   const [response, setResponse] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState({})
-  const [isError,setIsError] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -21,7 +22,10 @@ const ShelterRegister = () => {
     contact: "",
     role: "shelter",
     capacity: "",
-    location: ""
+    address: "",
+    city:"",
+    country:"",
+    zipcode:""
   })
 
   const [image, setImage] = useState([])
@@ -43,7 +47,7 @@ const ShelterRegister = () => {
     reader.onload = function (e) {
       console.log(e.target.result)
       setImage(e.target.result)
-      console.log(typeof(image))
+      console.log(typeof (image))
     };
 
     reader.onerror = function () {
@@ -80,30 +84,34 @@ const ShelterRegister = () => {
       contact: formData.contact,
       role: formData.role,
       capacity: formData.capacity,
-      location: formData.location,
-      imageBase64:image,
-      license:license
+      imageBase64: image,
+      license: license,
+      address: formData.address,
+      city:formData.city,
+      country:formData.country,
+      zipcode:formData.zipcode
+
     }
 
     errors = validatePassword(formData.password)
 
-    if(errors.length === 0){
+    if (errors.length === 0) {
 
-      axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/signup`,data)
-      .then((res) => {
-        console.log(res)
-        setResponse(res)
-        setLoading(false)
-        toast.info("Your Shelter Verification is Pending!");
-        navigate("/login")
-      })
-      .catch((err) => {
-        console.log(err)
-        setError(err)
-        toast.error(err.message)
-      })
+      axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/signup`, data)
+        .then((res) => {
+          console.log(res)
+          setResponse(res)
+          setLoading(false)
+          toast.info("Your Shelter Verification is Pending!");
+          navigate("/login")
+        })
+        .catch((err) => {
+          console.log(err)
+          setError(err)
+          toast.error(err.message)
+        })
     }
-    else{
+    else {
       toast.error("Invalid Password")
       setIsError(true)
     }
@@ -111,7 +119,7 @@ const ShelterRegister = () => {
 
   return (
     <>
-    
+
       <div className="flex min-h-full flex-1 flex-col m-8 justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <Logo />
@@ -120,7 +128,7 @@ const ShelterRegister = () => {
           </h2>
         </div>
 
-      
+
 
         <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-6" method="POST" onSubmit={handleSubmit}>
@@ -184,10 +192,10 @@ const ShelterRegister = () => {
                 />
               </div>
               <div className='text-red-500 text-sm'>
-              {isError && <p>
-                * Your Password must be 8 characters long,should contain a digit, Uppercase Letter, Special and should not contain numerical sequence, alphabetical sequence,keyboard sequence and empty space. 
+                {isError && <p>
+                  * Your Password must be 8 characters long,should contain a digit, Uppercase Letter, Special and should not contain numerical sequence, alphabetical sequence,keyboard sequence and empty space.
                 </p>
-              }
+                }
               </div>
             </div>
 
@@ -209,7 +217,7 @@ const ShelterRegister = () => {
                 />
               </div>
             </div>
-            
+
             <div>
               <label htmlFor="contact" className="text-sm font-medium leading-6 text-gray-900 flex">
                 Shelter Capacity
@@ -230,21 +238,85 @@ const ShelterRegister = () => {
             </div>
 
             <div>
-              <label htmlFor="contact" className="text-sm font-medium leading-6 text-gray-900 flex">
-                Shelter Location
+
+              <label htmlFor="address" className="text-sm font-medium leading-6 text-gray-900 flex">
+                Address
               </label>
               <div className="mt-1">
-                <input
-                  id="location"
-                  name="location"
-                  type="text"
-                  value={formData.location}
-                  autoComplete="text"
+                <textarea
+                  id="address"
+                  name="address"
+                  value={formData.address}
                   onChange={handleChange}
+                  type="text"
+                  rows="2"
+                  autoComplete="text"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  placeholder='Shelter Location'
+                  placeholder='Enter Your Address'
                 />
+              </div>
+            </div>
+
+            <div className='flex gap-2'>
+              <div>
+
+                <label htmlFor="city" className="text-sm font-medium leading-6 text-gray-900 flex">
+                  City
+                </label>
+                <div className="mt-1">
+                  <input
+                    id="city"
+                    name="city"
+                    value={formData.city}
+                    onChange={handleChange}
+                    type="text"
+                    autoComplete="text"
+                    required
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    placeholder='City'
+                  />
+                </div>
+              </div>
+
+              <div>
+
+                <label htmlFor="country" className="text-sm font-medium leading-6 text-gray-900 flex">
+                  Country
+                </label>
+                <div className="mt-1">
+                  <input
+                    id="country"
+                    name="country"
+                    value={formData.country}
+                    onChange={handleChange}
+                    type="text"
+                    autoComplete="text"
+                    required
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    placeholder='Country'
+                  />
+                </div>
+              </div>
+
+              <div>
+
+                <label htmlFor="zipcode" className="text-sm font-medium leading-6 text-gray-900 flex">
+                  Zipcode
+                </label>
+                <div className="mt-1">
+                  <input
+                    id="zipcode"
+                    name="zipcode"
+                    value={formData.zipcode}
+                    onChange={handleChange}
+                    type="text"
+                    autoComplete="text"
+                    required
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    placeholder='Zipcode'
+                  />
+                </div>
               </div>
             </div>
 
