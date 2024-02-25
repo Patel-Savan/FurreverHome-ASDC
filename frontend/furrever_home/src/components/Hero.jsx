@@ -9,7 +9,7 @@ const Hero = () => {
 
     <section className='bg-cream lg:bg-hero lg:bg-cover lg:bg-no-repeat min-h-[400px] lg:min-h-[805px]'>
       {/* <Header/> */}
-      <div className='container mx-auto flex justify-start items-center min-h-[400px] lg:h-[805px]'>
+      <div className='container mx-auto flex justify-start items-center min-h-[400px] lg:h-[605px]'>
         <div className='lg:max-w-[650px] text-center mx-auto lg:text-left lg:mx-0'>
 
         <div className='hidden xl:flex mb-6 ml-5'>
