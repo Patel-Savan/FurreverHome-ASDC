@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from 'axios';
+import { validatePassword } from '../../utils/helper';
 
 const PetAdopterRegister = () => {
 
@@ -11,7 +12,8 @@ const PetAdopterRegister = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState({})
   const navigate = useNavigate();
-
+  let errors =[]
+  const [isError,setIsError] = useState(false);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -35,24 +37,37 @@ const PetAdopterRegister = () => {
 
     event.preventDefault();
 
+    errors = validatePassword(formData.password)
 
-    axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/signup`, {
-      ...formData
-    })
-      .then((res) => {
-        console.log(res)
-        setResponse(res)
-        setLoading(false)
-        toast.info("Verify Your Email!");
-        navigate("/login")
+    if(errors.length === 0){
+
+      axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/signup`, {
+        ...formData
       })
-      .catch((err) => {
-        console.log(err)
-        setError(err)
-        toast.error(err.message)
-      })
+        .then((res) => {
+          console.log(res)
+          setResponse(res)
+          setLoading(false)
+          toast.info("Verify Your Email!");
+          navigate("/login")
+        })
+        .catch((err) => {
+          console.log(err)
+          setError(err)
+          toast.error(err.message)
+        })
+      }
+      else{
+        toast.error("Invalid Password")
+        setIsError(true)
+      }
 
   }
+
+  // useEffect(()=>{
+  //   fetchData()
+  // },[])
+
 
   return (
     <>
@@ -187,6 +202,12 @@ const PetAdopterRegister = () => {
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   placeholder='Enter a Password'
                 />
+              </div>
+              <div className='text-red-500 text-sm'>
+              {isError && <p>
+                * Your Password must be 8 characters long,should contain a digit, Uppercase Letter, Special and should not contain numerical sequence, alphabetical sequence,keyboard sequence and empty space. 
+                </p>
+              }
               </div>
             </div>
 

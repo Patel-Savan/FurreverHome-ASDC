@@ -4,12 +4,14 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from 'axios';
+import { validatePassword } from '../../utils/helper';
 
 const ShelterRegister = () => {
 
   const [response, setResponse] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState({})
+  const [isError,setIsError] = useState(false);
 
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -24,6 +26,7 @@ const ShelterRegister = () => {
 
   const [image, setImage] = useState([])
   const [license, setLicense] = useState([])
+  let errors = []
 
   const handleChange = (event) => {
 
@@ -82,15 +85,16 @@ const ShelterRegister = () => {
       license:license
     }
 
-    
+    errors = validatePassword(formData.password)
 
+    if(errors.length === 0){
 
-    axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/signup`,data)
+      axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/signup`,data)
       .then((res) => {
         console.log(res)
         setResponse(res)
         setLoading(false)
-        toast.info("Verify Your Email!");
+        toast.info("Your Shelter Verification is Pending!");
         navigate("/login")
       })
       .catch((err) => {
@@ -98,11 +102,16 @@ const ShelterRegister = () => {
         setError(err)
         toast.error(err.message)
       })
-
+    }
+    else{
+      toast.error("Invalid Password")
+      setIsError(true)
+    }
   }
 
   return (
     <>
+    
       <div className="flex min-h-full flex-1 flex-col m-8 justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <Logo />
@@ -110,6 +119,8 @@ const ShelterRegister = () => {
             Create Your New Account
           </h2>
         </div>
+
+      
 
         <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-6" method="POST" onSubmit={handleSubmit}>
@@ -172,6 +183,12 @@ const ShelterRegister = () => {
                   placeholder='Enter a Password'
                 />
               </div>
+              <div className='text-red-500 text-sm'>
+              {isError && <p>
+                * Your Password must be 8 characters long,should contain a digit, Uppercase Letter, Special and should not contain numerical sequence, alphabetical sequence,keyboard sequence and empty space. 
+                </p>
+              }
+              </div>
             </div>
 
             <div>
@@ -192,7 +209,7 @@ const ShelterRegister = () => {
                 />
               </div>
             </div>
-
+            
             <div>
               <label htmlFor="contact" className="text-sm font-medium leading-6 text-gray-900 flex">
                 Shelter Capacity
