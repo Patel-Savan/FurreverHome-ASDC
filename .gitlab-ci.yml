@@ -8,6 +8,8 @@ stages:
 
 build:
   stage: build
+  tags:
+    - furrever-gl-runner
   image: maven:latest
   script:
     - cd backend/Furrever_Home
@@ -19,6 +21,8 @@ build:
 
 build-frontend:
   stage: build
+  tags:
+    - furrever-gl-runner
   image: node:latest
   script:
     - cd frontend/furrever_home
