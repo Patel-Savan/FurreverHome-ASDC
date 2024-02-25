@@ -45,9 +45,12 @@ public class ShelterAuthenticationService {
         shelter.setName(((ShelterSignupRequest) signupRequest).getName());
         shelter.setContact(((ShelterSignupRequest) signupRequest).getContact());
         shelter.setLicense(((ShelterSignupRequest) signupRequest).getLicense());
-        shelter.setLocation(((ShelterSignupRequest) signupRequest).getLocation());
         shelter.setCapacity(((ShelterSignupRequest) signupRequest).getCapacity());
         shelter.setImageBase64(((ShelterSignupRequest) signupRequest).getImageBase64());
+        shelter.setCity(((ShelterSignupRequest) signupRequest).getCity());
+        shelter.setCountry(((ShelterSignupRequest) signupRequest).getCountry());
+        shelter.setAddress(((ShelterSignupRequest) signupRequest).getAddress());
+        shelter.setZipcode(((ShelterSignupRequest) signupRequest).getZipcode());
         shelter.setUser(result);
 
         String url = appUrl + "/api/auth/verify/" + signupRequest.getEmail();

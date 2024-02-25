@@ -1,5 +1,6 @@
 package com.furreverhome.Furrever_Home.entities;
 
+import com.furreverhome.Furrever_Home.dto.petadopter.ShelterResponseDto;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -17,8 +18,6 @@ public class Shelter {
 
     private String name;
 
-    private String location;
-
     private Long capacity;
 
     private String contact;
@@ -33,7 +32,31 @@ public class Shelter {
     private String license;
 
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    private String address;
+
+    private String city;
+
+    private String country;
+
+    private String zipcode;
+
+    public ShelterResponseDto getShelterResponseDto() {
+        ShelterResponseDto shelterResponseDto = new ShelterResponseDto();
+        shelterResponseDto.setId(id);
+        shelterResponseDto.setName(name);
+        shelterResponseDto.setCapacity(capacity);
+        shelterResponseDto.setAddress(address);
+        shelterResponseDto.setCity(city);
+        shelterResponseDto.setCountry(country);
+        shelterResponseDto.setZipcode(zipcode);
+        shelterResponseDto.setContact(contact);
+        shelterResponseDto.setImage(imageBase64);
+        shelterResponseDto.setLicense(license);
+        shelterResponseDto.setEmail(user.getEmail());
+        return shelterResponseDto;
+    }
 }

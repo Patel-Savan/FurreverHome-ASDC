@@ -13,4 +13,12 @@ public class PetAdopterDto {
 
     private Role userRole;
 
+    private String city;
+
+    private String address;
+
+    private String zipcode;
+
+    private String lastname;
+
 }

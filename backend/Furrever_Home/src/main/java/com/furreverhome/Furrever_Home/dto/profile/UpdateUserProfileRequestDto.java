@@ -4,6 +4,9 @@ public record UpdateUserProfileRequestDto(
         String firstName,
         String lastName,
         String phoneNumber,
-        String address
+        String address,
+        String city,
+        String country,
+        String zipcode
 ) {
 }

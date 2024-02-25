@@ -5,6 +5,6 @@ public record UpdateUserProfileResponseDto(
         String firstName,
         String lastName,
         String phoneNumber,
-        String address
-) {
+        String address,
+        String city, String country, String zipcode) {
 }

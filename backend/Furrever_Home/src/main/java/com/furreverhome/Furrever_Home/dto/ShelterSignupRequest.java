@@ -12,8 +12,6 @@ import java.time.LocalDateTime;
 public class ShelterSignupRequest extends SignupRequest{
     private String name;
 
-    private String location;
-
     private Long capacity;
 
     private String contact;
@@ -25,5 +23,13 @@ public class ShelterSignupRequest extends SignupRequest{
 //    private LocalDateTime createdAt;
 
     private String message;
+
+    private String address;
+
+    private String city;
+
+    private String country;
+
+    private String zipcode;
 
 }

@@ -52,8 +52,25 @@ public class UserProfileManagementControllerTest {
     @Test
     void testUpdateUserProfile() throws Exception {
         Long userId = 1L;
-        UpdateUserProfileRequestDto requestDto = new UpdateUserProfileRequestDto("John", "Doe", "1234567890", "123 Main St");
-        UpdateUserProfileResponseDto responseDto = new UpdateUserProfileResponseDto(userId, "John", "Doe", "1234567890", "123 Main St");
+        UpdateUserProfileRequestDto requestDto = new UpdateUserProfileRequestDto(
+            "John",            // firstName
+            "Doe",             // lastName
+            "+123456789",      // phoneNumber
+            "456 Elm Street",  // address
+            "Springfield",     // city
+            "USA",             // country
+            "12345"            // zipcode
+        );
+        UpdateUserProfileResponseDto responseDto = new UpdateUserProfileResponseDto(
+            userId, // id
+            "Jane",            // firstName
+            "Doe",             // lastName
+            "+1987654321",     // phoneNumber
+            "789 Maple Avenue",// address
+            "Anytown",         // city
+            "Countryland",     // country
+            "67890"            // zipcode
+        );
 
         when(userProfileManagementService.updateUserProfile(anyLong(), any(UpdateUserProfileRequestDto.class))).thenReturn(responseDto);
 
@@ -61,7 +78,7 @@ public class UserProfileManagementControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.firstName").value("John"))
+                .andExpect(jsonPath("$.firstName").value("Jane"))
                 .andExpect(jsonPath("$.lastName").value("Doe"));
 
         verify(userProfileManagementService).updateUserProfile(anyLong(), any(UpdateUserProfileRequestDto.class));
@@ -70,14 +87,23 @@ public class UserProfileManagementControllerTest {
     @Test
     void testGetUserProfileSuccess() throws Exception {
         Long userId = 1L;
-        UpdateUserProfileResponseDto responseDto = new UpdateUserProfileResponseDto(userId, "John", "Doe", "1234567890", "123 Main St");
+        UpdateUserProfileResponseDto responseDto = new UpdateUserProfileResponseDto(
+            userId, // id
+            "Jane",            // firstName
+            "Doe",             // lastName
+            "+1987654321",     // phoneNumber
+            "789 Maple Avenue",// address
+            "Anytown",         // city
+            "Countryland",     // country
+            "67890"            // zipcode
+        );
 
         given(userProfileManagementService.getUserProfile(eq(userId))).willReturn(responseDto);
 
         mockMvc.perform(get("/api/users/{userId}", userId))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.firstName").value("John"))
+                .andExpect(jsonPath("$.firstName").value("Jane"))
                 .andExpect(jsonPath("$.lastName").value("Doe"));
 
         verify(userProfileManagementService).getUserProfile(eq(userId));
@@ -98,8 +124,29 @@ public class UserProfileManagementControllerTest {
     @Test
     void testUpdateShelterProfileSuccess() throws Exception {
         Long shelterId = 1L;
-        UpdateShelterProfileRequestDto requestDto = new UpdateShelterProfileRequestDto("Shelter", "Location", 100L, "Contact", "ImageBase64", "License");
-        UpdateShelterProfileResponseDto responseDto = new UpdateShelterProfileResponseDto(shelterId, "Shelter", "Location", 100L, "Contact", "ImageBase64", "License");
+        UpdateShelterProfileRequestDto requestDto = new UpdateShelterProfileRequestDto(
+            "Happy Paws Shelter", // name
+            "1234 Bark St",       // address
+            "Puptown",            // city
+            "Furdia",             // country
+            "PAW123",             // zipcode
+            100L,                 // capacity (Long value, hence the 'L' suffix)
+            "+1234567890",        // contact
+            "image", // imageBase64 (example base64 string)
+            "SHL-7890123"         // license
+        );
+        UpdateShelterProfileResponseDto responseDto = new UpdateShelterProfileResponseDto(
+            shelterId, // id
+            "Happy Paws Shelter", // name
+            "1234 Bark St", // address
+            "Puptown", // city
+            "PAW123", // zipcode
+            100L, // capacity
+            "+1234567890", // contact
+            "image", // imageBase64
+            "SHL-7890123", // license
+            "Furdia" // country
+        );
 
         given(userProfileManagementService.updateShelterProfile(eq(shelterId), any(UpdateShelterProfileRequestDto.class))).willReturn(responseDto);
 
@@ -108,8 +155,8 @@ public class UserProfileManagementControllerTest {
                         .content(objectMapper.writeValueAsString(requestDto)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Shelter"))
-                .andExpect(jsonPath("$.location").value("Location"));
+                .andExpect(jsonPath("$.name").value("Happy Paws Shelter"))
+                .andExpect(jsonPath("$.address").value("1234 Bark St"));
 
         verify(userProfileManagementService).updateShelterProfile(eq(shelterId), any(UpdateShelterProfileRequestDto.class));
     }
@@ -117,7 +164,17 @@ public class UserProfileManagementControllerTest {
     @Test
     void testUpdateShelterProfileNotFound() throws Exception {
         Long shelterId = 2L;
-        UpdateShelterProfileRequestDto requestDto = new UpdateShelterProfileRequestDto("Shelter", "Location", 100L, "Contact", "ImageBase64", "License");
+        UpdateShelterProfileRequestDto requestDto = new UpdateShelterProfileRequestDto(
+            "Happy Paws Shelter", // name
+            "1234 Bark St",       // address
+            "Puptown",            // city
+            "Furdia",             // country
+            "PAW123",             // zipcode
+            100L,                 // capacity (Long value, hence the 'L' suffix)
+            "+1234567890",        // contact
+            "image", // imageBase64 (example base64 string)
+            "SHL-7890123"         // license
+        );
 
         given(userProfileManagementService.updateShelterProfile(eq(shelterId), any(UpdateShelterProfileRequestDto.class))).willThrow(new EntityNotFoundException("Shelter not found"));
 
@@ -133,7 +190,15 @@ public class UserProfileManagementControllerTest {
     @Test
     void testUpdateUserProfileUnauthorized() throws Exception {
         Long userId = 1L;
-        UpdateUserProfileRequestDto requestDto = new UpdateUserProfileRequestDto("John", "Doe", "1234567890", "123 Main St");
+        UpdateUserProfileRequestDto requestDto = new UpdateUserProfileRequestDto(
+            "John",            // firstName
+            "Doe",             // lastName
+            "+123456789",      // phoneNumber
+            "456 Elm Street",  // address
+            "Springfield",     // city
+            "USA",             // country
+            "12345"            // zipcode
+        );
 
         given(userProfileManagementService.updateUserProfile(eq(userId), any(UpdateUserProfileRequestDto.class))).willThrow(new AccessDeniedException("Unauthorized"));
 
