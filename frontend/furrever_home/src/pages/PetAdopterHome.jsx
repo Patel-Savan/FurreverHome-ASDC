@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { deleteLocalStorage, readLocalStorage, saveLocalStorage } from '../utils/helper'
 import { useNavigate } from 'react-router-dom'
-import shelter_image from '/img/shelter/shelter_image.jpg'
 import ShelterCard from '../components/Card/ShelterCard'
 import PetCard from "../components/Card/PetCard"
 import axios from 'axios'
