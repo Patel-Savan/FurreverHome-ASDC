@@ -123,13 +123,6 @@ const PetAdopterHome = () => {
     setSearchQuery(event.target.value);
   }
 
-  const handleShelterClick = (id) => {
-    navigate("/shelter?id=" + id)
-  }
-
-  const handlePetClick = (id) => {
-  navigate("pet?id=" + id)}
-
   return (
 
     <section>
@@ -211,7 +204,6 @@ const PetAdopterHome = () => {
                 contact = {shelter.contact}
                 key={shelter.id}
                 id={shelter.id}
-                onClick = {handleShelterClick}
               />
             )
           }) 
@@ -228,7 +220,6 @@ const PetAdopterHome = () => {
              contact={pet.contact}
              key={pet.id}
              id={pet.id}
-             onClick={handlePetClick}
             />
           }) 
         }
