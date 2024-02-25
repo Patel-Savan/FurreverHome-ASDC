@@ -1,31 +1,30 @@
 import React, { useState,useEffect } from 'react'
 
-import Sidebar from '../components/Shelter/Sidebar'
-import PetsTable from '../components/Shelter/PetsTable';
+
+import ShelterTable from '../components/Admin/ShelterTable';
 import { deleteLocalStorage, readLocalStorage, saveLocalStorage } from '../utils/helper'
 
 import pets from '../dummydata/pets'
 import axios from 'axios';
 import { toast } from "react-toastify";
 
-const ShelterHome = ({children}) => {
+const AdminHome = ({children}) => {
 
-  const [search, setSearch] = useState('');
-
-  const baseurl = `${import.meta.env.VITE_BACKEND_BASE_URL}/shelters`;
+    const [shelters,setShelters] = useState({})
+  const baseurl = `${import.meta.env.VITE_BACKEND_BASE_URL}/petadopter/shelters`;
   const token = readLocalStorage("token")
   const id = readLocalStorage("id");
   console.log(id)
 
   useEffect(()=>{
 
-    axios.get(`${baseurl}/${id}`,{
+    axios.get(`${baseurl}`,{
       headers: {
-        Authorization: `Bearer ${token} `,
+        Authorization: `Bearer ${token}`,
       }
     })
       .then(response => {
-        console.log(response.data)
+        setShelters(response.data)
         saveLocalStorage("User",JSON.stringify(response.data));
       })
       .catch(error => {
@@ -41,15 +40,12 @@ const ShelterHome = ({children}) => {
 
       <div className='lg:flex '>
 
-        {/* <div className='lg:w-[20%]'>
-          <Sidebar />
-        </div> */}
 
 
 
         <div className=' sm:w-full'>
 
-          <PetsTable pets={pets} sid={id} token={token}/>
+          <ShelterTable shelters={shelters}/>
 
         </div>
 
@@ -58,4 +54,4 @@ const ShelterHome = ({children}) => {
   )
 }
 
-export default ShelterHome
+export default AdminHome

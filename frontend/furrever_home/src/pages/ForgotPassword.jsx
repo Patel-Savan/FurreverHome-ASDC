@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import ImgLogo from '/img/logo/LogoWithText_NoBG.png'
+import {Link} from 'react-router-dom'
 import axios from 'axios'
 import Logo from '../components/Logo'
 
@@ -25,8 +27,14 @@ const ForgotPassword = () => {
 
     }
 
+
   return (
     <>
+          {/* <div className='flex
+          '>
+            <div> 
+              <img className= src="https://images.unsplash.com/photo-1559190394-df5a28aab5c5?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
+            </div> */}
       <div className="flex min-h-full flex-1 flex-col m-8 justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <Logo />
@@ -69,6 +77,7 @@ const ForgotPassword = () => {
          
         </div>
       </div>
+      {/* </div> */}
     </>
   )
 }
