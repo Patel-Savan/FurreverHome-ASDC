@@ -22,17 +22,22 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public boolean changeVerifiedStatus(String email, String status) {
         Optional<User> optionalUser = userRepository.findByEmail(email);
-        System.out.println(email);
-        System.out.println(status);
         if(optionalUser.isPresent()) {
             User user = optionalUser.get();
-            System.out.println(user.getVerified());
-            if(Objects.equals(status, "Approve"))
-                user.setVerified(Boolean.TRUE);
-            else
-                user.setVerified(Boolean.FALSE);
-            userRepository.save(user);
-            return true;
+            Optional<Shelter> optionalShelter = shelterRepository.findByUserId(user.getId());
+            if (optionalShelter.isPresent()) {
+                Shelter shelter = optionalShelter.get();
+                if(Objects.equals(status, "Approve")) {
+                    user.setVerified(Boolean.TRUE);
+                    shelter.setRejected(Boolean.FALSE);
+                } else{
+                    shelter.setRejected(Boolean.TRUE);
+                    user.setVerified(Boolean.FALSE);
+                }
+                shelterRepository.save(shelter);
+                userRepository.save(user);
+                return true;
+            }
         }
         return false;
     }

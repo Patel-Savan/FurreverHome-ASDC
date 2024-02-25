@@ -11,7 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,16 +41,7 @@ public class ShelterServiceImpl implements ShelterService{
         }
         petRepository.save(pet);
 
-        PetDto petDto = new PetDto();
-        petDto.setPetID(pet.getPetID());
-        petDto.setType(pet.getType());
-        petDto.setBreed(pet.getBreed());
-        petDto.setColour(pet.getColour());
-        petDto.setGender(pet.getGender());
-        petDto.setBirthdate(pet.getBirthdate());
-        petDto.setPetImage(pet.getPetImage());
-        petDto.setShelter(pet.getShelter());
-        return petDto;
+        return mapPetToDto(pet);
     }
 
     public PetDto editPet(Long petID, RegisterPetRequest updatePetRequest){
@@ -75,16 +68,8 @@ public class ShelterServiceImpl implements ShelterService{
                 pet.setPetImage(updatePetRequest.getPetImage());
             }
             petRepository.save(pet);
-            PetDto petDto = new PetDto();
-            petDto.setPetID(pet.getPetID());
-            petDto.setType(pet.getType());
-            petDto.setBreed(pet.getBreed());
-            petDto.setColour(pet.getColour());
-            petDto.setGender(pet.getGender());
-            petDto.setBirthdate(pet.getBirthdate());
-            petDto.setPetImage(pet.getPetImage());
-            petDto.setShelter(pet.getShelter());
-            return petDto;
+
+            return mapPetToDto(pet);
         }else {
             throw new RuntimeException("Pet with ID "+petID+" not found");
         }
@@ -97,5 +82,31 @@ public class ShelterServiceImpl implements ShelterService{
         } else {
             throw new RuntimeException("Pet with ID " + petId + " not found");
         }
+    }
+
+    public List<PetDto> getPetsForShelter(Long shelterID) {
+        Optional<Shelter> optionalShelter = shelterRepository.findById(shelterID);
+        if (optionalShelter.isPresent()){
+            Shelter shelter = optionalShelter.get();
+            List<Pet> pets = petRepository.findByShelter(shelter);
+            return pets.stream()
+                    .map(this::mapPetToDto)
+                    .collect(Collectors.toList());
+        }else {
+            throw new RuntimeException("Shelter with ID " + shelterID + " not found");
+        }
+    }
+
+    private PetDto mapPetToDto(Pet pet) {
+        PetDto petDto = new PetDto();
+        petDto.setPetID(pet.getPetID());
+        petDto.setType(pet.getType());
+        petDto.setBreed(pet.getBreed());
+        petDto.setColour(pet.getColour());
+        petDto.setGender(pet.getGender());
+        petDto.setBirthdate(pet.getBirthdate());
+        petDto.setPetImage(pet.getPetImage());
+        petDto.setShelter(pet.getShelter());
+        return petDto;
     }
 }

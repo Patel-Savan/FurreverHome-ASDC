@@ -26,4 +26,8 @@ public class ShelterResponseDto {
     private String image;
 
     private String license;
+
+    private boolean verified;
+
+    private boolean rejected;
 }

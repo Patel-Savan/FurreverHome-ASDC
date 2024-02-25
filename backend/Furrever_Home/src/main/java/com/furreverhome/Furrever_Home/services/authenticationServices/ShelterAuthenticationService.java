@@ -51,6 +51,7 @@ public class ShelterAuthenticationService {
         shelter.setCountry(((ShelterSignupRequest) signupRequest).getCountry());
         shelter.setAddress(((ShelterSignupRequest) signupRequest).getAddress());
         shelter.setZipcode(((ShelterSignupRequest) signupRequest).getZipcode());
+        shelter.setRejected(Boolean.FALSE);
         shelter.setUser(result);
 
         String url = appUrl + "/api/auth/verify/" + signupRequest.getEmail();
