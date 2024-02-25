@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
+import java.util.Optional;
+
 public interface ShelterRepository extends JpaRepository<Shelter, Long> {
     Optional<Shelter> findByUserId(Long userId);
 }
