@@ -12,10 +12,10 @@
     @apply text-[46px] font-medium leading-tight;
   }
   .btn {
-    @apply h-[62px] flex justify-center items-center py-3 px-8 rounded-full text-[20px] transition-all;
+    @apply h-[40px] flex justify-center items-center py-3 px-8 rounded-full text-[20px] transition-all;
   }
   .btn-outline {
-    @apply bg-transparent border-2 hover:bg-transparent;
+    @apply bg-transparent font-primary border-primary border-2 hover:bg-transparent hover:bg-primary-hover hover:text-white;
   }
   .btn-primary {
     @apply bg-primary text-white hover:bg-primary-hover;
