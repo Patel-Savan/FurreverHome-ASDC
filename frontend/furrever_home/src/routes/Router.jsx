@@ -16,7 +16,9 @@ import PrivateRoutesAdopter from './PrivateRoutesAdopter'
 import PrivateRoutesAdmin from './PrivateRoutesAdmin'
 import PublicRoutes from './PublicRoutes'
 import PageNotFound from '../components/PageNotFound'
-
+import AdminHome from '../pages/AdminHome'
+import AdopterProfile from '../components/Adopter/AdopterProfile'
+import ShelterProfile from '../components/Shelter/ShelterProfile'
 
 const Router = () => {
     return (
@@ -35,14 +37,19 @@ const Router = () => {
 
             <Route element={<PrivateRoutes />}>
                 <Route element={<PrivateRoutesAdmin />}>
-                    {/* <Route path="/admin/home" element={<Layout><AdminHome /></Layout>} /> */}
+                    <Route path="/admin/home" element={<Layout><AdminHome /></Layout>} />
                 </Route>
                 <Route element={<PrivateRoutesAdopter />}>
-                    <Route path="/adopter/home" element={<Layout><PetAdopterHome /></Layout>} /> 
+                    <Route path="/adopter/home" element={<Layout><PetAdopterHome /></Layout>} />
+                    <Route path="/adopter/profile" element={<Layout><AdopterProfile/></Layout>}/>
                 </Route>
                 <Route element={<PrivateRoutesShelter />}>
                     <Route path="/shelter/home" element={<Layout><ShelterHome /></Layout>} />
+                    <Route path="/shelter/profile" element={<Layout><ShelterProfile/></Layout>}/>
                 </Route>
+
+
+                
 
             </Route>
 

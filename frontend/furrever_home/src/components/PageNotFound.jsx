@@ -1,5 +1,5 @@
 import React from 'react'
-import Error from '/img/error/404.jpg'
+// import Error from '/img/error/404.jpg'
 import { Link } from 'react-router-dom'
 
 const PageNotFound = () => {
@@ -20,9 +20,9 @@ const PageNotFound = () => {
                     </div>
                 </div>
 
-                <div className="relative w-full mt-8 lg:w-1/2 lg:mt-0">
+                {/* <div className="relative w-full mt-8 lg:w-1/2 lg:mt-0">
                     <img className=" w-full lg:h-[32rem] h-80 md:h-96 rounded-lg object-cover " src={Error} alt="" />
-                </div>
+                </div> */}
             </div>
         </section>
     )
