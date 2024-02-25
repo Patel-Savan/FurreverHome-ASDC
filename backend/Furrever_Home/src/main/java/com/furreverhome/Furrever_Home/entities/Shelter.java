@@ -44,6 +44,8 @@ public class Shelter {
 
     private String zipcode;
 
+    private boolean rejected;
+
     public ShelterResponseDto getShelterResponseDto() {
         ShelterResponseDto shelterResponseDto = new ShelterResponseDto();
         shelterResponseDto.setId(id);
@@ -57,6 +59,8 @@ public class Shelter {
         shelterResponseDto.setImage(imageBase64);
         shelterResponseDto.setLicense(license);
         shelterResponseDto.setEmail(user.getEmail());
+        shelterResponseDto.setVerified(user.getVerified());
+        shelterResponseDto.setRejected(rejected);
         return shelterResponseDto;
     }
 }

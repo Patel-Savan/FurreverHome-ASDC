@@ -18,7 +18,7 @@ public class PetAdopterController {
 
     private final PetAdopterService petAdopterService;
     @GetMapping("/shelters")
-    public ResponseEntity<List<ShelterResponseDto>> getAllCars() {
+    public ResponseEntity<List<ShelterResponseDto>> getAllShelters() {
         List<ShelterResponseDto> shelterResponseDtoList = petAdopterService.getAllShelter();
         return ResponseEntity.ok(shelterResponseDtoList);
     }
