@@ -18,7 +18,7 @@ const ShelterProfile = () => {
                         <h1 className="text-xl font-bold">{user.name}</h1>
                         <p className="text-gray-700">Capacity: {user.capacity}</p>
                         <div className="mt-6 flex flex-wrap gap-4 justify-center">
-                            <UpdateShelterProfile/>
+                            <UpdateShelterProfile shelter={user}/>
                         </div>
                     </div>
                     <hr className="my-6 border-t border-gray-300"/>

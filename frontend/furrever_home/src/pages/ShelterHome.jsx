@@ -17,22 +17,22 @@ const ShelterHome = ({children}) => {
   const id = readLocalStorage("id");
   console.log(id)
 
-  // useEffect(()=>{
+  useEffect(()=>{
 
-  //   // axios.get(`${baseurl}/${id}`,{
-  //   //   headers: {
-  //   //     Authorization: `Bearer ${token}`,
-  //   //   }
-  //   // })
-  //   //   .then(response => {
-  //   //     console.log(response.data)
-  //   //     saveLocalStorage("User",JSON.stringify(response.data));
-  //   //   })
-  //   //   .catch(error => {
-  //   //     console.log(error);
-  //   //   })
+    axios.get(`${baseurl}/shelters/${id}`,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+      .then(response => {
+        console.log(response.data)
+        saveLocalStorage("User",JSON.stringify(response.data));
+      })
+      .catch(error => {
+        console.log(error);
+      })
 
-  // },[])
+  },[])
 
 
 
