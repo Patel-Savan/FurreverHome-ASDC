@@ -5,4 +5,5 @@ import com.furreverhome.Furrever_Home.dto.shelter.RegisterPetRequest;
 
 public interface ShelterService {
     PetDto registerPet(RegisterPetRequest registerPetRequest);
+    boolean changeAdoptedStatus(Long petId, String status);
 }

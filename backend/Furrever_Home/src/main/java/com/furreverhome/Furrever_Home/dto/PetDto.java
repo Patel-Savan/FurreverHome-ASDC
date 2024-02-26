@@ -18,4 +18,5 @@ public class PetDto {
     private Date birthdate;
     private String petImage;
     private Shelter shelter;
+    private boolean adopted;
 }

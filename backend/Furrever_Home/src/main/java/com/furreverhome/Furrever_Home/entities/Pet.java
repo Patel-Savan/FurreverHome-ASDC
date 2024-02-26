@@ -30,6 +30,8 @@ public class Pet {
     @JoinColumn(name = "shelterID", referencedColumnName = "id")
     private Shelter shelter;
 
+    private boolean adopted;
+
     public PetResponseDto getPetResponseDto() {
         PetResponseDto petResponseDto = new PetResponseDto();
 
@@ -44,6 +46,7 @@ public class Pet {
 //        petResponseDto.setShelter(shelter);
         petResponseDto.setColor(colour);
         petResponseDto.setGender(gender);
+        petResponseDto.setAdopted(adopted);
 
         return petResponseDto;
     }

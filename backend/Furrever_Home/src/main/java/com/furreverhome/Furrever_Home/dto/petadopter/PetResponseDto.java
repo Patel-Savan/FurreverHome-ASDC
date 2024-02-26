@@ -26,4 +26,6 @@ public class PetResponseDto {
     private String shelterCity;
 
     private String shelterContact;
+
+    private boolean adopted;
 }

@@ -35,4 +35,11 @@ public class ShelterController {
     public ResponseEntity<List<PetDto>> getPetInShelter(@PathVariable Long shelterID){
         return ResponseEntity.ok(shelterService.getPetsForShelter(shelterID));
     }
+
+    @GetMapping("/shelter/{petId}/{status}")
+    public ResponseEntity<?> changeAdoptedStatus(@PathVariable Long petId, @PathVariable String status) {
+        boolean success = shelterService.changeAdoptedStatus(petId, status);
+        if(success) return ResponseEntity.ok().build();
+        return ResponseEntity.notFound().build();
+    }
 }

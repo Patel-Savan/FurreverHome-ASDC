@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -107,6 +108,24 @@ public class ShelterServiceImpl implements ShelterService{
         petDto.setBirthdate(pet.getBirthdate());
         petDto.setPetImage(pet.getPetImage());
         petDto.setShelter(pet.getShelter());
+        petDto.setAdopted(pet.isAdopted());
         return petDto;
     }
+
+    @Override
+    public boolean changeAdoptedStatus(Long petId, String status) {
+        Optional<Pet> optionalPet = petRepository.findById(petId);
+        if(optionalPet.isPresent()) {
+            Pet pet = optionalPet.get();
+            if(Objects.equals(status, "Adopted")) {
+                pet.setAdopted(Boolean.TRUE);
+            } else{
+                pet.setAdopted(Boolean.FALSE);
+            }
+            petRepository.save(pet);
+            return true;
+        }
+        return false;
+    }
+
 }
