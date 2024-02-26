@@ -14,6 +14,8 @@ public class JwtAuthenticationResponse {
 
     private Long userId;
 
+    private Long shelterId;
+
     private Boolean verified;
 
 }

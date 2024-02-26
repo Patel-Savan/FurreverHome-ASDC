@@ -7,10 +7,12 @@ import com.furreverhome.Furrever_Home.dto.RefreshTokenRequest;
 import com.furreverhome.Furrever_Home.dto.SigninRequest;
 import com.furreverhome.Furrever_Home.dto.user.PasswordDto;
 import com.furreverhome.Furrever_Home.entities.PasswordResetToken;
+import com.furreverhome.Furrever_Home.entities.Shelter;
 import com.furreverhome.Furrever_Home.entities.User;
 import com.furreverhome.Furrever_Home.enums.Role;
 import com.furreverhome.Furrever_Home.repository.PasswordTokenRepository;
 import com.furreverhome.Furrever_Home.repository.PetAdopterRepository;
+import com.furreverhome.Furrever_Home.repository.ShelterRepository;
 import com.furreverhome.Furrever_Home.repository.UserRepository;
 import com.furreverhome.Furrever_Home.services.AuthenticationService;
 import com.furreverhome.Furrever_Home.services.JwtService;
@@ -47,6 +49,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final EmailService emailService;
 
+    private final ShelterRepository shelterRepository;
+
 
     @PostConstruct
     public void createAdminAccount() {
@@ -79,6 +83,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var user = userRepository.findByEmail(signinRequest.getEmail()).orElseThrow(() -> new IllegalArgumentException("Invalid email and password"));
         JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
         if(user.getVerified()) {
+            Optional<Shelter> optionalShelter = shelterRepository.findByUserId(user.getId());
             var jwt = jwtService.generateToken(user);
             var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
 
@@ -86,6 +91,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             jwtAuthenticationResponse.setRefreshToken(refreshToken);
             jwtAuthenticationResponse.setUserRole(user.getRole());
             jwtAuthenticationResponse.setUserId(user.getId());
+            if(optionalShelter.isPresent()) {
+                jwtAuthenticationResponse.setShelterId(optionalShelter.get().getId());
+            }
             jwtAuthenticationResponse.setVerified(user.getVerified());
             return jwtAuthenticationResponse;
         }
