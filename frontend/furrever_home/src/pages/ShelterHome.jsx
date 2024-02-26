@@ -12,27 +12,27 @@ const ShelterHome = ({children}) => {
 
   const [search, setSearch] = useState('');
 
-  const baseurl = `${import.meta.env.VITE_BACKEND_BASE_URL}/shelters`;
+  const baseurl = `${import.meta.env.VITE_BACKEND_BASE_URL}`;
   const token = readLocalStorage("token")
   const id = readLocalStorage("id");
   console.log(id)
 
-  useEffect(()=>{
+  // useEffect(()=>{
 
-    axios.get(`${baseurl}/${id}`,{
-      headers: {
-        Authorization: `Bearer ${token}`,
-      }
-    })
-      .then(response => {
-        console.log(response.data)
-        saveLocalStorage("User",JSON.stringify(response.data));
-      })
-      .catch(error => {
-        console.log(error);
-      })
+  //   // axios.get(`${baseurl}/${id}`,{
+  //   //   headers: {
+  //   //     Authorization: `Bearer ${token}`,
+  //   //   }
+  //   // })
+  //   //   .then(response => {
+  //   //     console.log(response.data)
+  //   //     saveLocalStorage("User",JSON.stringify(response.data));
+  //   //   })
+  //   //   .catch(error => {
+  //   //     console.log(error);
+  //   //   })
 
-  },[])
+  // },[])
 
 
 

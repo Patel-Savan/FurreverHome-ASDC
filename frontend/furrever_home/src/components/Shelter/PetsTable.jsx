@@ -23,7 +23,7 @@ import UpdatePetDetails from './UpdatePetDetails';
 import axios from 'axios';
 import { toast } from "react-toastify";
 import { deleteLocalStorage, readLocalStorage, saveLocalStorage } from '../../utils/helper'
-
+import pet1 from "../../dummydata/pets"
 
 const PetsTable = () => {
 
@@ -33,10 +33,27 @@ const PetsTable = () => {
     const [loading, setLoading] = useState(false)
     const baseurl = `${import.meta.env.VITE_BACKEND_BASE_URL}`;
     const token = readLocalStorage("token")
-    const sid = readLocalStorage("id");
+    const sid = readLocalStorage("shelterID");
 
     const handleChange = (e) => {
         setSearch(e.target.value)
+    }
+
+    const deletePet = (id)=>{
+        axios.delete(`${baseurl}/shelter/deletePet/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
+            .then(response => {
+                setPets(response.data)
+                setLoading(true)
+                console.log(pets)
+
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
 
     useEffect(() => {
@@ -59,7 +76,7 @@ const PetsTable = () => {
     }, [pets.length])
 
     const columns = [
-        { field: 'id', headerName: 'PetID', width: 90 },
+        { field: 'petID', headerName: 'PetID', width: 90 },
         {
             field: 'petImage',
             headerName: 'Pet',
@@ -68,7 +85,7 @@ const PetsTable = () => {
             renderCell: (params) => <Avatar src={params.value} />
         },
         {
-            field: 'petStatus',
+            field: 'adopted',
             headerName: 'Status',
             width: 150,
             editable: true,
@@ -79,12 +96,7 @@ const PetsTable = () => {
 
             }
         },
-        {
-            field: 'age',
-            headerName: 'Age',
-            width: 150,
-            editable: true,
-        },
+
         {
             field: 'type',
             headerName: 'Type',
@@ -116,15 +128,15 @@ const PetsTable = () => {
             editable: true,
         },
         {
-
+            field: "",
             headerName: 'Action',
             width: 500,
-            renderCell: () => {
+            renderCell: (param) => {
                 return (
 
                     <div className="flex gap-4">
-                        <UpdatePetDetails pets={pets.id} sid={sid}/>
-                        <button variant="text" onClick={() => console.log("Hi")}>
+                        <UpdatePetDetails pets={param.row} sid={sid}/>
+                        <button variant="text" onClick={()=>{deletePet(param.row.petID)}}>
                             <TrashIcon className="h-4 w-4 text-red-600" />
                         </button>
                     </div>
@@ -170,28 +182,23 @@ const PetsTable = () => {
                 </div>
             </CardHeader>
 
-            {/* <Card className=""> */}
-            {
-                loading ? (<DataGrid
-                    rows={pets.filter((item) => {
-                        return search.toLowerCase === ''
-                            ? item
-                            : item.type.includes(search)
-                    })}
-                    columns={columns}
-                    initialState={{
-                        pagination: {
-                            paginationModel: {
-                                pageSize: 10,
-                            },
-                        },
-                    }}
-                    pageSizeOptions={[10]}
-                    checkboxSelection
-                    disableRowSelectionOnClick
 
-                />): (<h1>Loading</h1>)
-            }
+            <DataGrid
+                rows={pets}
+                getRowId={(row) => row.petID}
+                columns={columns}
+                initialState={{
+                    pagination: {
+                        paginationModel: {
+                            pageSize: 10,
+                        },
+                    },
+                }}
+                pageSizeOptions={[10]}
+                checkboxSelection
+                disableRowSelectionOnClick
+
+            />
 
 
         </Card>

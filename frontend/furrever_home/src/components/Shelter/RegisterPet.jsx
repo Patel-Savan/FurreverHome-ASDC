@@ -22,7 +22,7 @@ const RegisterPet = () => {
     const [loading, setLoading] = useState(true)
     const handleOpen = () => setOpen((cur) => !cur);
     const navigate = useNavigate();
-    const sid = readLocalStorage("id");
+    const sid = readLocalStorage("shelterID");
     const token = readLocalStorage("token")
     console.log("Bearer "+token)
     const [image,setPetImage] = useState("");
@@ -87,7 +87,7 @@ const RegisterPet = () => {
                 setResponse(res)
                 setLoading(true)
                 toast.success("New Pet added!");
-                navigate("/shelter/home")
+                navigate(0)
                 handleOpen();
                 setFormData({
                     type: "",

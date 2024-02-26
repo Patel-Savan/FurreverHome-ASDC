@@ -21,7 +21,7 @@ import {
 import { DataGrid } from '@mui/x-data-grid';
 import { deleteLocalStorage, readLocalStorage, saveLocalStorage } from '../../utils/helper'
 import { toast } from 'react-toastify';
-
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -39,6 +39,7 @@ const ShelterTable = () => {
     const token = readLocalStorage("token")
     const id = readLocalStorage("id");
     console.log(id)
+    const navigate = useNavigate();
 
     const [search, setSearch] = useState('');
     const handleChange = (e) => {
@@ -54,26 +55,17 @@ const ShelterTable = () => {
             editable: true,
         },
         {
-            field: 'verified',
-            headerName: 'Status',
-            width: 150,
-            editable: true,
-            renderCell: (param) => {
-                return(
-                    param.value?<Chip color="green" value="Verified" />:<Chip color="blue" value="Pending" /> 
-                )
-            
-        }
-        },
-        {
             field: 'rejected',
             headerName: 'Status',
             width: 150,
             editable: true,
             renderCell: (param) => {
+                console.log(param.row.verified)
+                console.log(param.value)
                 return(
                     
-                    param.value?<Chip color="red" value="Rejected" />:<Chip color="blue" value="Pending" /> 
+                    
+                    (param.row.verified && param.value)?<Chip color="blue" value="Pending" /> : (param.row.verified) ? <Chip color="green" value="Verified" /> :<Chip color="red" value="Rejected" /> 
                 )
             
         }
@@ -134,6 +126,8 @@ const ShelterTable = () => {
     
 
     const approve=(id)=>{
+        console.log(shelters[id-1].email)
+        console.log(id)
         axios.get(`${baseurl}/shelter/${shelters[id-1].email}/Approve}`,{
             headers: {
               Authorization: `Bearer ${token}`,
@@ -141,6 +135,7 @@ const ShelterTable = () => {
           })
             .then(response => {
               toast.info("Status Approved")
+            //   navigate(0)
             })
             .catch(error => {
               console.log(error);
@@ -155,6 +150,7 @@ const ShelterTable = () => {
           })
             .then(response => {
               toast.info("Status Approved")
+              navigate(0)
             })
             .catch(error => {
               console.log(error);
@@ -205,9 +201,8 @@ const ShelterTable = () => {
             </CardHeader>
 
             {/* <Card className=""> */}
-            {
-                loading?
-                (<DataGrid
+
+                <DataGrid
                     rows={shelters}
                     columns={columns}
                     initialState={{
@@ -221,12 +216,9 @@ const ShelterTable = () => {
                     checkboxSelection
                     disableRowSelectionOnClick
     
-                />)
-                : (
-                    <h1>Loading</h1>
-                )
+                />
                 
-            }
+            
             
         </Card>
     );

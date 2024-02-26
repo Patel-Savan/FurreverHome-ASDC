@@ -23,9 +23,10 @@ const UpdatePetDetails = ({pets,sid}) => {
     const [loading, setLoading] = useState(true)
     const handleOpen = () => setOpen((cur) => !cur);
     const navigate = useNavigate();
-
+    const token = readLocalStorage("token")
+    console.log(pets)
     const [formData, setFormData] = useState({
-        age: pets.age,
+        
         type: pets.type,
         breed: pets.breed,
         colour: pets.colour,
@@ -66,20 +67,19 @@ const UpdatePetDetails = ({pets,sid}) => {
 
         event.preventDefault();
 
-        axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/shelter/registerPet`,{
+        axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/shelter/editPet/${pets.petID}`, formData,{
             headers: {
-                Authorization: `Bearer ${token} `,
+                Authorization: `Bearer ${token}`,
               }
-        }, formData)
+        })
             .then((res) => {
                 console.log(res)
                 setResponse(res)
                 setLoading(true)
-                toast.success("New Pet added!");
-                navigate("/shelter/home")
+                toast.success("Pet Updated!");
+                navigate(0)
                 handleOpen();
                 setFormData({
-                    age: "",
                     type: "",
                     breed: "",
                     colour: "",
@@ -94,7 +94,6 @@ const UpdatePetDetails = ({pets,sid}) => {
                 toast.error(err.message)
                 handleOpen();
                 setFormData({
-                        age: "",
                         type: "",
                         breed: "",
                         colour: "",
@@ -124,26 +123,7 @@ const UpdatePetDetails = ({pets,sid}) => {
 
                         <form method="POST" onSubmit={handleSubmit}>
 
-                        <div>
-
-                            <label htmlFor="pet" className="text-sm font-medium leading-6 text-gray-900 flex">
-                                Pet Age
-                            </label>
-                            <div className="mt-1">
-                                <input
-                                    id="age"
-                                    name="age"
-                                    type="text"
-                                    value={formData.age}
-                                    onChange={handleChange}
-                                    autoComplete="text"
-                                    required
-                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    placeholder='Enter Shelter Name'
-                                />
-                            </div>
-                        </div>
-
+                       
                         <div>
 
                             <label htmlFor="shelterName" className="text-sm font-medium leading-6 text-gray-900 flex">
@@ -194,7 +174,7 @@ const UpdatePetDetails = ({pets,sid}) => {
                                     id="colour"
                                     name="colour"
                                     type="text"
-                                    value={formData.name}
+                                    value={formData.colour}
                                     onChange={handleChange}
                                     autoComplete="text"
                                     required

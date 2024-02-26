@@ -42,6 +42,7 @@ const Login = () => {
           saveLocalStorage("id",response.data.userId);
           saveLocalStorage("token",response.data.token);
           saveLocalStorage("role",response.data.userRole);
+          saveLocalStorage("shelterID",response.data.shelterId)
           console.log(response.data)
 
             if(response.data.userRole == "PETADOPTER")
