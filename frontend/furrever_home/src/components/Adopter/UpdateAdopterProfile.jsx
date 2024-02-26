@@ -23,15 +23,15 @@ const UpdateAdopterProfile = ({ id, token }) => {
     const handleOpen = () => setOpen((cur) => !cur);
     const navigate = useNavigate();
 
+
     const [formData, setFormData] = useState({
-        age: "",
-        type: "",
-        breed: "",
-        colour: "",
-        gender: "",
-        birthdate: "",
-        petImage: "",
-        shelter: id
+        firstName:"",
+        lastName:"",
+        phoneNumber:"",
+        address:"",
+        city:"",
+        country:"",
+        zipcode:""
     });
 
     const handleChange = (event) => {
@@ -42,52 +42,34 @@ const UpdateAdopterProfile = ({ id, token }) => {
         setFormData(newData)
     }
 
-    const handleImage = (image) => {
-
-        const reader = new FileReader();
-        reader.readAsDataURL(image);
-        reader.onload = function (e) {
-            //   console.log(e.target.result)
-            const newData = { ...formData }
-            newData.petImage = e.target.result
-            setFormData(newData)
-            //   console.log(typeof (image))
-        };
-
-        reader.onerror = function () {
-            console.log(reader.error);
-        };
-    }
-
-    // const token = readLocalStorage("token")
-
     const handleSubmit = (event) => {
 
         event.preventDefault();
+        const userId = readLocalStorage("id")
+        const token = readLocalStorage("token")
 
-        axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/shelter/registerPet`, {
+        axios.put(`${import.meta.env.VITE_BACKEND_BASE_URL}/users/${userId}`,formData, {
             headers: {
                 Authorization: `Bearer ${token} `,
             }
-        }, formData)
+        })
             .then((res) => {
                 console.log(res)
-                setResponse(res)
                 setLoading(true)
-                toast.success("New Pet added!");
-                navigate("/shelter/home")
+                deleteLocalStorage("User")
+                saveLocalStorage("User",JSON.stringify(res.data))
+                toast.success("Successfully Updated User info");
+                navigate("/adopter/home")
                 handleOpen();
                 setFormData({
-                    age: "",
-                    type: "",
-                    breed: "",
-                    colour: "",
-                    gender: "",
-                    birthdate: "",
-                    petImage: ""
-                })
-
-            })
+                    firstName:"",
+                    lastName:"",
+                    phoneNumber:"",
+                    address:"",
+                    city:"",
+                    country:"",
+                    zipcode:""
+                 })})
             .catch((err) => {
                 console.log(err)
                 toast.error(err.message)
@@ -108,7 +90,7 @@ const UpdateAdopterProfile = ({ id, token }) => {
 
     return (
         <>
-            <button className="btn btn-orange m-5" onClick={handleOpen}>Add new Pet</button>
+            <button className="btn btn-orange m-5 lg:h-15 sm:h-20" onClick={handleOpen}>Update Profile</button>
             <Dialog
                 size="lg"
                 open={open}
@@ -122,158 +104,162 @@ const UpdateAdopterProfile = ({ id, token }) => {
                         </Typography>
 
 
-                        <form method="POST" onSubmit={handleSubmit}>
+                        <form onSubmit={handleSubmit}>
 
                             <div>
 
-                                <label htmlFor="pet" className="text-sm font-medium leading-6 text-gray-900 flex">
-                                    Pet Age
+                                <label htmlFor="firstName" className="text-sm font-medium leading-6 text-gray-900 flex">
+                                    First Name
                                 </label>
                                 <div className="mt-1">
                                     <input
-                                        id="age"
-                                        name="age"
+                                        id="firstName"
+                                        name="firstName"
                                         type="text"
-                                        value={formData.age}
+                                        value={formData.firstName}
                                         onChange={handleChange}
                                         autoComplete="text"
                                         required
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        placeholder='Enter Shelter Name'
+                                        placeholder='Enter First Name'
                                     />
                                 </div>
                             </div>
 
                             <div>
 
-                                <label htmlFor="shelterName" className="text-sm font-medium leading-6 text-gray-900 flex">
-                                    Type
+                                <label htmlFor="lastName" className="text-sm font-medium leading-6 text-gray-900 flex">
+                                    Last Name
                                 </label>
                                 <div className="mt-1">
                                     <input
-                                        id="type"
-                                        name="type"
+                                        id="lastName"
+                                        name="lastName"
                                         type="text"
-                                        value={formData.type}
+                                        value={formData.lastName}
                                         onChange={handleChange}
                                         autoComplete="text"
                                         required
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        placeholder='Enter Shelter Name'
+                                        placeholder='Enter Last name'
                                     />
                                 </div>
                             </div>
 
                             <div>
 
-                                <label htmlFor="shelterName" className="text-sm font-medium leading-6 text-gray-900 flex">
-                                    Breed
+                                <label htmlFor="phoneNumber" className="text-sm font-medium leading-6 text-gray-900 flex">
+                                    Phone number
                                 </label>
                                 <div className="mt-1">
                                     <input
-                                        id="breed"
-                                        name="breed"
+                                        id="phoneNumber"
+                                        name="phoneNumber"
                                         type="text"
-                                        value={formData.breed}
+                                        value={formData.phoneNumber}
                                         onChange={handleChange}
                                         autoComplete="text"
                                         required
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        placeholder='Enter Shelter Name'
+                                        placeholder='Enter Phone number'
                                     />
                                 </div>
                             </div>
 
                             <div>
 
-                                <label htmlFor="shelterName" className="text-sm font-medium leading-6 text-gray-900 flex">
-                                    Colour
+                                <label htmlFor="address" className="text-sm font-medium leading-6 text-gray-900 flex">
+                                    Address
                                 </label>
                                 <div className="mt-1">
                                     <input
-                                        id="colour"
-                                        name="colour"
+                                        id="address"
+                                        name="address"
                                         type="text"
-                                        value={formData.name}
+                                        value={formData.address}
                                         onChange={handleChange}
                                         autoComplete="text"
                                         required
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        placeholder='Enter Shelter Name'
+                                        placeholder='Enter Address'
                                     />
                                 </div>
                             </div>
 
                             <div>
 
-                                <label htmlFor="shelterName" className="text-sm font-medium leading-6 text-gray-900 flex">
-                                    Gender
+                                <label htmlFor="city" className="text-sm font-medium leading-6 text-gray-900 flex">
+                                    City
                                 </label>
                                 <div className="mt-1">
                                     <input
-                                        id="gender"
-                                        name="gender"
+                                        id="city"
+                                        name="city"
                                         type="text"
-                                        value={formData.gender}
+                                        value={formData.city}
                                         onChange={handleChange}
                                         autoComplete="text"
                                         required
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        placeholder='Enter Shelter Name'
+                                        placeholder='Enter City'
                                     />
                                 </div>
                             </div>
 
                             <div>
 
-                                <label htmlFor="shelterName" className="text-sm font-medium leading-6 text-gray-900 flex">
-                                    Birth Date
+                                <label htmlFor="country" className="text-sm font-medium leading-6 text-gray-900 flex">
+                                    Country
                                 </label>
                                 <div className="mt-1">
                                     <input
-                                        id="birthdate"
-                                        name="birthdate"
-                                        type="date"
-                                        value={formData.birthdate}
+                                        id="country"
+                                        name="country"
+                                        type="text"
+                                        value={formData.country}
                                         onChange={handleChange}
                                         autoComplete="text"
                                         required
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        placeholder='Enter Shelter Name'
+                                        placeholder='Enter country'
                                     />
                                 </div>
                             </div>
 
-                            <div className="">
-                                <label className="block text-sm font-medium leading-6 text-gray-900">Upload Image</label>
-                                <input type="file"
-                                    name='petImage'
-                                    required
-                                    onChange={(event) => { handleImage(event.target.files[0]) }}
-                                    className="w-full text-black text-sm bg-white border file:cursor-pointer cursor-pointer file:border-0 file:py-2.5 file:px-4 file:bg-gray-100 file:hover:bg-gray-200 file:text-black rounded" />
-                                <p className="text-xs text-gray-400 mt-2">PNG, JPG are Allowed.</p>
+                            <div>
+
+                                <label htmlFor="zipcode" className="text-sm font-medium leading-6 text-gray-900 flex">
+                                    Zip Code
+                                </label>
+                                <div className="mt-1">
+                                    <input
+                                       id="zipcode"
+                                       name="zipcode"
+                                       type="text"
+                                       value={formData.zipcode}
+                                       onChange={handleChange}
+                                       autoComplete="text"
+                                       required
+                                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                       placeholder='Enter Zipcode'
+                                    />
+                                </div>
                             </div>
 
                             <div className="pt-0 flex gap-4">
                                 <button type="submit" className="btn btn-orange" variant="gradient" fullWidth>
-                                    Add
+                                    Update
                                 </button>
                                 <button className="btn btn-orange" variant="gradient" onClick={handleOpen} fullWidth>
                                     Close
                                 </button>
                             </div>
-
-
                         </form>
-
                     </CardBody>
-
-
                 </Card>
-
             </Dialog>
         </>
     );
-}
+  }
 
 export default UpdateAdopterProfile
