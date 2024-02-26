@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { deleteLocalStorage, readLocalStorage, saveLocalStorage } from '../utils/helper'
 import { useNavigate } from 'react-router-dom'
+import shelter_image from '/img/shelter/shelter_image.jpg'
 import ShelterCard from '../components/Card/ShelterCard'
 import PetCard from "../components/Card/PetCard"
 import axios from 'axios'
@@ -13,6 +14,7 @@ const PetAdopterHome = () => {
   const [filter,setFilter] = useState("Shelter");
   const [searchQuery,setSearchQuery] = useState("");
   const [type,setType] = useState("city");
+  const [userCity,setUserCity] = useState("");
   const baseurl = `${import.meta.env.VITE_BACKEND_BASE_URL}/petadopter`;
   const token = readLocalStorage("token")
   const id = readLocalStorage("id");
@@ -29,6 +31,7 @@ const PetAdopterHome = () => {
         saveLocalStorage("User",JSON.stringify(response.data));
         setSearchQuery(response.data.city)
         // console.log(filter + "=" + searchQuery);
+        setUserCity(response.data.city)
         return response.data.city
       })
       .then((city) => {
@@ -62,6 +65,7 @@ const PetAdopterHome = () => {
     event.preventDefault();
 
     if(filter === "Shelter"){
+
       if(type === "All"){
 
         axios.get(`${baseurl}/shelters`,{
@@ -75,8 +79,10 @@ const PetAdopterHome = () => {
           .catch(error => {
             toast.error("Cannot get All Shelters")
           })
+
       }
       else{
+
         axios.post(`${baseurl}/searchshelter`,{
           [type] : searchQuery
         },{
@@ -92,9 +98,11 @@ const PetAdopterHome = () => {
          })
     
         console.log(type + "=" + searchQuery)
+
       }
     }
     else{
+
       axios.post(`${baseurl}/searchpet`,{
         [type] : searchQuery
       },{
@@ -109,18 +117,68 @@ const PetAdopterHome = () => {
           toast.error("Cannot load data")
        })
       console.log(type + "=" + searchQuery)
-    }
 
-    
+    }
   }
 
+  useEffect(() => {
+    if(filter === "Shelter"){
+
+      axios.post(`${baseurl}/searchshelter`,{
+        city : userCity
+      },{
+      headers: {
+        Authorization: `Bearer ${token} `,
+      }})
+       .then(response => {
+          setData(response.data.shelterResponseDtoList)
+          console.log(response.data)
+       })
+       .catch(error => {
+          toast.error("Cannot load data")
+       })
+
+    }
+    else{
+
+      axios.post(`${baseurl}/searchpet`,{
+        type : "dog"
+      },{
+      headers: {
+        Authorization: `Bearer ${token} `,
+      }})
+       .then(response => {
+          setData(response.data.petResponseDtoList)
+          console.log(response.data.petResponseDtoList)
+       })
+       .catch(error => {
+          toast.error("Cannot load data")
+       })
+
+    }
+  },[filter])
+
   const handleFilterChange = (event) => {
+    if(event.target.value === "Pet"){
+      setType("age")
+      setSearchQuery("")
+    }else{
+      setType("city")
+      setSearchQuery("")
+    }
     setFilter(event.target.value);
   }
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   }
+
+  const handleShelterClick = (id) => {
+    navigate("/shelter?id=" + id)
+  }
+
+  const handlePetClick = (id) => {
+  navigate("pet?id=" + id)}
 
   return (
 
@@ -190,7 +248,7 @@ const PetAdopterHome = () => {
           thumbnailSrc={shelter_image}
         /> */}
 
-        { filter === "Shelter" ?
+        { filter === "Shelter" && 
           data
           .map((shelter) => {
             return (
@@ -203,25 +261,29 @@ const PetAdopterHome = () => {
                 contact = {shelter.contact}
                 key={shelter.id}
                 id={shelter.id}
+                onClick = {handleShelterClick}
               />
             )
-          }) 
-          :
+          }) }
+          { filter === "Pet" && 
           data.map((pet) => {
+            return(
+              
             <PetCard 
+             key={pet.petId}
              className="bg-[#f3faff]"
              type={pet.type}
              breed ={pet.breed}
              age={pet.age}
-             thumbnailSrc={pet.image}
-             shelter={pet.shelter}
-             city={pet.city}
-             contact={pet.contact}
-             key={pet.id}
-             id={pet.id}
-            />
+             thumbnailSrc={pet.petImage}
+             shelterName={pet.shelterName}
+             shelterCity={pet.shelterCity}
+             shelterContact={pet.shelterContact}
+             petId={pet.petId}
+             onClick={handlePetClick}
+            />)
           }) 
-        }
+          }
       </div>
 
     </section>
