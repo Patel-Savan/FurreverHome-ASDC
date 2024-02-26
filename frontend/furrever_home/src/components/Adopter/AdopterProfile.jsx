@@ -1,10 +1,30 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useEffect } from 'react'
 import { deleteLocalStorage, readLocalStorage, saveLocalStorage } from '../../utils/helper'
+import axios from 'axios'
 import UpdateAdopterProfile from './UpdateAdopterProfile'
+import { ToastContainer, toast } from "react-toastify";
 
 const AdopterProfile = () => {
-    const user =JSON.parse( readLocalStorage("User"))
-    console.log(user);
+    const [user,setUser] = useState({});
+    const userId = readLocalStorage("id");
+    const token = readLocalStorage("token")    
+
+    useEffect(() => {
+        axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/users/${userId}`,{
+                headers: {
+                  Authorization: `Bearer ${token} `,
+            }})
+            .then(response => {
+                console.log(response.data)
+                setUser(response.data)
+            })
+            .catch(error =>{
+                toast.error("Cannot get User details");
+            })
+    },[])
+
+
   return (
     <div className="bg-gray-100">
     <div className="container mx-auto py-8">
@@ -15,7 +35,7 @@ const AdopterProfile = () => {
                         <img src={user.imageBase64} className="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0">
 
                         </img>
-                        <h1 className="text-xl font-bold">{user.firstname} {user.lastname}</h1>
+                        <h1 className="text-xl font-bold">{user.firstName} {user.lastName}</h1>
                         {/* <p className="text-gray-700">Capacity: {user.capacity}</p> */}
                         <div className="mt-6 flex flex-wrap gap-4 justify-center">
                         <UpdateAdopterProfile/>
