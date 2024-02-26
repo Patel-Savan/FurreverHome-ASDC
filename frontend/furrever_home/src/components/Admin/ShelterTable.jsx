@@ -128,7 +128,7 @@ const ShelterTable = () => {
     const approve=(id)=>{
         console.log(shelters[id-1].email)
         console.log(id)
-        axios.get(`${baseurl}/shelter/${shelters[id-1].email}/Approve}`,{
+        axios.get(`${baseurl}/shelter/${shelters[id-1].email}/Approve`,{
             headers: {
               Authorization: `Bearer ${token}`,
             }
