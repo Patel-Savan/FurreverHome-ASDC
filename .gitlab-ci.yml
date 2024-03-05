@@ -9,8 +9,8 @@ stages:
 build:
   stage: build
   tags:
-    # - furrever-gl-runner
-    - autoscale-runner.cs.dal.ca
+    - furrever-gl-runner
+    # - autoscale-runner.cs.dal.ca
   image: maven:latest
   script:
     - cd backend/Furrever_Home
@@ -24,8 +24,8 @@ build:
 build-frontend:
   stage: build
   tags:
-    # - furrever-gl-runner
-    - autoscale-runner.cs.dal.ca
+    - furrever-gl-runner
+    # - autoscale-runner.cs.dal.ca
   image: node:latest
   script:
     - cd frontend/furrever_home
@@ -61,8 +61,8 @@ publish:
   image: docker:latest
   stage: publish
   tags:
-    # - furrever-gl-runner
-    - autoscale-runner.cs.dal.ca
+    - furrever-gl-runner
+    # - autoscale-runner.cs.dal.ca
   variables:
     # these values may need to be different if using TLS, k8s, etc.
     # You can alternatively set defaults in your runner config
@@ -88,8 +88,8 @@ publish-frontend:
   image: docker:latest
   stage: publish
   tags:
-  #  - furrever-gl-runner
-  - autoscale-runner.cs.dal.ca
+   - furrever-gl-runner
+  # - autoscale-runner.cs.dal.ca
   variables:
    # these values may need to be different if using TLS, k8s, etc.
    # You can alternatively set defaults in your runner config
@@ -116,8 +116,8 @@ deploy:
   image: alpine:latest
   stage: deploy
   tags:
-    # - furrever-gl-runner
-    - autoscale-runner.cs.dal.ca
+    - furrever-gl-runner
+    # - autoscale-runner.cs.dal.ca
   before_script:
     - apk update && apk add openssh-client
     - eval $(ssh-agent -s)
@@ -148,8 +148,8 @@ deploy-frontend:
   image: alpine:latest
   stage: deploy
   tags:
-  #  - furrever-gl-runner
-    - autoscale-runner.cs.dal.ca
+   - furrever-gl-runner
+    # - autoscale-runner.cs.dal.ca
   before_script:
     - apk update && apk add openssh-client
     - eval $(ssh-agent -s)
