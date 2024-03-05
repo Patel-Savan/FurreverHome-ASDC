@@ -28,11 +28,11 @@ public class AdminServiceImpl implements AdminService {
             if (optionalShelter.isPresent()) {
                 Shelter shelter = optionalShelter.get();
                 if(Objects.equals(status, "Approve")) {
-                    user.setVerified(Boolean.TRUE);
+                    shelter.setAccepted(Boolean.TRUE);
                     shelter.setRejected(Boolean.FALSE);
                 } else{
                     shelter.setRejected(Boolean.TRUE);
-                    user.setVerified(Boolean.FALSE);
+                    shelter.setAccepted(Boolean.FALSE);
                 }
                 shelterRepository.save(shelter);
                 userRepository.save(user);

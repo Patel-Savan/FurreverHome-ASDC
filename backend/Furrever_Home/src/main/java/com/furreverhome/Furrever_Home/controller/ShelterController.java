@@ -1,7 +1,7 @@
 package com.furreverhome.Furrever_Home.controller;
 
 import com.furreverhome.Furrever_Home.dto.GenericResponse;
-import com.furreverhome.Furrever_Home.dto.PetDto;
+import com.furreverhome.Furrever_Home.dto.Pet.PetDto;
 import com.furreverhome.Furrever_Home.dto.shelter.RegisterPetRequest;
 import com.furreverhome.Furrever_Home.services.shelterService.ShelterServiceImpl;
 import lombok.RequiredArgsConstructor;
