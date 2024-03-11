@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const ShelterCard = ({
     heading,
@@ -31,6 +32,11 @@ const ShelterCard = ({
             <p className="font-normal text-gray-500 cursor-pointer text-lg duration-300 transition hover:text-[#FA5252] mt-2">
                 Contact : {contact}
             </p>
+            <Link to="/adopter/shelter/1">
+            <button className='btn btn-outline' >
+                Details
+            </button>
+            </Link>
         </div>
     )
 }

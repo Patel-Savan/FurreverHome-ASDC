@@ -14,8 +14,28 @@ const ShelterHome = ({children}) => {
 
   const baseurl = `${import.meta.env.VITE_BACKEND_BASE_URL}`;
   const token = readLocalStorage("token")
+  const [pets, setPets] = useState([])
+  const sid = readLocalStorage("shelterID");
   const id = readLocalStorage("id");
   console.log(id)
+
+  const getPet =()=>{
+    axios.get(`${baseurl}/shelter/${sid}/pets`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        }
+    })
+        .then(response => {
+            setPets(response.data)
+            console.log(response.data)
+            setLoading(true)
+            console.log(pets)
+
+        })
+        .catch(error => {
+            console.log(error);
+        })
+}
 
   useEffect(()=>{
 
@@ -32,7 +52,9 @@ const ShelterHome = ({children}) => {
         console.log(error);
       })
 
-  },[])
+      getPet()
+
+  },[pets.length])
 
 
 
@@ -49,7 +71,7 @@ const ShelterHome = ({children}) => {
 
         <div className=' sm:w-full'>
 
-          <PetsTable />
+          <PetsTable pets={pets} />
 
         </div>
 

@@ -25,11 +25,11 @@ import { toast } from "react-toastify";
 import { deleteLocalStorage, readLocalStorage, saveLocalStorage } from '../../utils/helper'
 import pet1 from "../../dummydata/pets"
 
-const PetsTable = () => {
+const PetsTable = ({pets}) => {
 
     const [search, setSearch] = useState('');
 
-    const [pets, setPets] = useState([])
+    
     const [loading, setLoading] = useState(false)
     const baseurl = `${import.meta.env.VITE_BACKEND_BASE_URL}`;
     const token = readLocalStorage("token")
@@ -38,6 +38,8 @@ const PetsTable = () => {
     const handleChange = (e) => {
         setSearch(e.target.value)
     }
+
+
 
     const deletePet = (id)=>{
         axios.delete(`${baseurl}/shelter/deletePet/${id}`, {
@@ -56,24 +58,11 @@ const PetsTable = () => {
             })
     }
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        axios.get(`${baseurl}/shelter/${sid}/pets`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        })
-            .then(response => {
-                setPets(response.data)
-                setLoading(true)
-                console.log(pets)
+    //     getPet()
 
-            })
-            .catch(error => {
-                console.log(error);
-            })
-
-    }, [pets.length])
+    // }, [pets.length])
 
     const columns = [
         { field: 'petID', headerName: 'PetID', width: 90 },
@@ -91,7 +80,7 @@ const PetsTable = () => {
             editable: true,
             renderCell: (param) => {
                 return (
-                    param ? <Chip color="green" value="Adopted" /> : <Chip color="cyan" value="blue" />
+                    param.value ? <Chip color="green" value="Adopted" /> : <Chip color="cyan" value="Not Adopted" />
                 )
 
             }

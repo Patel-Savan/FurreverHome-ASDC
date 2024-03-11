@@ -19,6 +19,8 @@ import PageNotFound from '../components/PageNotFound'
 import AdminHome from '../pages/AdminHome'
 import AdopterProfile from '../components/Adopter/AdopterProfile'
 import ShelterProfile from '../components/Shelter/ShelterProfile'
+import Pet from '../components/Adopter/Pet'
+import Shelter from '../components/Adopter/Shelter'
 
 const Router = () => {
     return (
@@ -42,6 +44,8 @@ const Router = () => {
                 <Route element={<PrivateRoutesAdopter />}>
                     <Route path="/adopter/home" element={<Layout><PetAdopterHome /></Layout>} />
                     <Route path="/adopter/profile" element={<Layout><AdopterProfile/></Layout>}/>
+                    <Route path="/adopter/pet/:id" element={<Layout><Pet/></Layout>}/>
+                    <Route path="/adopter/shelter/:id" element={<Layout><Shelter/></Layout>}/>
                 </Route>
                 <Route element={<PrivateRoutesShelter />}>
                     <Route path="/shelter/home" element={<Layout><ShelterHome /></Layout>} />
