@@ -1,11 +1,16 @@
 package com.furreverhome.Furrever_Home.controller;
 
 import com.furreverhome.Furrever_Home.dto.PetAdopterDto;
+import com.furreverhome.Furrever_Home.dto.lostpet.RegisterLostPetDto;
 import com.furreverhome.Furrever_Home.dto.petadopter.SearchPetDto;
 import com.furreverhome.Furrever_Home.dto.petadopter.SearchShelterDto;
 import com.furreverhome.Furrever_Home.dto.petadopter.ShelterResponseDto;
+import com.furreverhome.Furrever_Home.entities.LostPet;
+import com.furreverhome.Furrever_Home.services.petadopterservices.LostPetService;
 import com.furreverhome.Furrever_Home.services.petadopterservices.PetAdopterService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +22,7 @@ import java.util.List;
 public class PetAdopterController {
 
     private final PetAdopterService petAdopterService;
+    private final LostPetService lostPetService;
     @GetMapping("/shelters")
     public ResponseEntity<List<ShelterResponseDto>> getAllShelters() {
         List<ShelterResponseDto> shelterResponseDtoList = petAdopterService.getAllShelter();
@@ -38,6 +44,11 @@ public class PetAdopterController {
     @PostMapping("/searchpet")
     public ResponseEntity<?> searchPet(@RequestBody SearchPetDto searchPetDto) {
         return ResponseEntity.ok(petAdopterService.searchPet(searchPetDto));
+    }
+
+    @PostMapping("/lostpet")
+    public ResponseEntity<LostPet> registerLostPet(@Valid @RequestHeader("Authorization") String authorizationHeader, @RequestBody RegisterLostPetDto registerLostPetDto) {
+        return ResponseEntity.ok(lostPetService.registerLostPet(authorizationHeader, registerLostPetDto));
     }
 
 }
