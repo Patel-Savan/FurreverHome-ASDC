@@ -2,6 +2,7 @@ package com.furreverhome.Furrever_Home.services;
 
 import com.furreverhome.Furrever_Home.dto.GenericResponse;
 import com.furreverhome.Furrever_Home.dto.Pet.PetAdoptionRequestDto;
+import com.furreverhome.Furrever_Home.dto.Pet.PetAdoptionRequestResponseDto;
 import com.furreverhome.Furrever_Home.dto.Pet.PetDto;
 import com.furreverhome.Furrever_Home.dto.shelter.RegisterPetRequest;
 import com.furreverhome.Furrever_Home.entities.Pet;
@@ -10,6 +11,7 @@ import com.furreverhome.Furrever_Home.repository.AdopterPetRequestsRepository;
 import com.furreverhome.Furrever_Home.repository.PetAdopterRepository;
 import com.furreverhome.Furrever_Home.repository.PetRepository;
 import com.furreverhome.Furrever_Home.services.petadopterservices.impl.PetAdopterServiceImpl;
+import com.furreverhome.Furrever_Home.services.petservice.PetService;
 import com.furreverhome.Furrever_Home.services.shelterService.ShelterServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,14 +38,10 @@ public class ShelterServiceTest {
     private ShelterServiceImpl shelterService;
 
     @Mock
-    private PetAdopterRepository petAdopterRepository;
-
-    @Mock
     private AdopterPetRequestsRepository adopterPetRequestsRepository;
 
     @InjectMocks
-    private PetAdopterServiceImpl petAdopterService;
-
+    private PetService petService;
 
     @Test
     void deletePetNotFoundTest(){
@@ -123,50 +122,25 @@ public class ShelterServiceTest {
     }
 
     @Test
-    void adoptPetRequestSuccess() {
-        PetAdoptionRequestDto petAdoptionRequestDto = new PetAdoptionRequestDto();
-        petAdoptionRequestDto.setPetAdopterID(1L);
-        petAdoptionRequestDto.setPetID(2L);
-        PetAdopter petAdopter = new PetAdopter();
-        Pet pet = new Pet();
-        when(petAdopterRepository.findById(petAdoptionRequestDto.getPetAdopterID())).thenReturn(Optional.of(petAdopter));
-        when(petRepository.findById(petAdoptionRequestDto.getPetID())).thenReturn(Optional.of(pet));
-        GenericResponse response = petAdopterService.adoptPetRequest(petAdoptionRequestDto);
-        verify(petAdopterRepository, times(1)).findById(petAdoptionRequestDto.getPetAdopterID());
-        verify(petRepository, times(1)).findById(petAdoptionRequestDto.getPetID());
-        verify(adopterPetRequestsRepository, times(1)).save(any());
-        assertEquals("Adoption Request Successful.", response.getMessage());
+    void getPetAdoptionRequestsException() {
+        Long petId = 2L;
+        when(petRepository.findById(petId)).thenReturn(Optional.empty());
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> shelterService.getPetAdoptionRequests(petId));
+        assertEquals("Requests with petID " + petId + " not found", exception.getMessage());
     }
 
     @Test
-    void adoptPetRequestPetAdopted() {
-        PetAdoptionRequestDto petAdoptionRequestDto = new PetAdoptionRequestDto();
-        petAdoptionRequestDto.setPetAdopterID(2L);
-        petAdoptionRequestDto.setPetID(2L);
+    void getPetAdoptionRequestsSuccess() {
+        Long petId = 2L;
         Pet pet = new Pet();
+        pet.setPetID(petId);
         PetAdopter petAdopter = new PetAdopter();
-        pet.setAdopted(true);
-        when(petAdopterRepository.findById(petAdoptionRequestDto.getPetAdopterID())).thenReturn(Optional.of(petAdopter));
-        when(petRepository.findById(petAdoptionRequestDto.getPetID())).thenReturn(Optional.of(pet));
-        GenericResponse response = petAdopterService.adoptPetRequest(petAdoptionRequestDto);
-        verify(petAdopterRepository, times(1)).findById(petAdoptionRequestDto.getPetAdopterID());
-        verify(petRepository, times(1)).findById(petAdoptionRequestDto.getPetID());
-        verify(adopterPetRequestsRepository, never()).save(any());
-        assertEquals("Pet already adopted", response.getMessage());
+        petAdopter.setId(1L);
+        when(petRepository.findById(petId)).thenReturn(Optional.of(pet));
+        when(adopterPetRequestsRepository.findByPet(pet)).thenReturn(Collections.singletonList(petAdopter));
+        PetAdoptionRequestResponseDto result = shelterService.getPetAdoptionRequests(petId);
+        assertNotNull(result);
+        assertEquals(petId, result.getPetID());
+        assertEquals(Collections.singletonList(petAdopter), result.getPetAdopters());
     }
-
-    @Test
-    void adoptPetRequestNotFound() {
-        PetAdoptionRequestDto petAdoptionRequestDto = new PetAdoptionRequestDto();
-        petAdoptionRequestDto.setPetAdopterID(2L);
-        petAdoptionRequestDto.setPetID(2L);
-        when(petAdopterRepository.findById(petAdoptionRequestDto.getPetAdopterID())).thenReturn(Optional.empty());
-        when(petRepository.findById(petAdoptionRequestDto.getPetID())).thenReturn(Optional.empty());
-        GenericResponse response = petAdopterService.adoptPetRequest(petAdoptionRequestDto);
-        verify(petAdopterRepository, times(1)).findById(petAdoptionRequestDto.getPetAdopterID());
-        verify(petRepository, times(1)).findById(petAdoptionRequestDto.getPetID());
-        verify(adopterPetRequestsRepository, never()).save(any());
-        assertEquals("PetAdopter or pet not found.", response.getMessage());
-    }
-
 }
