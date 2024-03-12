@@ -14,4 +14,5 @@ public interface LostPetService {
     List<LostPetDto> getAllLostPets();
     LostPetResponseDtoListDto searchLostPet(SearchPetDto searchPetDto);
     LostPetResponseDtoListDto getLostPetListByUser(Long userId);
+    boolean updateLostPetDetails(LostPetDto lostPetDto);
 }

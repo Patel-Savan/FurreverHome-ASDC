@@ -90,4 +90,9 @@ public class LostPetServiceImpl implements LostPetService {
             } else  throw new RuntimeException("No lostpets found for this user");
         }else throw new UserNotFoundException("User not found");
     }
+
+    @Override
+    public boolean updateLostPetDetails(LostPetDto lostPetDto) {
+        return false;
+    }
 }

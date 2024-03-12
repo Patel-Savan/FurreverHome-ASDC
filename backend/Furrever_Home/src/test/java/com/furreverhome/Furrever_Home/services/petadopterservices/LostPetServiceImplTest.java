@@ -203,4 +203,34 @@ public class LostPetServiceImplTest {
         verify(lostPetRepository, times(1)).findByUser(user);
     }
 
+    @Test
+    void testUpdateLostPetDetailsWhenLostPetExists() {
+        LostPetDto lostPetDto = Mockito.mock(LostPetDto.class);
+
+        LostPet lostPet = Mockito.mock(LostPet.class);
+
+        when(lostPetRepository.findById(lostPetDto.getId())).thenReturn(Optional.of(lostPet));
+
+        // Act
+        boolean result = lostPetService.updateLostPetDetails(lostPetDto);
+
+        // Assert
+        assertTrue(result);
+        verify(lostPetRepository, times(1)).save(lostPet);
+    }
+
+    @Test
+    void testUpdateLostPetDetailsWhenLostPetDoesNotExist() {
+        LostPetDto lostPetDto = Mockito.mock(LostPetDto.class);
+
+        when(lostPetRepository.findById(lostPetDto.getId())).thenReturn(Optional.empty());
+
+        // Act
+        boolean result = lostPetService.updateLostPetDetails(lostPetDto);
+
+        // Assert
+        assertFalse(result);
+        verify(lostPetRepository, never()).save(any(LostPet.class));
+    }
+
 }
