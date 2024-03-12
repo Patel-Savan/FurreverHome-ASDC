@@ -48,6 +48,6 @@ public class LostPetServiceImpl implements LostPetService {
 
     @Override
     public List<LostPetDto> getAllLostPets() {
-        return null;
+        return lostPetRepository.findAll().stream().map(LostPet::getLostPetDto).collect(Collectors.toList());
     }
 }

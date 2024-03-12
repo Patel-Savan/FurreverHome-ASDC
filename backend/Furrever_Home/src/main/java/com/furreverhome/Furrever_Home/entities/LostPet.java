@@ -1,5 +1,7 @@
 package com.furreverhome.Furrever_Home.entities;
 
+import com.furreverhome.Furrever_Home.dto.lostpet.LostPetDto;
+import com.furreverhome.Furrever_Home.dto.petadopter.ShelterResponseDto;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -25,4 +27,17 @@ public class LostPet {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    public LostPetDto getLostPetDto() {
+        LostPetDto lostPetDto = new LostPetDto();
+        lostPetDto.setId(id);
+        lostPetDto.setType(type);
+        lostPetDto.setBreed(breed);
+        lostPetDto.setColour(colour);
+        lostPetDto.setGender(gender);
+        lostPetDto.setEmail(email);
+        lostPetDto.setPhone(phone);
+        lostPetDto.setPetImage(petImage);
+        return lostPetDto;
+    }
 }
