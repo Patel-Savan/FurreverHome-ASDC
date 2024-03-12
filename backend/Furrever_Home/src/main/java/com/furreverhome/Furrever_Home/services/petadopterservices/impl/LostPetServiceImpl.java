@@ -90,4 +90,22 @@ public class LostPetServiceImpl implements LostPetService {
             } else  throw new RuntimeException("No lostpets found for this user");
         }else throw new UserNotFoundException("User not found");
     }
+
+    @Override
+    public boolean updateLostPetDetails(LostPetDto lostPetDto) {
+        Optional<LostPet> optionalLostPet = lostPetRepository.findById(lostPetDto.getId());
+        if(optionalLostPet.isPresent()) {
+            LostPet lostPet = optionalLostPet.get();
+            lostPet.setType(lostPetDto.getType());
+            lostPet.setPetImage(lostPet.getPetImage());
+            lostPet.setColour(lostPetDto.getColour());
+            lostPet.setGender(lostPetDto.getGender());
+            lostPet.setPhone(lostPetDto.getPhone());
+            lostPet.setEmail(lostPetDto.getEmail());
+            lostPet.setBreed(lostPetDto.getBreed());
+            lostPetRepository.save(lostPet);
+            return true;
+        }
+        return false;
+    }
 }

@@ -3,6 +3,7 @@ package com.furreverhome.Furrever_Home.controller;
 import com.furreverhome.Furrever_Home.dto.Pet.PetAdoptionRequestDto;
 import com.furreverhome.Furrever_Home.dto.Pet.PetDto;
 import com.furreverhome.Furrever_Home.dto.PetAdopterDto;
+import com.furreverhome.Furrever_Home.dto.lostpet.LostPetDto;
 import com.furreverhome.Furrever_Home.dto.lostpet.LostPetResponseDtoListDto;
 import com.furreverhome.Furrever_Home.dto.lostpet.RegisterLostPetDto;
 import com.furreverhome.Furrever_Home.dto.petadopter.SearchPetDto;
@@ -66,6 +67,10 @@ public class PetAdopterController {
         return ResponseEntity.ok(lostPetService.getLostPetListByUser(userId));
     }
 
+    @PostMapping("/lostpet/update")
+    public ResponseEntity<?> updateLostPetDetails(@RequestBody LostPetDto lostPetDto) {
+        return ResponseEntity.ok(lostPetService.updateLostPetDetails(lostPetDto));
+    }
     @PostMapping("/pet/adopt")
     public ResponseEntity<?> adoptPetRequest(@RequestBody PetAdoptionRequestDto petAdoptionRequestDto){
         return ResponseEntity.ok(petAdopterService.adoptPetRequest(petAdoptionRequestDto));

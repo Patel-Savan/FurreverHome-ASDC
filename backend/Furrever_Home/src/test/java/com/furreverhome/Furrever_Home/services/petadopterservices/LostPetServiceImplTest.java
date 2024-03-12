@@ -203,4 +203,48 @@ public class LostPetServiceImplTest {
         verify(lostPetRepository, times(1)).findByUser(user);
     }
 
+    @Test
+    void testUpdateLostPetDetailsWhenLostPetExists() {
+        LostPetDto lostPetDto = new LostPetDto();
+        lostPetDto.setId(1L);
+        lostPetDto.setPetImage("pet image");
+        lostPetDto.setColour("black");
+        lostPetDto.setPhone("896950004");
+        lostPetDto.setEmail("example@gmail.com");
+        lostPetDto.setType("dog");
+        lostPetDto.setGender("male");
+
+        LostPet lostPet = Mockito.mock(LostPet.class);
+
+        when(lostPetRepository.findById(lostPetDto.getId())).thenReturn(Optional.of(lostPet));
+
+        // Act
+        boolean result = lostPetService.updateLostPetDetails(lostPetDto);
+
+        // Assert
+        assertTrue(result);
+        verify(lostPetRepository, times(1)).save(lostPet);
+    }
+
+    @Test
+    void testUpdateLostPetDetailsWhenLostPetDoesNotExist() {
+        LostPetDto lostPetDto = new LostPetDto();
+        lostPetDto.setId(1L);
+        lostPetDto.setPetImage("pet image");
+        lostPetDto.setColour("black");
+        lostPetDto.setPhone("896950004");
+        lostPetDto.setEmail("example@gmail.com");
+        lostPetDto.setType("dog");
+        lostPetDto.setGender("male");
+
+        when(lostPetRepository.findById(lostPetDto.getId())).thenReturn(Optional.empty());
+
+        // Act
+        boolean result = lostPetService.updateLostPetDetails(lostPetDto);
+
+        // Assert
+        assertFalse(result);
+        verify(lostPetRepository, never()).save(any(LostPet.class));
+    }
+
 }
