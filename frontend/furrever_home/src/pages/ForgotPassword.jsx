@@ -3,6 +3,7 @@ import ImgLogo from '/img/logo/LogoWithText_NoBG.png'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
 import Logo from '../components/Logo'
+import { ToastContainer, toast } from "react-toastify";
 
 const ForgotPassword = () => {
 
@@ -18,11 +19,11 @@ const ForgotPassword = () => {
         axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/forgetPassword`,{email})
             .then(response =>{
                 
-                    alert("A mail has been sent to your Email");
+              toast.info("A mail has been sent to your Email");
                 
             })
             .catch(error =>{
-                console.log(error);
+                toast.error("Cannot send mail. Please try again later");
             });
 
     }

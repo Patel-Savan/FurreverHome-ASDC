@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { deleteLocalStorage, readLocalStorage, saveLocalStorage } from '../utils/helper'
 import { useNavigate } from 'react-router-dom'
 import ShelterCard from '../components/Card/ShelterCard'
-import PetCard from '../components/Card/ShelterCard'
+import PetCard from '../components/Card/PetCard'
 import {
   Card,
   Typography,
@@ -197,12 +197,20 @@ const PetAdopterHome = () => {
     setSearchQuery(event.target.value);
   }
 
-  const handleShelterClick = (id) => {
-    navigate("/adopter/shelter/2" + id)
+  const handleShelterClick = (shelterId) => {
+    navigate("/adopter/shelter",{
+      state:{
+        id:shelterId
+      }
+    })
   }
 
-  const handlePetClick = (id) => {
-    navigate("/adopter/pet/2" + id)
+  const handlePetClick = (petId) => {
+    navigate("/adopter/pet",{
+      state:{
+        id:petId
+      }
+    })
   }
 
   return (
@@ -210,45 +218,7 @@ const PetAdopterHome = () => {
     <section className='lg:flex'>
 
       <Card className="lg:h-[calc(100vh-2rem)] sm:w-full  lg:max-w-[20rem] m-2 p-4 bg-primary shadow-xl shadow-white-900/5 ">
-        {/* <List>
-
-          <ListItem>
-            <ListItemPrefix>
-              <InboxIcon className="h-5 w-5 text-white" />
-            </ListItemPrefix>
-            <Typography variant="h8" color="white">
-              Profile
-            </Typography>
-
-          </ListItem>
-          <ListItem>
-            <ListItemPrefix>
-              <UserCircleIcon className="h-5 w-5 text-white" />
-            </ListItemPrefix>
-            <Typography variant="h8" color="white">
-              Pets
-            </Typography>
-          </ListItem>
-          <ListItem>
-            <ListItemPrefix>
-              <Cog6ToothIcon className="h-5 w-5 text-white" />
-            </ListItemPrefix>
-            <Typography variant="h8" color="white">
-              <Link to="#id">Sidebar</Link>
-            </Typography>
-          </ListItem>
-          <ListItem>
-            <ListItemPrefix>
-              <PowerIcon className="h-5 w-5 text-white" />
-            </ListItemPrefix>
-            <Typography variant="h8" color="white">
-              <Link to="/shelter/home/#pets">
-                Sidebar
-              </Link>
-
-            </Typography>
-          </ListItem>
-        </List> */}
+        
          <div className='flex align-middle justify-center mt-2'>
           <form onSubmit={handleSearch} className='flex-col container mx-4'>
             <input className=' rounded-2xl flex m-4' type="text" onChange={handleSearchChange} />
@@ -331,7 +301,7 @@ const PetAdopterHome = () => {
                     contact={shelter.contact}
                     key={shelter.id}
                     id={shelter.id}
-                    onClick={handleShelterClick}
+                    handleClick={handleShelterClick}
                   />
                 )
               })}
@@ -350,7 +320,7 @@ const PetAdopterHome = () => {
                   shelterCity={pet.shelterCity}
                   shelterContact={pet.shelterContact}
                   petId={pet.petId}
-                  onClick={handlePetClick}
+                  handleClick={handlePetClick}
                 />)
             })
           }
@@ -362,9 +332,3 @@ const PetAdopterHome = () => {
 }
 
 export default PetAdopterHome
-//searchQuery.toLowerCase() === ''
-/*         .filter((item) => {
-  return true
-  ? item
-  : item.city.toLowerCase().includes(searchQuery)
-})*/
