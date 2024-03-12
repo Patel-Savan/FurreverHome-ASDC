@@ -1,7 +1,9 @@
 package com.furreverhome.Furrever_Home.services.petadopterservices.impl;
 
 import com.furreverhome.Furrever_Home.dto.lostpet.LostPetDto;
+import com.furreverhome.Furrever_Home.dto.lostpet.LostPetResponseDtoListDto;
 import com.furreverhome.Furrever_Home.dto.lostpet.RegisterLostPetDto;
+import com.furreverhome.Furrever_Home.dto.petadopter.SearchPetDto;
 import com.furreverhome.Furrever_Home.entities.LostPet;
 import com.furreverhome.Furrever_Home.entities.User;
 import com.furreverhome.Furrever_Home.exception.UserNotFoundException;
@@ -10,6 +12,8 @@ import com.furreverhome.Furrever_Home.repository.UserRepository;
 import com.furreverhome.Furrever_Home.services.JwtService;
 import com.furreverhome.Furrever_Home.services.petadopterservices.LostPetService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,5 +51,29 @@ public class LostPetServiceImpl implements LostPetService {
     @Override
     public List<LostPetDto> getAllLostPets() {
         return lostPetRepository.findAll().stream().map(LostPet::getLostPetDto).collect(Collectors.toList());
+    }
+
+
+    @Override
+    public LostPetResponseDtoListDto searchLostPet(SearchPetDto searchPetDto) {
+        LostPet lostPet = new LostPet();
+        lostPet.setBreed(searchPetDto.getBreed());
+        lostPet.setType(searchPetDto.getType());
+        lostPet.setGender(searchPetDto.getGender());
+        lostPet.setColour(searchPetDto.getColor());
+
+        ExampleMatcher exampleMatcher =
+                ExampleMatcher.matchingAll()
+                        .withMatcher("type", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                        .withMatcher("breed", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                        .withMatcher("age", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                        .withMatcher("colour", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                        .withMatcher("gender", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
+
+        Example<LostPet> petExample = Example.of(lostPet, exampleMatcher);
+        List<LostPet> lostPetList = lostPetRepository.findAll(petExample);
+        LostPetResponseDtoListDto lostPetResponseDtoListDto = new LostPetResponseDtoListDto();
+        lostPetResponseDtoListDto.setLostPetDtoList(lostPetList.stream().map(LostPet::getLostPetDto).collect(Collectors.toList()));
+        return lostPetResponseDtoListDto;
     }
 }
