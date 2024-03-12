@@ -7,6 +7,7 @@ import com.furreverhome.Furrever_Home.dto.RefreshTokenRequest;
 import com.furreverhome.Furrever_Home.dto.SigninRequest;
 import com.furreverhome.Furrever_Home.dto.user.PasswordDto;
 import com.furreverhome.Furrever_Home.entities.PasswordResetToken;
+import com.furreverhome.Furrever_Home.entities.PetAdopter;
 import com.furreverhome.Furrever_Home.entities.Shelter;
 import com.furreverhome.Furrever_Home.entities.User;
 import com.furreverhome.Furrever_Home.enums.Role;
@@ -51,6 +52,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final ShelterRepository shelterRepository;
 
+    private final PetAdopterRepository petAdopterRepository;
+
 
     @PostConstruct
     public void createAdminAccount() {
@@ -84,6 +87,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
         if(user.getVerified()) {
             Optional<Shelter> optionalShelter = shelterRepository.findByUserId(user.getId());
+            Optional<PetAdopter> optionalPetAdopter = petAdopterRepository.findByUserId(user.getId());
             var jwt = jwtService.generateToken(user);
             var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
 
@@ -93,6 +97,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             jwtAuthenticationResponse.setUserId(user.getId());
             if(optionalShelter.isPresent()) {
                 jwtAuthenticationResponse.setShelterId(optionalShelter.get().getId());
+            }
+            if(optionalPetAdopter.isPresent()) {
+                jwtAuthenticationResponse.setPetAdopterId(optionalPetAdopter.get().getId());
             }
             jwtAuthenticationResponse.setVerified(user.getVerified());
             return jwtAuthenticationResponse;
