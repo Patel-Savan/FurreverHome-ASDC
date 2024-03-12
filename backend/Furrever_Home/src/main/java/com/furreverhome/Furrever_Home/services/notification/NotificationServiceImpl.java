@@ -40,9 +40,6 @@ public class NotificationServiceImpl implements NotificationService {
 
         List<PetVaccinationInfo> dueVaccinations = petVaccinationInfoRepository.findAllWithNextVaccinationDueBetween(today, nextWeek);
 
-        log.info("Vaccination today {}, nextWeek {}", today, nextWeek);
-        log.info("Vaccination list {}", dueVaccinations.size());
-
         dueVaccinations.forEach(vaccinationInfo -> {
             Pet pet = vaccinationInfo.getPet();
             Shelter shelter = pet.getShelter();
