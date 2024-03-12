@@ -1,7 +1,12 @@
 package com.furreverhome.Furrever_Home.services.petadopterservices;
 
+import com.furreverhome.Furrever_Home.dto.lostpet.LostPetDto;
+import com.furreverhome.Furrever_Home.dto.lostpet.LostPetResponseDtoListDto;
 import com.furreverhome.Furrever_Home.dto.lostpet.RegisterLostPetDto;
+import com.furreverhome.Furrever_Home.dto.petadopter.PetResponseDtoListDto;
+import com.furreverhome.Furrever_Home.dto.petadopter.SearchPetDto;
 import com.furreverhome.Furrever_Home.entities.LostPet;
+import com.furreverhome.Furrever_Home.entities.Pet;
 import com.furreverhome.Furrever_Home.entities.User;
 import com.furreverhome.Furrever_Home.exception.UserNotFoundException;
 import com.furreverhome.Furrever_Home.repository.LostPetRepository;
@@ -13,8 +18,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Example;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -103,4 +113,94 @@ public class LostPetServiceImplTest {
         verify(userRepository, times(1)).findByEmail("unknown@example.com");
         verify(lostPetRepository, never()).save(any(LostPet.class));
     }
+
+
+    @Test
+    void testGetAllLostPets() {
+        // Mock the LostPet
+        LostPet lostPet1 = mock(LostPet.class);
+        LostPet lostPet2 = mock(LostPet.class);
+        when(lostPetRepository.findAll()).thenReturn(Arrays.asList(lostPet1, lostPet2));
+
+        // Act
+        List<LostPetDto> result = lostPetService.getAllLostPets();
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(2, result.size());
+
+        // Verify the interaction with the repository
+        verify(lostPetRepository, times(1)).findAll();
+    }
+
+
+    @Test
+    void testSearchLostPet() {
+        SearchPetDto searchPetDto = new SearchPetDto();
+        searchPetDto.setAge(10);
+        searchPetDto.setBreed("doberman");
+        searchPetDto.setType("dog");
+        searchPetDto.setGender("male");
+        searchPetDto.setColor("black");
+        List<LostPet> lostPetList = Arrays.asList(Mockito.mock(LostPet.class), Mockito.mock(LostPet.class));
+        when(lostPetRepository.findAll(any(Example.class))).thenReturn(lostPetList);
+
+        // Act
+        LostPetResponseDtoListDto result = lostPetService.searchLostPet(searchPetDto);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(lostPetList.size(), result.getLostPetDtoList().size());
+
+        // Verify interaction
+        verify(lostPetRepository, times(1)).findAll(any(Example.class));
+    }
+
+
+    @Test
+    void testReturnLostPetListWhenUserExistsWithLostPets() {
+        LostPet lostPet1 = new LostPet();
+        lostPet1.setUser(user);
+        LostPet lostPet2 = new LostPet();
+        lostPet2.setUser(user);
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(lostPetRepository.findByUser(user)).thenReturn(Arrays.asList(lostPet1, lostPet2));
+
+        // Act
+        LostPetResponseDtoListDto result = lostPetService.getLostPetListByUser(1L);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(result.getLostPetDtoList().size(), 2);
+
+        // Verify
+        verify(userRepository).findById(1L);
+        verify(lostPetRepository, times(1)).findByUser(user);
+    }
+
+    @Test
+    void testThrowUserNotFoundExceptionWhenUserDoesNotExist() {
+        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+
+        // Act and Assert
+        assertThrows(UserNotFoundException.class, () -> lostPetService.getLostPetListByUser(1L));
+
+        // Verify
+        verify(userRepository, times(1)).findById(1L);
+        verify(lostPetRepository, never()).findByUser(any(User.class));
+    }
+
+    @Test
+    void testThrowRuntimeExceptionWhenUserExistsButNoLostPets() {
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(lostPetRepository.findByUser(user)).thenReturn(Collections.emptyList());
+
+        // Act and Assert
+        assertThrows(RuntimeException.class, () -> lostPetService.getLostPetListByUser(1L));
+
+        // Verify
+        verify(userRepository, times(1)).findById(1L);
+        verify(lostPetRepository, times(1)).findByUser(user);
+    }
+
 }
