@@ -35,9 +35,5 @@ public class EmailService {
         helper.setSubject(subject);
         helper.setText(body, isHTML); // The 'true' flag indicates that this is HTML content
         mailSender.send(message);
-
-
-
     }
-
 }
