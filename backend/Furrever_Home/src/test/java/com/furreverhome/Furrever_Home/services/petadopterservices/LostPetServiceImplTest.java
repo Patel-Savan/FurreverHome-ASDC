@@ -205,7 +205,14 @@ public class LostPetServiceImplTest {
 
     @Test
     void testUpdateLostPetDetailsWhenLostPetExists() {
-        LostPetDto lostPetDto = Mockito.mock(LostPetDto.class);
+        LostPetDto lostPetDto = new LostPetDto();
+        lostPetDto.setId(1L);
+        lostPetDto.setPetImage("pet image");
+        lostPetDto.setColour("black");
+        lostPetDto.setPhone("896950004");
+        lostPetDto.setEmail("example@gmail.com");
+        lostPetDto.setType("dog");
+        lostPetDto.setGender("male");
 
         LostPet lostPet = Mockito.mock(LostPet.class);
 
@@ -221,7 +228,14 @@ public class LostPetServiceImplTest {
 
     @Test
     void testUpdateLostPetDetailsWhenLostPetDoesNotExist() {
-        LostPetDto lostPetDto = Mockito.mock(LostPetDto.class);
+        LostPetDto lostPetDto = new LostPetDto();
+        lostPetDto.setId(1L);
+        lostPetDto.setPetImage("pet image");
+        lostPetDto.setColour("black");
+        lostPetDto.setPhone("896950004");
+        lostPetDto.setEmail("example@gmail.com");
+        lostPetDto.setType("dog");
+        lostPetDto.setGender("male");
 
         when(lostPetRepository.findById(lostPetDto.getId())).thenReturn(Optional.empty());
 
