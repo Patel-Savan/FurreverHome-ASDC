@@ -1,8 +1,12 @@
 package com.furreverhome.Furrever_Home.services.petadopterservices;
 
 import com.furreverhome.Furrever_Home.dto.lostpet.LostPetDto;
+import com.furreverhome.Furrever_Home.dto.lostpet.LostPetResponseDtoListDto;
 import com.furreverhome.Furrever_Home.dto.lostpet.RegisterLostPetDto;
+import com.furreverhome.Furrever_Home.dto.petadopter.PetResponseDtoListDto;
+import com.furreverhome.Furrever_Home.dto.petadopter.SearchPetDto;
 import com.furreverhome.Furrever_Home.entities.LostPet;
+import com.furreverhome.Furrever_Home.entities.Pet;
 import com.furreverhome.Furrever_Home.entities.User;
 import com.furreverhome.Furrever_Home.exception.UserNotFoundException;
 import com.furreverhome.Furrever_Home.repository.LostPetRepository;
@@ -14,7 +18,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Example;
 
 import java.util.Arrays;
 import java.util.List;
@@ -124,6 +130,29 @@ public class LostPetServiceImplTest {
 
         // Verify the interaction with the repository
         verify(lostPetRepository, times(1)).findAll();
+    }
+
+
+    @Test
+    void testSearchLostPet() {
+        SearchPetDto searchPetDto = new SearchPetDto();
+        searchPetDto.setAge(10);
+        searchPetDto.setBreed("doberman");
+        searchPetDto.setType("dog");
+        searchPetDto.setGender("male");
+        searchPetDto.setColor("black");
+        List<LostPet> lostPetList = Arrays.asList(Mockito.mock(LostPet.class), Mockito.mock(LostPet.class));
+        when(lostPetRepository.findAll(any(Example.class))).thenReturn(lostPetList);
+
+        // Act
+        LostPetResponseDtoListDto result = lostPetService.searchLostPet(searchPetDto);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(lostPetList.size(), result.getLostPetDtoList().size());
+
+        // Verify interaction
+        verify(lostPetRepository, times(1)).findAll(any(Example.class));
     }
 
 }

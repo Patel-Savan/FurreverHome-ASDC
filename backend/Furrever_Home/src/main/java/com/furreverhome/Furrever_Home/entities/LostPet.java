@@ -38,6 +38,7 @@ public class LostPet {
         lostPetDto.setEmail(email);
         lostPetDto.setPhone(phone);
         lostPetDto.setPetImage(petImage);
+        lostPetDto.setUserId(user.getId());
         return lostPetDto;
     }
 }

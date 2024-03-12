@@ -2,9 +2,7 @@ package com.furreverhome.Furrever_Home.services.petadopterservices.impl;
 
 import com.furreverhome.Furrever_Home.dto.lostpet.LostPetDto;
 import com.furreverhome.Furrever_Home.dto.lostpet.RegisterLostPetDto;
-import com.furreverhome.Furrever_Home.dto.petadopter.ShelterResponseDto;
 import com.furreverhome.Furrever_Home.entities.LostPet;
-import com.furreverhome.Furrever_Home.entities.Shelter;
 import com.furreverhome.Furrever_Home.entities.User;
 import com.furreverhome.Furrever_Home.exception.UserNotFoundException;
 import com.furreverhome.Furrever_Home.repository.LostPetRepository;
