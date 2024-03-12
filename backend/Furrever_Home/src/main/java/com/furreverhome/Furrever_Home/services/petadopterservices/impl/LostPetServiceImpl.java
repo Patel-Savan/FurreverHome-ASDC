@@ -76,4 +76,9 @@ public class LostPetServiceImpl implements LostPetService {
         lostPetResponseDtoListDto.setLostPetDtoList(lostPetList.stream().map(LostPet::getLostPetDto).collect(Collectors.toList()));
         return lostPetResponseDtoListDto;
     }
+
+    @Override
+    public LostPetResponseDtoListDto getLostPetListByUser(Long userId) {
+        return null;
+    }
 }

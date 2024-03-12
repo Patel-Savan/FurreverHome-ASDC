@@ -23,6 +23,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Example;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -153,6 +154,53 @@ public class LostPetServiceImplTest {
 
         // Verify interaction
         verify(lostPetRepository, times(1)).findAll(any(Example.class));
+    }
+
+
+    @Test
+    void testReturnLostPetListWhenUserExistsWithLostPets() {
+        LostPet lostPet1 = new LostPet();
+        lostPet1.setUser(user);
+        LostPet lostPet2 = new LostPet();
+        lostPet2.setUser(user);
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(lostPetRepository.findByUser(user)).thenReturn(Arrays.asList(lostPet1, lostPet2));
+
+        // Act
+        LostPetResponseDtoListDto result = lostPetService.getLostPetListByUser(1L);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(result.getLostPetDtoList().size(), 2);
+
+        // Verify
+        verify(userRepository).findById(1L);
+        verify(lostPetRepository, times(1)).findByUser(user);
+    }
+
+    @Test
+    void testThrowUserNotFoundExceptionWhenUserDoesNotExist() {
+        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+
+        // Act and Assert
+        assertThrows(UserNotFoundException.class, () -> lostPetService.getLostPetListByUser(1L));
+
+        // Verify
+        verify(userRepository, times(1)).findById(1L);
+        verify(lostPetRepository, never()).findByUser(any(User.class));
+    }
+
+    @Test
+    void testThrowRuntimeExceptionWhenUserExistsButNoLostPets() {
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(lostPetRepository.findByUser(user)).thenReturn(Collections.emptyList());
+
+        // Act and Assert
+        assertThrows(RuntimeException.class, () -> lostPetService.getLostPetListByUser(1L));
+
+        // Verify
+        verify(userRepository, times(1)).findById(1L);
+        verify(lostPetRepository, times(1)).findByUser(user);
     }
 
 }
