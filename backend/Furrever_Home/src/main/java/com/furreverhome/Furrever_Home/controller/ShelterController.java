@@ -1,8 +1,10 @@
 package com.furreverhome.Furrever_Home.controller;
 
 import com.furreverhome.Furrever_Home.dto.GenericResponse;
-import com.furreverhome.Furrever_Home.dto.PetDto;
+import com.furreverhome.Furrever_Home.dto.Pet.PetAdoptionRequestResponseDto;
+import com.furreverhome.Furrever_Home.dto.Pet.PetDto;
 import com.furreverhome.Furrever_Home.dto.shelter.RegisterPetRequest;
+import com.furreverhome.Furrever_Home.services.petservice.PetService;
 import com.furreverhome.Furrever_Home.services.shelterService.ShelterServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,8 @@ import java.util.List;
 public class ShelterController {
 
     private final ShelterServiceImpl shelterService;
+    private final PetService petService;
+
     @PostMapping("/registerPet")
     public ResponseEntity<PetDto> registerPetInShelter(@RequestBody RegisterPetRequest registerPetRequest){
         return ResponseEntity.ok(shelterService.registerPet(registerPetRequest));
@@ -41,5 +45,15 @@ public class ShelterController {
         boolean success = shelterService.changeAdoptedStatus(petId, status);
         if(success) return ResponseEntity.ok().build();
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/{petID}")
+    public ResponseEntity<PetDto> getPetInfo(@PathVariable Long petID){
+        return ResponseEntity.ok(petService.getPetInfo(petID));
+    }
+
+    @GetMapping("/{petID}/adoptionrequests")
+    public ResponseEntity<PetAdoptionRequestResponseDto> getPetAdoptionRequests(@PathVariable Long petID){
+        return ResponseEntity.ok(shelterService.getPetAdoptionRequests(petID));
     }
 }

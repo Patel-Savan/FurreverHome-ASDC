@@ -1,4 +1,4 @@
-package com.furreverhome.Furrever_Home.dto;
+package com.furreverhome.Furrever_Home.dto.Pet;
 
 import com.furreverhome.Furrever_Home.entities.Shelter;
 import jakarta.persistence.FetchType;
