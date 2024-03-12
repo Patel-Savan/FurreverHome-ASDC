@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { deleteLocalStorage, readLocalStorage, saveLocalStorage } from '../utils/helper'
 import { useNavigate } from 'react-router-dom'
 import ShelterCard from '../components/Card/ShelterCard'
-import PetCard from '../components/Card/ShelterCard'
+import PetCard from '../components/Card/PetCard'
 import {
   Card,
   Typography,
