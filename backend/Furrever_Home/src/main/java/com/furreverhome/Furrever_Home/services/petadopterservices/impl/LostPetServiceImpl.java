@@ -1,7 +1,10 @@
 package com.furreverhome.Furrever_Home.services.petadopterservices.impl;
 
+import com.furreverhome.Furrever_Home.dto.lostpet.LostPetDto;
 import com.furreverhome.Furrever_Home.dto.lostpet.RegisterLostPetDto;
+import com.furreverhome.Furrever_Home.dto.petadopter.ShelterResponseDto;
 import com.furreverhome.Furrever_Home.entities.LostPet;
+import com.furreverhome.Furrever_Home.entities.Shelter;
 import com.furreverhome.Furrever_Home.entities.User;
 import com.furreverhome.Furrever_Home.exception.UserNotFoundException;
 import com.furreverhome.Furrever_Home.repository.LostPetRepository;
@@ -11,7 +14,10 @@ import com.furreverhome.Furrever_Home.services.petadopterservices.LostPetService
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class LostPetServiceImpl implements LostPetService {
@@ -37,5 +43,11 @@ public class LostPetServiceImpl implements LostPetService {
             lostPetRepository.save(lostPet);
             return lostPet;
         } else throw new UserNotFoundException("User not found");
+    }
+
+
+    @Override
+    public List<LostPetDto> getAllLostPets() {
+        return null;
     }
 }

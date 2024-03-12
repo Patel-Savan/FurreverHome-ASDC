@@ -1,5 +1,6 @@
 package com.furreverhome.Furrever_Home.services.petadopterservices;
 
+import com.furreverhome.Furrever_Home.dto.lostpet.LostPetDto;
 import com.furreverhome.Furrever_Home.dto.lostpet.RegisterLostPetDto;
 import com.furreverhome.Furrever_Home.entities.LostPet;
 import com.furreverhome.Furrever_Home.entities.User;
@@ -15,6 +16,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -103,4 +106,24 @@ public class LostPetServiceImplTest {
         verify(userRepository, times(1)).findByEmail("unknown@example.com");
         verify(lostPetRepository, never()).save(any(LostPet.class));
     }
+
+
+    @Test
+    void testGetAllLostPets() {
+        // Mock the LostPet
+        LostPet lostPet1 = mock(LostPet.class);
+        LostPet lostPet2 = mock(LostPet.class);
+        when(lostPetRepository.findAll()).thenReturn(Arrays.asList(lostPet1, lostPet2));
+
+        // Act
+        List<LostPetDto> result = lostPetService.getAllLostPets();
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(2, result.size());
+
+        // Verify the interaction with the repository
+        verify(lostPetRepository, times(1)).findAll();
+    }
+
 }
