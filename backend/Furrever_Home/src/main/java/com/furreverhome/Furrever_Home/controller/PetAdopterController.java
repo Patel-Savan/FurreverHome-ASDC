@@ -57,4 +57,9 @@ public class PetAdopterController {
         return ResponseEntity.ok(lostPetService.searchLostPet(SearchPetDto));
     }
 
+    @GetMapping("/lostpet/{userId}")
+    public ResponseEntity<LostPetResponseDtoListDto> getLostPetBy(@PathVariable Long userId) {
+        return ResponseEntity.ok(lostPetService.getLostPetListByUser(userId));
+    }
+
 }

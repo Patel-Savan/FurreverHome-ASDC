@@ -79,6 +79,15 @@ public class LostPetServiceImpl implements LostPetService {
 
     @Override
     public LostPetResponseDtoListDto getLostPetListByUser(Long userId) {
-        return null;
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if(optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            List<LostPet> lostPetList = lostPetRepository.findByUser(user);
+            if (!lostPetList.isEmpty()) {
+                LostPetResponseDtoListDto lostPetResponseDtoListDto = new LostPetResponseDtoListDto();
+                lostPetResponseDtoListDto.setLostPetDtoList(lostPetList.stream().map(LostPet::getLostPetDto).collect(Collectors.toList()));
+                return lostPetResponseDtoListDto;
+            } else  throw new RuntimeException("No lostpets found for this user");
+        }else throw new UserNotFoundException("User not found");
     }
 }
