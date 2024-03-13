@@ -198,7 +198,7 @@ const PetAdopterHome = () => {
   }
 
   const handleShelterClick = (shelterId) => {
-    navigate("/adopter/shelter",{
+    navigate(`/adopter/shelter/${shelterId}`,{
       state:{
         id:shelterId
       }

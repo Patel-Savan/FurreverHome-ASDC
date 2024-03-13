@@ -19,8 +19,9 @@ import PageNotFound from '../components/PageNotFound'
 import AdminHome from '../pages/AdminHome'
 import AdopterProfile from '../components/Adopter/AdopterProfile'
 import ShelterProfile from '../components/Shelter/ShelterProfile'
-import Pet from '../components/Adopter/Pet'
+import PetForAdopter from '../components/Pet/PetForAdopter'
 import Shelter from '../components/Adopter/Shelter'
+import LostAndFoundHome from '../components/LostAndFound/LostAndFoundHome'
 
 const Router = () => {
     return (
@@ -44,8 +45,9 @@ const Router = () => {
                 <Route element={<PrivateRoutesAdopter />}>
                     <Route path="/adopter/home" element={<Layout><PetAdopterHome /></Layout>} />
                     <Route path="/adopter/profile" element={<Layout><AdopterProfile/></Layout>}/>
-                    <Route path="/adopter/pet/:id" element={<Layout><Pet/></Layout>}/>
+                    <Route path="/adopter/pet" element={<Layout><PetForAdopter/></Layout>}/>
                     <Route path="/adopter/shelter/:id" element={<Layout><Shelter/></Layout>}/>
+                    <Route path="/lost-found" element={<Layout><LostAndFoundHome/></Layout>} />
                 </Route>
                 <Route element={<PrivateRoutesShelter />}>
                     <Route path="/shelter/home" element={<Layout><ShelterHome /></Layout>} />

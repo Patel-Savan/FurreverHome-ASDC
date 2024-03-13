@@ -83,7 +83,7 @@ const Header = () => {
                       <Link to='/'>
                         Adopt
                       </Link>
-                      <Link to='/'>
+                      <Link to='/lost-found'>
                         Lost&Found
                       </Link>
                     </nav>
