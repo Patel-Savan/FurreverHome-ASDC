@@ -8,6 +8,7 @@ import com.furreverhome.Furrever_Home.dto.petadopter.SearchShelterDto;
 import com.furreverhome.Furrever_Home.dto.petadopter.ShelterResponseDto;
 import com.furreverhome.Furrever_Home.services.petadopterservices.PetAdopterService;
 import com.furreverhome.Furrever_Home.services.petservice.PetService;
+import com.furreverhome.Furrever_Home.services.petservice.PetServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +50,7 @@ public class PetAdopterController {
         return ResponseEntity.ok(petAdopterService.adoptPetRequest(petAdoptionRequestDto));
     }
 
-    @GetMapping("/{petID}")
+    @GetMapping("/pets/{petID}")
     public ResponseEntity<PetDto> getPetInfo(@PathVariable Long petID){
         return ResponseEntity.ok(petService.getPetInfo(petID));
     }

@@ -3,6 +3,7 @@ package com.furreverhome.Furrever_Home.controller;
 import com.furreverhome.Furrever_Home.dto.GenericResponse;
 import com.furreverhome.Furrever_Home.dto.Pet.PetAdoptionRequestResponseDto;
 import com.furreverhome.Furrever_Home.dto.Pet.PetDto;
+import com.furreverhome.Furrever_Home.dto.Pet.PetVaccineDto;
 import com.furreverhome.Furrever_Home.dto.shelter.RegisterPetRequest;
 import com.furreverhome.Furrever_Home.services.petservice.PetService;
 import com.furreverhome.Furrever_Home.services.shelterService.ShelterServiceImpl;
@@ -55,5 +56,10 @@ public class ShelterController {
     @GetMapping("/{petID}/adoptionrequests")
     public ResponseEntity<PetAdoptionRequestResponseDto> getPetAdoptionRequests(@PathVariable Long petID){
         return ResponseEntity.ok(shelterService.getPetAdoptionRequests(petID));
+    }
+
+    @PostMapping("/{petID}/addvaccine")
+    public ResponseEntity<GenericResponse> addVaccine(@RequestBody PetVaccineDto petVaccineDto , @PathVariable Long petID){
+        return ResponseEntity.ok(petService.addVaccinationDetails(petVaccineDto, petID));
     }
 }
