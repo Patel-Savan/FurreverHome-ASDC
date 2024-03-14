@@ -13,7 +13,7 @@ import java.util.Date;
 public class PetVaccination {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long petVaccineID;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -22,7 +22,7 @@ public class PetVaccination {
 
     private String vaccineName;
 
-    private boolean isGiven;
+    private boolean vaccineGiven;
 
     private Date date;
 
