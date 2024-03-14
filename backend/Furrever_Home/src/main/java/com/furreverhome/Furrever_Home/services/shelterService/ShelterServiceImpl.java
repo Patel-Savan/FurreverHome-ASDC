@@ -75,6 +75,9 @@ public class ShelterServiceImpl implements ShelterService{
             if (updatePetRequest.getPetImage()!=null){
                 pet.setPetImage(updatePetRequest.getPetImage());
             }
+            if (updatePetRequest.getPetMedicalHistory()!=null){
+                pet.setPetMedicalHistory(updatePetRequest.getPetMedicalHistory());
+            }
             petRepository.save(pet);
 
             return mapPetToDto(pet);
@@ -114,6 +117,7 @@ public class ShelterServiceImpl implements ShelterService{
         petDto.setGender(pet.getGender());
         petDto.setBirthdate(pet.getBirthdate());
         petDto.setPetImage(pet.getPetImage());
+        petDto.setPetMedicalHistory(pet.getPetMedicalHistory());
         petDto.setShelter(pet.getShelter());
         petDto.setAdopted(pet.isAdopted());
         return petDto;
