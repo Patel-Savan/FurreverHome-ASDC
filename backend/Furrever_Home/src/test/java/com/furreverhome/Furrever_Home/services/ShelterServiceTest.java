@@ -1,17 +1,16 @@
 package com.furreverhome.Furrever_Home.services;
 
 import com.furreverhome.Furrever_Home.dto.GenericResponse;
-import com.furreverhome.Furrever_Home.dto.Pet.PetAdoptionRequestDto;
 import com.furreverhome.Furrever_Home.dto.Pet.PetAdoptionRequestResponseDto;
 import com.furreverhome.Furrever_Home.dto.Pet.PetDto;
 import com.furreverhome.Furrever_Home.dto.shelter.RegisterPetRequest;
 import com.furreverhome.Furrever_Home.entities.Pet;
 import com.furreverhome.Furrever_Home.entities.PetAdopter;
+import com.furreverhome.Furrever_Home.entities.Shelter;
 import com.furreverhome.Furrever_Home.repository.AdopterPetRequestsRepository;
-import com.furreverhome.Furrever_Home.repository.PetAdopterRepository;
 import com.furreverhome.Furrever_Home.repository.PetRepository;
-import com.furreverhome.Furrever_Home.services.petadopterservices.impl.PetAdopterServiceImpl;
-import com.furreverhome.Furrever_Home.services.petservice.PetService;
+import com.furreverhome.Furrever_Home.repository.ShelterRepository;
+import com.furreverhome.Furrever_Home.services.petservice.PetServiceImpl;
 import com.furreverhome.Furrever_Home.services.shelterService.ShelterServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,8 +39,8 @@ public class ShelterServiceTest {
     @Mock
     private AdopterPetRequestsRepository adopterPetRequestsRepository;
 
-    @InjectMocks
-    private PetService petService;
+    @Mock
+    private ShelterRepository shelterRepository;
 
     @Test
     void deletePetNotFoundTest(){
@@ -143,4 +142,26 @@ public class ShelterServiceTest {
         assertEquals(petId, result.getPetID());
         assertEquals(Collections.singletonList(petAdopter), result.getPetAdopters());
     }
+
+    @Test
+    void getPetsForShelterShelterNotFound() {
+        Long shelterId = 2L;
+        when(shelterRepository.findById(shelterId)).thenReturn(Optional.empty());
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> shelterService.getPetsForShelter(shelterId));
+        assertEquals("Shelter with ID " + shelterId + " not found", exception.getMessage());
+    }
+
+    @Test
+    void getPetsForShelterShelterFound() {
+        Long shelterId = 2L;
+        Shelter shelter = new Shelter();
+        shelter.setId(shelterId);
+        when(shelterRepository.findById(shelterId)).thenReturn(Optional.of(shelter));
+        when(petRepository.findByShelter(shelter)).thenReturn(Collections.emptyList());
+        var petDtos = shelterService.getPetsForShelter(shelterId);
+        assertNotNull(petDtos);
+        assertTrue(petDtos.isEmpty());
+    }
+
+
 }
