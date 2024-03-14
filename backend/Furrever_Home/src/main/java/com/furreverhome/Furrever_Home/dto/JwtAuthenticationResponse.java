@@ -18,4 +18,6 @@ public class JwtAuthenticationResponse {
 
     private Boolean verified;
 
+    private Long petAdopterId;
+
 }

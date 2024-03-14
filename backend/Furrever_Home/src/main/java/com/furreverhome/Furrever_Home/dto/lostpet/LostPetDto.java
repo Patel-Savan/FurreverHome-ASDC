@@ -13,5 +13,5 @@ public class LostPetDto {
     private String petImage;
     private String phone;
     private String email;
-    private User user;
+    private Long userId;
 }
