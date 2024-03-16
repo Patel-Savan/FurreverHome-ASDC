@@ -55,4 +55,10 @@ public class PetAdopterController {
         return ResponseEntity.ok(petService.getPetInfo(petID));
     }
 
+    @GetMapping("/pet/adopt/requestexists")
+    public ResponseEntity<?> requestExists(@RequestBody PetAdoptionRequestDto petAdoptionRequestDto){
+        boolean success = petAdopterService.requestExists(petAdoptionRequestDto);
+        if(success) return ResponseEntity.ok().build();
+        return ResponseEntity.notFound().build();
+    }
 }
