@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -75,6 +76,9 @@ public class ShelterServiceImpl implements ShelterService{
             if (updatePetRequest.getPetImage()!=null){
                 pet.setPetImage(updatePetRequest.getPetImage());
             }
+            if (updatePetRequest.getPetMedicalHistory()!=null){
+                pet.setPetMedicalHistory(updatePetRequest.getPetMedicalHistory());
+            }
             petRepository.save(pet);
 
             return mapPetToDto(pet);
@@ -114,6 +118,7 @@ public class ShelterServiceImpl implements ShelterService{
         petDto.setGender(pet.getGender());
         petDto.setBirthdate(pet.getBirthdate());
         petDto.setPetImage(pet.getPetImage());
+        petDto.setPetMedicalHistory(pet.getPetMedicalHistory());
         petDto.setShelter(pet.getShelter());
         petDto.setAdopted(pet.isAdopted());
         return petDto;
@@ -142,7 +147,11 @@ public class ShelterServiceImpl implements ShelterService{
             List<PetAdopter> petAdopters = adopterPetRequestsRepository.findByPet(pet);
             PetAdoptionRequestResponseDto petAdoptionRequestResponseDto = new PetAdoptionRequestResponseDto();
             petAdoptionRequestResponseDto.setPetID(petID);
-            petAdoptionRequestResponseDto.setPetAdopters(petAdopters);
+            List<Long> petAdopterIDList = new ArrayList<>();
+            for (PetAdopter petAdopter : petAdopters) {
+                petAdopterIDList.add(petAdopter.getId());
+            }
+            petAdoptionRequestResponseDto.setPetAdopters(petAdopterIDList);
             return petAdoptionRequestResponseDto;
         }else {
             throw new RuntimeException("Requests with petID " + petID + " not found");

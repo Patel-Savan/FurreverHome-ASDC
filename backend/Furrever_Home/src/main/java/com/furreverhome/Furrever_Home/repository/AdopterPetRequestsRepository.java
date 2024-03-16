@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface AdopterPetRequestsRepository extends JpaRepository<AdopterPetRequests, Long> {
     List<PetAdopter> findByPet(Pet pet);
+
+    boolean existsByPetAndPetAdopter(Pet pet, PetAdopter petAdopter);
 }

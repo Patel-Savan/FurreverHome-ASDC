@@ -14,6 +14,7 @@ import com.furreverhome.Furrever_Home.services.petadopterservices.LostPetService
 import com.furreverhome.Furrever_Home.services.petadopterservices.PetAdopterService;
 import jakarta.validation.Valid;
 import com.furreverhome.Furrever_Home.services.petservice.PetService;
+import com.furreverhome.Furrever_Home.services.petservice.PetServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.springframework.http.ResponseEntity;
@@ -76,9 +77,15 @@ public class PetAdopterController {
         return ResponseEntity.ok(petAdopterService.adoptPetRequest(petAdoptionRequestDto));
     }
 
-    @GetMapping("/{petID}")
+    @GetMapping("/pets/{petID}")
     public ResponseEntity<PetDto> getPetInfo(@PathVariable Long petID){
         return ResponseEntity.ok(petService.getPetInfo(petID));
     }
 
+    @GetMapping("/pet/adopt/requestexists")
+    public ResponseEntity<?> requestExists( @RequestParam("petID") Long petID, @RequestParam("petAdopterID") Long petAdopterID){
+        boolean success = petAdopterService.requestExists(petID,petAdopterID);
+        if(success) return ResponseEntity.ok().build();
+        return ResponseEntity.notFound().build();
+    }
 }

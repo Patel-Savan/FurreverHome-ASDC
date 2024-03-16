@@ -104,7 +104,7 @@ public class PetAdopterServiceImpl implements PetAdopterService {
         Optional<Pet> optionalPet = petRepository.findById(petAdoptionRequestDto.getPetID());
         if (optionalPet.isPresent() && optionalPetAdopter.isPresent()) {
             Pet pet = optionalPet.get();
-            if (pet.isAdopted() == true) {
+            if (pet.isAdopted() == true || requestExists(petAdoptionRequestDto.getPetID(), petAdoptionRequestDto.getPetAdopterID())) {
                 return new GenericResponse("Pet already adopted");
             } else {
                 AdopterPetRequests adopterPetRequests = new AdopterPetRequests();
@@ -117,6 +117,17 @@ public class PetAdopterServiceImpl implements PetAdopterService {
         } else {
             return new GenericResponse("PetAdopter or pet not found.");
         }
+    }
+
+    public boolean requestExists(Long petID, Long petAdopterID){
+        Optional<PetAdopter> optionalPetAdopter= petAdopterRepository.findById(petAdopterID);
+        Optional<Pet> optionalPet = petRepository.findById(petID);
+        if (optionalPet.isPresent() && optionalPetAdopter.isPresent()) {
+            Pet pet = optionalPet.get();
+            PetAdopter petAdopter = optionalPetAdopter.get();
+            return adopterPetRequestsRepository.existsByPetAndPetAdopter(pet, petAdopter);
+        }
+        return false;
     }
 
 }
