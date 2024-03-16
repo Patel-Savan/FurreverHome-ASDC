@@ -300,7 +300,7 @@ const PetAdopterHome = () => {
                     capacity={shelter.capacity}
                     contact={shelter.contact}
                     key={shelter.id}
-                    shelterId={shelter.id}
+                    shelterId={shelter.user.id}
                     handleClick={handleShelterClick}
                   />
                 )

@@ -22,6 +22,7 @@ import ShelterProfile from '../components/Shelter/ShelterProfile'
 import PetForAdopter from '../components/Pet/PetForAdopter'
 import Shelter from '../components/Adopter/Shelter'
 import LostAndFoundHome from '../components/LostAndFound/LostAndFoundHome'
+import Shelterchat from '../components/Chat/shelterchat'
 
 const Router = () => {
     return (
@@ -53,6 +54,8 @@ const Router = () => {
                     <Route path="/shelter/home" element={<Layout><ShelterHome /></Layout>} />
                     <Route path="/shelter/profile" element={<Layout><ShelterProfile/></Layout>}/>
                 </Route>
+
+                <Route path="/chat/:shelterId" element={<Shelterchat />}/>
 
 
                 
