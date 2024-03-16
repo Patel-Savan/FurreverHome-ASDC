@@ -9,5 +9,5 @@ import java.util.List;
 @Data
 public class PetAdoptionRequestResponseDto {
     private Long petID;
-    private List<PetAdopter> petAdopters;
+    private List<Long> petAdopters;
 }

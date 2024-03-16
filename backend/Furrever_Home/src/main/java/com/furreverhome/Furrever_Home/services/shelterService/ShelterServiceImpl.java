@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -146,7 +147,11 @@ public class ShelterServiceImpl implements ShelterService{
             List<PetAdopter> petAdopters = adopterPetRequestsRepository.findByPet(pet);
             PetAdoptionRequestResponseDto petAdoptionRequestResponseDto = new PetAdoptionRequestResponseDto();
             petAdoptionRequestResponseDto.setPetID(petID);
-            petAdoptionRequestResponseDto.setPetAdopters(petAdopters);
+            List<Long> petAdopterIDList = new ArrayList<>();
+            for (PetAdopter petAdopter : petAdopters) {
+                petAdopterIDList.add(petAdopter.getId());
+            }
+            petAdoptionRequestResponseDto.setPetAdopters(petAdopterIDList);
             return petAdoptionRequestResponseDto;
         }else {
             throw new RuntimeException("Requests with petID " + petID + " not found");
