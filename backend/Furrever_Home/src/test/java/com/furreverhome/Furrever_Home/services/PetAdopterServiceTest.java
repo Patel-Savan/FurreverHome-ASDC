@@ -17,7 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.never;
@@ -83,4 +83,44 @@ public class PetAdopterServiceTest {
         verify(adopterPetRequestsRepository, never()).save(any());
         assertEquals("PetAdopter or pet not found.", response.getMessage());
     }
+
+    @Test
+    void requestExistsRequestExists() {
+        PetAdoptionRequestDto petAdoptionRequestDto = new PetAdoptionRequestDto();
+        petAdoptionRequestDto.setPetAdopterID(3L);
+        petAdoptionRequestDto.setPetID(2L);
+        PetAdopter petAdopter = new PetAdopter();
+        Pet pet = new Pet();
+        when(petRepository.findById(petAdoptionRequestDto.getPetID())).thenReturn(Optional.of(pet));
+        when(petAdopterRepository.findById(petAdoptionRequestDto.getPetAdopterID())).thenReturn(Optional.of(petAdopter));
+        when(adopterPetRequestsRepository.existsByPetAndPetAdopter(pet, petAdopter)).thenReturn(true);
+        boolean exists = petAdopterService.requestExists(petAdoptionRequestDto);
+        assertTrue(exists);
+    }
+
+    @Test
+    void requestExistsRequestDoesNotExist() {
+        PetAdoptionRequestDto petAdoptionRequestDto = new PetAdoptionRequestDto();
+        petAdoptionRequestDto.setPetAdopterID(2L);
+        petAdoptionRequestDto.setPetID(2L);
+        PetAdopter petAdopter = new PetAdopter();
+        Pet pet = new Pet();
+        when(petRepository.findById(petAdoptionRequestDto.getPetID())).thenReturn(Optional.of(pet));
+        when(petAdopterRepository.findById(petAdoptionRequestDto.getPetAdopterID())).thenReturn(Optional.of(petAdopter));
+        when(adopterPetRequestsRepository.existsByPetAndPetAdopter(pet, petAdopter)).thenReturn(false);
+        boolean exists = petAdopterService.requestExists(petAdoptionRequestDto);
+        assertFalse(exists);
+    }
+
+    @Test
+    void requestExists_PetOrAdopterNotFound_ReturnsFalse() {
+        PetAdoptionRequestDto petAdoptionRequestDto = new PetAdoptionRequestDto();
+        petAdoptionRequestDto.setPetAdopterID(2L);
+        petAdoptionRequestDto.setPetID(2L);
+        when(petRepository.findById(petAdoptionRequestDto.getPetID())).thenReturn(Optional.empty());
+        when(petAdopterRepository.findById(petAdoptionRequestDto.getPetAdopterID())).thenReturn(Optional.empty());
+        boolean exists = petAdopterService.requestExists(petAdoptionRequestDto);
+        assertFalse(exists);
+    }
+
 }
