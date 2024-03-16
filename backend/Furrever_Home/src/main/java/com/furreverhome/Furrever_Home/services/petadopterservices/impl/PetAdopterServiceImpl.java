@@ -119,4 +119,15 @@ public class PetAdopterServiceImpl implements PetAdopterService {
         }
     }
 
+    public boolean requestExists(PetAdoptionRequestDto petAdoptionRequestDto){
+        Optional<PetAdopter> optionalPetAdopter= petAdopterRepository.findById(petAdoptionRequestDto.getPetAdopterID());
+        Optional<Pet> optionalPet = petRepository.findById(petAdoptionRequestDto.getPetID());
+        if (optionalPet.isPresent() && optionalPetAdopter.isPresent()) {
+            Pet pet = optionalPet.get();
+            PetAdopter petAdopter = optionalPetAdopter.get();
+            return adopterPetRequestsRepository.existsByPetAndPetAdopter(pet, petAdopter);
+        }
+        return false;
+    }
+
 }

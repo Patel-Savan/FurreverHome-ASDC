@@ -20,4 +20,6 @@ public interface PetAdopterService {
 
     GenericResponse adoptPetRequest(PetAdoptionRequestDto petAdoptionRequestDto);
 
+    boolean requestExists(PetAdoptionRequestDto petAdoptionRequestDto);
+
 }

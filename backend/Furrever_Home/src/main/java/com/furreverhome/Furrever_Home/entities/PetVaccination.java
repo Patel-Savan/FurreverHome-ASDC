@@ -16,7 +16,7 @@ public class PetVaccination {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long petVaccineID;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "petID", referencedColumnName = "petID", nullable = false)
     private Pet pet;
 
