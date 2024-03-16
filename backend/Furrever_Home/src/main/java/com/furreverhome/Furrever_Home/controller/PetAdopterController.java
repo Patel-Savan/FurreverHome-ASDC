@@ -83,8 +83,8 @@ public class PetAdopterController {
     }
 
     @GetMapping("/pet/adopt/requestexists")
-    public ResponseEntity<?> requestExists(@RequestBody PetAdoptionRequestDto petAdoptionRequestDto){
-        boolean success = petAdopterService.requestExists(petAdoptionRequestDto);
+    public ResponseEntity<?> requestExists( @RequestParam("petID") Long petID, @RequestParam("petAdopterID") Long petAdopterID){
+        boolean success = petAdopterService.requestExists(petID,petAdopterID);
         if(success) return ResponseEntity.ok().build();
         return ResponseEntity.notFound().build();
     }
