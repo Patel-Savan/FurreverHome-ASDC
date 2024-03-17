@@ -25,6 +25,7 @@ const PetForShelter = () => {
       country:"",
       contact:"",
     });
+    const [vaccine,setVaccine] = useState([])
     const token = readLocalStorage("token")
 
     useEffect(() =>{
@@ -56,6 +57,7 @@ const PetForShelter = () => {
           country:res.country,
           contact:res.contact
         })
+        setVaccine(response.data.vaccineNameList)
       })
       .catch(error => {
         toast.error("Cannot get pet details")
@@ -71,7 +73,7 @@ const PetForShelter = () => {
       <div className="container mx-auto py-8">
         <div className="grid gap-6 grid-cols-2">
           <PetDetail pet={pet} petId={petId} />
-          <ShelterDetail shelter={shelter} petId={petId}/>
+          <ShelterDetail shelter={shelter} vaccine={vaccine}  petId={petId}/>
         </div>
       </div>
     </div>
