@@ -28,6 +28,7 @@ const App = () => {
 
     const userid = readLocalStorage("id")
     const token = readLocalStorage("token")
+    const User = JSON.parse(readLocalStorage("User"))
 
     const [data,setData] = useState(null)
     const [loading,setLoading] = useState(false)
@@ -53,7 +54,7 @@ const App = () => {
   const filters = {
     type: "messaging",
     // Assuming 'tag' is a custom field you've set on the channel metadata
-    petadopter: "emayoung99@gmail.com",
+    petadopter: User.email,
   };
 
   const initChat = async (data) => {
@@ -81,7 +82,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/api/chats/from/${userid}/to/${shelterId}`,{
+    axios.get(`http://localhost:8080/api/chats/from/${shelterId}/to/${userid}`,{
         headers: {
           Authorization: `Bearer ${token}`,
         }

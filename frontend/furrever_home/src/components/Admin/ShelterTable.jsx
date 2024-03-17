@@ -63,7 +63,7 @@ const ShelterTable = () => {
                 console.log(param.row.verified)
                 console.log(param.value)
                 return( 
-                    (!param.row.verified && !param.value)?<Chip color="blue" value="Pending" /> : (param.row.verified) ? <Chip color="green" value="Verified" /> :<Chip color="red" value="Rejected" /> 
+                    (!param.row.accepted && !param.value)?<Chip color="blue" value="Pending" /> : (param.row.accepted) ? <Chip color="green" value="Verified" /> :<Chip color="red" value="Rejected" /> 
                 )
             
         }
@@ -105,13 +105,13 @@ const ShelterTable = () => {
             editable: true,
         },
         {
-            field: 'verified',
+            field: 'accepted',
             headerName: 'Action',
             width: 400,
             renderCell: (prop) => {
                 return (
 
-                    (!prop.row.rejected && !prop.row.verified)?
+                    (!prop.row.rejected && !prop.row.accepted)?
 
     
                     <div className="flex gap-2">
@@ -207,11 +207,6 @@ const ShelterTable = () => {
             {/* <Card className=""> */}
 
                 <DataGrid
-                    // rows={shelters.filter((sh)=>{
-                    //     return(
-                    //         !sh.verified && sh.rejected
-                    //     )
-                    // })}
                     rows={shelters}
                     columns={columns}
                     initialState={{
@@ -224,7 +219,6 @@ const ShelterTable = () => {
                     pageSizeOptions={[10]}
                     checkboxSelection
                     disableRowSelectionOnClick
-    
                 />
                 
             

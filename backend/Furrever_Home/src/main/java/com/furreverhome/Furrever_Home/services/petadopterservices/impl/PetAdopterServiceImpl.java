@@ -61,6 +61,8 @@ public class PetAdopterServiceImpl implements PetAdopterService {
         shelter.setName(searchShelterDto.getName());
         shelter.setCity(searchShelterDto.getCity());
         shelter.setCapacity(searchShelterDto.getCapacity());
+        shelter.setAccepted(true);
+        shelter.setRejected(false);
 
         ExampleMatcher exampleMatcher =
                 ExampleMatcher.matchingAll()
