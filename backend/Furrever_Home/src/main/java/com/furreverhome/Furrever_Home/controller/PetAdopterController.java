@@ -12,6 +12,9 @@ import com.furreverhome.Furrever_Home.dto.petadopter.ShelterResponseDto;
 import com.furreverhome.Furrever_Home.entities.LostPet;
 import com.furreverhome.Furrever_Home.services.petadopterservices.LostPetService;
 import com.furreverhome.Furrever_Home.services.petadopterservices.PetAdopterService;
+import jakarta.validation.Valid;
+import com.furreverhome.Furrever_Home.services.petservice.PetService;
+import com.furreverhome.Furrever_Home.services.petservice.PetServiceImpl;
 import com.furreverhome.Furrever_Home.services.petservice.PetService;
 import com.furreverhome.Furrever_Home.services.petservice.PetServiceImpl;
 import jakarta.validation.Valid;
@@ -28,10 +31,8 @@ import java.util.List;
 public class PetAdopterController {
 
     private final PetAdopterService petAdopterService;
-
-    private final PetService petService;
-
     private final LostPetService lostPetService;
+    private final PetService petService;
 
     @GetMapping("/shelters")
     public ResponseEntity<List<ShelterResponseDto>> getAllShelters() {
@@ -71,6 +72,7 @@ public class PetAdopterController {
         boolean success = petAdopterService.requestExists(petID,petAdopterID);
         if(success) return ResponseEntity.ok().build();
         return ResponseEntity.notFound().build();
+    }
 
     @PostMapping("/lostpet")
     public ResponseEntity<LostPet> registerLostPet(@Valid @RequestHeader("Authorization") String authorizationHeader, @RequestBody RegisterLostPetDto registerLostPetDto) {
@@ -91,4 +93,5 @@ public class PetAdopterController {
     public ResponseEntity<?> updateLostPetDetails(@RequestBody LostPetDto lostPetDto) {
         return ResponseEntity.ok(lostPetService.updateLostPetDetails(lostPetDto));
     }
+
 }

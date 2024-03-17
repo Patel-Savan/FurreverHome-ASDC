@@ -30,13 +30,13 @@ const ResetPassword = () => {
     const handleSubmit = (event) =>{
         event.preventDefault();
 
-        errors = validatePassword();
+        errors = validatePassword(newPassword);
 
         if(errors.length === 0){
           if(newPassword == verifyNewPassword ){
-            axios.post("http://localhost:8080/api/auth/resetPassword",{newPassword,verifyNewPassword,token})
+            axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/resetPassword`,{newPassword,verifyNewPassword,token})
                 .then(response =>{
-                  toast.info("Password Successfully Reset")
+                  toast.success("Password Successfully Reset")
                   navigate('/login');
                 })
                 .catch(error =>{
@@ -48,6 +48,7 @@ const ResetPassword = () => {
           }
         }
         else{
+          toast.error("Invalid Password")
           setIsError(true);
         }
     }
