@@ -1,5 +1,7 @@
 package com.furreverhome.Furrever_Home.controller;
 
+import com.furreverhome.Furrever_Home.dto.Pet.PetAdoptionRequestDto;
+import com.furreverhome.Furrever_Home.dto.Pet.PetDto;
 import com.furreverhome.Furrever_Home.dto.PetAdopterDto;
 import com.furreverhome.Furrever_Home.dto.lostpet.LostPetDto;
 import com.furreverhome.Furrever_Home.dto.lostpet.LostPetResponseDtoListDto;
@@ -10,6 +12,8 @@ import com.furreverhome.Furrever_Home.dto.petadopter.ShelterResponseDto;
 import com.furreverhome.Furrever_Home.entities.LostPet;
 import com.furreverhome.Furrever_Home.services.petadopterservices.LostPetService;
 import com.furreverhome.Furrever_Home.services.petadopterservices.PetAdopterService;
+import com.furreverhome.Furrever_Home.services.petservice.PetService;
+import com.furreverhome.Furrever_Home.services.petservice.PetServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -24,7 +28,11 @@ import java.util.List;
 public class PetAdopterController {
 
     private final PetAdopterService petAdopterService;
+
+    private final PetService petService;
+
     private final LostPetService lostPetService;
+
     @GetMapping("/shelters")
     public ResponseEntity<List<ShelterResponseDto>> getAllShelters() {
         List<ShelterResponseDto> shelterResponseDtoList = petAdopterService.getAllShelter();
@@ -47,6 +55,22 @@ public class PetAdopterController {
     public ResponseEntity<?> searchPet(@RequestBody SearchPetDto searchPetDto) {
         return ResponseEntity.ok(petAdopterService.searchPet(searchPetDto));
     }
+
+    @PostMapping("/pet/adopt")
+    public ResponseEntity<?> adoptPetRequest(@RequestBody PetAdoptionRequestDto petAdoptionRequestDto){
+        return ResponseEntity.ok(petAdopterService.adoptPetRequest(petAdoptionRequestDto));
+    }
+
+    @GetMapping("/pets/{petID}")
+    public ResponseEntity<PetDto> getPetInfo(@PathVariable Long petID){
+        return ResponseEntity.ok(petService.getPetInfo(petID));
+    }
+
+    @GetMapping("/pet/adopt/requestexists")
+    public ResponseEntity<?> requestExists( @RequestParam("petID") Long petID, @RequestParam("petAdopterID") Long petAdopterID){
+        boolean success = petAdopterService.requestExists(petID,petAdopterID);
+        if(success) return ResponseEntity.ok().build();
+        return ResponseEntity.notFound().build();
 
     @PostMapping("/lostpet")
     public ResponseEntity<LostPet> registerLostPet(@Valid @RequestHeader("Authorization") String authorizationHeader, @RequestBody RegisterLostPetDto registerLostPetDto) {

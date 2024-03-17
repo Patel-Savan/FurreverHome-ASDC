@@ -1,16 +1,12 @@
 package com.furreverhome.Furrever_Home.services.petadopterservices.impl;
 
+import com.furreverhome.Furrever_Home.dto.GenericResponse;
+import com.furreverhome.Furrever_Home.dto.Pet.PetAdoptionRequestDto;
 import com.furreverhome.Furrever_Home.dto.PetAdopterDto;
 import com.furreverhome.Furrever_Home.dto.petadopter.*;
-import com.furreverhome.Furrever_Home.entities.Pet;
-import com.furreverhome.Furrever_Home.entities.PetAdopter;
-import com.furreverhome.Furrever_Home.entities.Shelter;
-import com.furreverhome.Furrever_Home.entities.User;
+import com.furreverhome.Furrever_Home.entities.*;
 import com.furreverhome.Furrever_Home.exception.UserNotFoundException;
-import com.furreverhome.Furrever_Home.repository.PetAdopterRepository;
-import com.furreverhome.Furrever_Home.repository.PetRepository;
-import com.furreverhome.Furrever_Home.repository.ShelterRepository;
-import com.furreverhome.Furrever_Home.repository.UserRepository;
+import com.furreverhome.Furrever_Home.repository.*;
 import com.furreverhome.Furrever_Home.services.petadopterservices.PetAdopterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
@@ -32,6 +28,8 @@ public class PetAdopterServiceImpl implements PetAdopterService {
     private final UserRepository userRepository;
 
     private final PetRepository petRepository;
+
+    private final AdopterPetRequestsRepository adopterPetRequestsRepository;
 
     @Override
     public List<ShelterResponseDto> getAllShelter() {
@@ -100,4 +98,36 @@ public class PetAdopterServiceImpl implements PetAdopterService {
         petResponseDtoListDto.setPetResponseDtoList(petList.stream().map(Pet::getPetResponseDto).collect(Collectors.toList()));
         return petResponseDtoListDto;
     }
+
+    public GenericResponse adoptPetRequest(PetAdoptionRequestDto petAdoptionRequestDto) {
+        Optional<PetAdopter> optionalPetAdopter= petAdopterRepository.findById(petAdoptionRequestDto.getPetAdopterID());
+        Optional<Pet> optionalPet = petRepository.findById(petAdoptionRequestDto.getPetID());
+        if (optionalPet.isPresent() && optionalPetAdopter.isPresent()) {
+            Pet pet = optionalPet.get();
+            if (pet.isAdopted() == true || requestExists(petAdoptionRequestDto.getPetID(), petAdoptionRequestDto.getPetAdopterID())) {
+                return new GenericResponse("Pet already adopted");
+            } else {
+                AdopterPetRequests adopterPetRequests = new AdopterPetRequests();
+                PetAdopter petAdopter = optionalPetAdopter.get();
+                adopterPetRequests.setPetAdopter(petAdopter);
+                adopterPetRequests.setPet(pet);
+                adopterPetRequestsRepository.save(adopterPetRequests);
+                return new GenericResponse("Adoption Request Successful.");
+            }
+        } else {
+            return new GenericResponse("PetAdopter or pet not found.");
+        }
+    }
+
+    public boolean requestExists(Long petID, Long petAdopterID){
+        Optional<PetAdopter> optionalPetAdopter= petAdopterRepository.findById(petAdopterID);
+        Optional<Pet> optionalPet = petRepository.findById(petID);
+        if (optionalPet.isPresent() && optionalPetAdopter.isPresent()) {
+            Pet pet = optionalPet.get();
+            PetAdopter petAdopter = optionalPetAdopter.get();
+            return adopterPetRequestsRepository.existsByPetAndPetAdopter(pet, petAdopter);
+        }
+        return false;
+    }
+
 }
