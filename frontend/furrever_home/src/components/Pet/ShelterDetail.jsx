@@ -28,8 +28,8 @@ const ShelterDetail = ({
         {
           vaccine.length>0 ?  
 
-          vaccine.map(vac => {
-            return ( <p className="flex items-center gap-1 p-3">{vac} </p> )
+          vaccine.map((vac,index) => {
+            return ( <p key={index} className="flex items-center gap-1 p-3">{vac} </p> )
           }) 
           : 
           <p className="flex items-center gap-1 p-3">No Vaccines are given to this pet</p>

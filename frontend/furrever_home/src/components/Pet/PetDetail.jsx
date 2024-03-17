@@ -22,7 +22,11 @@ const PetDetail = ({
   if(role === "PETADOPTER"){
     useEffect(()=> {
 
-    axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/petadopter/pet/adopt/requestexists/${petId}/${userId}`,{
+    axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/petadopter/pet/adopt/requestexists`,{
+      params:{
+        petID: petId,
+        petAdopterID:userId
+      },
       headers : {
         Authorization :`Bearer ${token}`
       }

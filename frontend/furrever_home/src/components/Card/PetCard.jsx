@@ -34,11 +34,9 @@ const PetCard = ( {
             <p className="font-normal text-gray-500 cursor-pointer text-lg duration-300 transition hover:text-[#FA5252] mt-2">
                 Want to adopt me ? contact at {shelterContact}
             </p>
-            <Link to="/adopter/pet/1">
             <button className='btn btn-outline' onClick={() => handleClick(petId)} >
                 Details
             </button>
-            </Link>
     </div>
   )
 }

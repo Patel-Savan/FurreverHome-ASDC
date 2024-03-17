@@ -24,16 +24,18 @@ import axios from 'axios';
 import { toast } from "react-toastify";
 import { deleteLocalStorage, readLocalStorage, saveLocalStorage } from '../../utils/helper'
 import pet1 from "../../dummydata/pets"
+import { useNavigate } from 'react-router-dom';
 
 const PetsTable = ({pets}) => {
 
     const [search, setSearch] = useState('');
 
-    
+
     const [loading, setLoading] = useState(false)
     const baseurl = `${import.meta.env.VITE_BACKEND_BASE_URL}`;
     const token = readLocalStorage("token")
-    const sid = readLocalStorage("shelterID");
+    const sid = readLocalStorage("shelterID")
+    const navigate = useNavigate()
 
     const handleChange = (e) => {
         setSearch(e.target.value)
@@ -64,6 +66,13 @@ const PetsTable = ({pets}) => {
 
     // }, [pets.length])
 
+    const handlePetClick = (petId) => {
+        navigate("/shelter/pet",{
+          state:{
+            id:petId
+          }
+        })
+      }
     const columns = [
         { field: 'petID', headerName: 'PetID', width: 90 },
         {
@@ -71,7 +80,7 @@ const PetsTable = ({pets}) => {
             headerName: 'Pet',
             width: 150,
             editable: true,
-            renderCell: (params) => <Avatar src={params.value} />
+            renderCell: (params) => <Avatar src={params.value} onClick={() => handlePetClick(params.row.petID)} />
         },
         {
             field: 'adopted',
