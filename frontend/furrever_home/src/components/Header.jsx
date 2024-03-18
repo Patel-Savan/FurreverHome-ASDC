@@ -6,6 +6,8 @@ import verifyAuthentication from '../hooks/verifyAuthentication';
 import { deleteLocalStorage, readLocalStorage } from '../utils/helper';
 import { useNavigate } from 'react-router-dom';
 import Modal from './Modal/Modal';
+import InitialsAvatar from 'react-initials-avatar';
+import 'react-initials-avatar/lib/ReactInitialsAvatar.css';
 import {
   Avatar, Menu,
   MenuHandler,
@@ -37,8 +39,8 @@ const Header = () => {
 
 
         {/* Todo: Add Link Component*/}
-        
-        
+
+
 
         {
           (userToken.userRole === 'SHELTER')
@@ -108,49 +110,71 @@ const Header = () => {
 
 
 
-                <Menu>
-                  <MenuHandler>
-                    <button><Avatar src="https://docs.material-tailwind.com/img/face-2.jpg" alt="avatar" size="md" /></button>
-                  </MenuHandler>
-                  <MenuList>
-                    
-                    {
-                      userToken.userRole==="SHELTER" 
-                      ?
-                      (<>
-                        <MenuItem>
-                    <Link to="/shelter/profile">
-                    Profile
-                    </Link>   
-                    </MenuItem>
-                      <MenuItem>
-                        <Link to="/shelter/home">
-                        Dashboard
-                        </Link>   
-                        </MenuItem> 
-                        </>  )
-                      :
-                      (
-                      <><MenuItem>
-                      <Link to="/adopter/profile">
-                      Profile
-                      </Link>   
-                      </MenuItem>
-                      <MenuItem>
-                        <Link to="/adopter/home">
-                        Dashboard
-                        </Link>   
-                        </MenuItem> </>  )
-                    }  
-                               
-                    <button type="submit"
-                      className="btn btn-outline align-middle justify-center"
-                      onClick={handleLogout}
-                    >
-                      Sign Out
-                    </button>
-                  </MenuList>
-                </Menu>
+
+
+                {
+                  userToken.userRole === "SHELTER"
+                    ?
+                    (
+                      <Menu>
+                        <MenuHandler>
+                          <button><Avatar src={user.imageBase64} alt="avatar" size="md" /></button>
+                        </MenuHandler>
+                        <MenuList>
+                          <MenuItem>
+                            <Link to="/shelter/profile">
+                              Profile
+                            </Link>
+                          </MenuItem>
+                          <MenuItem>
+                            <Link to="/shelter/home">
+                              Dashboard
+                            </Link>
+                          </MenuItem>
+                          <button type="submit"
+                            className="btn btn-outline align-middle justify-center"
+                            onClick={handleLogout}
+                          >
+                            Sign Out
+                          </button>
+                        </MenuList>
+                      </Menu>
+                    )
+                    :
+                    (
+                      <Menu>
+                        <MenuHandler>
+                          <button>
+                          <InitialsAvatar name={`${user.firstname} ${user.lastname}`} />
+                          </button>
+                        </MenuHandler>
+                        <MenuList>
+                          <MenuItem>
+                            <Link to="/shelter/profile">
+                              Profile
+                            </Link>
+                            </MenuItem>
+                            <MenuItem>
+                              <Link to="/adopter/profile">
+                                Profile
+                              </Link>
+                            </MenuItem>
+                            <MenuItem>
+                              <Link to="/adopter/home">
+                                Dashboard
+                              </Link>
+                            </MenuItem>
+                            <button type="submit"
+                              className="btn btn-outline align-middle justify-center"
+                              onClick={handleLogout}
+                            >
+                              Sign Out
+                            </button>
+                        </MenuList>
+                      </Menu>)
+                }
+
+
               </div>
 
             ) :

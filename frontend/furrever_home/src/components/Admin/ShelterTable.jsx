@@ -1,34 +1,15 @@
-import React,{useState,useEffect} from 'react'
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import axios from "axios"
-import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
 import {
     Card,
-    CardHeader,
-    Input,
-    Typography,
-    Button,
-    CardBody,
-    Chip,
-    CardFooter,
-    Tabs,
-    TabsHeader,
-    Tab,
-    Avatar,
-    IconButton,
-    Tooltip,
+    CardHeader, Chip, Input,
+    Typography
 } from "@material-tailwind/react";
 import { DataGrid } from '@mui/x-data-grid';
-import { deleteLocalStorage, readLocalStorage, saveLocalStorage } from '../../utils/helper'
-import { toast } from 'react-toastify';
+import axios from "axios";
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-
-
-
-
-
-
+import { toast } from 'react-toastify';
+import { readLocalStorage, saveLocalStorage } from '../../utils/helper';
 
 const ShelterTable = () => {
 

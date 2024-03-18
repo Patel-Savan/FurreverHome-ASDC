@@ -82,7 +82,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/api/chats/from/${shelterId}/to/${userid}`,{
+    axios.get(`http://localhost:8080/api/chats/from/${userid}/to/${shelterId}`,{
         headers: {
           Authorization: `Bearer ${token}`,
         }
