@@ -96,5 +96,5 @@ public class PetAdopterController {
     @GetMapping("/{shelterID}/pets")
     public ResponseEntity<List<PetDto>> getPetInShelter(@PathVariable Long shelterID){
         return ResponseEntity.ok(shelterService.getPetsForShelter(shelterID));
-    }
+    
 }
