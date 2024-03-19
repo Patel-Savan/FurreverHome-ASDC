@@ -7,6 +7,7 @@ const ShelterDetail = ({
 }) => {
 
   const role = "petadopter";
+  console.log(shelter)
   return (
       <div className="bg-white relative group overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 ease-in-out hover:-translate-y-2">
         

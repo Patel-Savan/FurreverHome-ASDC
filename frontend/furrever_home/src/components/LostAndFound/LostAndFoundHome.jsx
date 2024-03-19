@@ -46,7 +46,7 @@ const LostAndFoundHome = ()=>{
             <TabsBody>
                 
                     <TabPanel key="1" value="1">
-                    <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 p-3 sm:p-8">
+                    <div className="grid gap-10 grid-cols-1 m-5 md:grid-cols-4 p-3 sm:p-8">
                     {
                         pets.map((pet) => {
                             return (              

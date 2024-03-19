@@ -15,6 +15,8 @@ import {
   Window,
 } from "stream-chat-react";
 
+import { Spinner } from "@material-tailwind/react";
+
 import "stream-chat-react/dist/css/index.css";
 // http://localhost:8080/api/chats/from/3/to/2
 
@@ -109,7 +111,7 @@ const App = () => {
   }, []);
 
   if (!chatClient || !activeChannel) {
-    return <LoadingIndicator />;
+    return <Spinner color="green" className="flex justify-center align-middle" />;
   }
 
   return (

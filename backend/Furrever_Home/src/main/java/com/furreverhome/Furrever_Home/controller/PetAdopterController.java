@@ -70,6 +70,8 @@ public class PetAdopterController {
         return ResponseEntity.ok(lostPetService.getLostPetListByUser(userId));
     }
 
+
+
     @PostMapping("/lostpet/update")
     public ResponseEntity<?> updateLostPetDetails(@RequestBody LostPetDto lostPetDto) {
         return ResponseEntity.ok(lostPetService.updateLostPetDetails(lostPetDto));
