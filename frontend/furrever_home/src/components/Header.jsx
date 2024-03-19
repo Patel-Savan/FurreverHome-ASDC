@@ -21,6 +21,7 @@ const Header = () => {
   const user = JSON.parse(readLocalStorage("User"))
   console.log(userToken)
   const navigate = useNavigate();
+  
 
   const handleLogout = () => {
     deleteLocalStorage("token");
@@ -46,20 +47,6 @@ const Header = () => {
           (userToken.userRole === 'SHELTER')
             ?
             (
-              //   <nav className='text-xl flex gap-x-4 lg:gap-x-12'>
-              //   <Link to='/shelter/home' >
-              //     Pets
-              //   </Link>
-              //   {/* <Link to='/'>
-              //     Pets
-              //   </Link> */}
-              //   {/* <Link to='/shelter/register-pet'>
-              //     Register Pet
-              //   </Link> */}
-              //   <Link to='/'>
-              //     Manage
-              //   </Link>
-              // </nav>
               (
                 <Link to='/shelter/home'>
                   <img className=' h-12' src={ImgLogo} />
@@ -149,11 +136,6 @@ const Header = () => {
                           </button>
                         </MenuHandler>
                         <MenuList>
-                          <MenuItem>
-                            <Link to="/shelter/profile">
-                              Profile
-                            </Link>
-                            </MenuItem>
                             <MenuItem>
                               <Link to="/adopter/profile">
                                 Profile

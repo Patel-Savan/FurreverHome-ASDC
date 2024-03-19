@@ -1,19 +1,21 @@
-import React, { useState } from 'react'
-import { useParams } from 'react-router-dom';
+import React, { useState,useEffect } from 'react'
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import PetCard from '../../components/Card/ShelterCard'
 import { deleteLocalStorage, readLocalStorage, saveLocalStorage } from '../../utils/helper'
-import pets from '../../dummydata/pets';
 import { Link } from 'react-router-dom';
 
 
 const Shelter = () => {
 
-    const { id } = useParams();
-    console.log(id)
-    // const [data,setData] = useState(pets)
-    const baseurl = `${import.meta.env.VITE_BACKEND_BASE_URL}`;
+    const { id } = useParams()
+    const {state} = useLocation()
+    console.log(state)
+    const [pets,setPets] = useState({})
+    const [loading,setLoading] = useState(false)
+    const baseurl = `${import.meta.env.VITE_BACKEND_BASE_URL}`
     const token = readLocalStorage("token")
+    const navigate = useNavigate()
 
     const handlePetClick = (petId) => {
         navigate("/adopter/pet",{
@@ -22,29 +24,35 @@ const Shelter = () => {
           }
         })
       }
+
+      useEffect(() => {
+        axios.get(`${baseurl}/petadopter/${state.userId}/pets`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
+            .then(response => {
+                setPets(response.data)
+                console.log(response.data);
+                setLoading(true)
+                console.log(pets)
+                console.log("HIIII")
+                console.log(pets)
+    
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        
+      }, []);
     
 
 
-    // axios.get(`${baseurl}/shelter/${sid}/pets`, {
-    //     headers: {
-    //         Authorization: `Bearer ${token}`,
-    //     }
-    // })
-    //     .then(response => {
-    //         setData(response.data)
-    //         console.log(data);
-    //         setLoading(true)
-    //         console.log(pets)
-
-    //     })
-    //     .catch(error => {
-    //         console.log(error);
-    //     })
-
+    
 
     return (
 
-        <div className="bg-cream">
+        <div className="">
             <div className="container mx-auto py-8">
                 <div className="grid grid-cols-4 sm:grid-cols-12 gap-6 px-4">
                     <div className="col-span-4 sm:col-span-3">
@@ -77,7 +85,10 @@ const Shelter = () => {
                         <div className="bg-white shadow rounded-lg p-6">
                             <h2 className="text-xl font-bold mb-4">Available Pets</h2>
                             <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 p-3 sm:p-8">
+
                                 {
+                                    loading 
+                                    ?
                                     pets.map((pet) => {
                                         return (
                                             <PetCard
@@ -91,9 +102,12 @@ const Shelter = () => {
                                                 shelterCity={pet.shelterCity}
                                                 shelterContact={pet.shelterContact}
                                                 petId={pet.petId}
-                                                onClick={handlePetClick}
+                                                handleClick={handlePetClick}
                                             />)
+                                          
                                     })
+                                    :
+                                        <h1>Loading</h1>  
                                 }
                             </div>
 
