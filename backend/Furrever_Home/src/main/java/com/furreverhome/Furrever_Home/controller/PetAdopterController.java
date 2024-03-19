@@ -70,8 +70,6 @@ public class PetAdopterController {
         return ResponseEntity.ok(lostPetService.getLostPetListByUser(userId));
     }
 
-
-
     @PostMapping("/lostpet/update")
     public ResponseEntity<?> updateLostPetDetails(@RequestBody LostPetDto lostPetDto) {
         return ResponseEntity.ok(lostPetService.updateLostPetDetails(lostPetDto));
@@ -94,7 +92,13 @@ public class PetAdopterController {
     }
 
     @GetMapping("/{shelterID}/pets")
-    public ResponseEntity<List<PetDto>> getPetInShelter(@PathVariable Long shelterID){
+    public ResponseEntity<List<PetDto>> getPetInShelter(@PathVariable Long shelterID) {
         return ResponseEntity.ok(shelterService.getPetsForShelter(shelterID));
-    
+    }
+
+    @GetMapping("/lostpets")
+    public ResponseEntity<List<LostPetDto>> getAllLostpets() {
+        List<LostPetDto> lostPetDtoList = lostPetService.getAllLostPets();
+        return ResponseEntity.ok(lostPetDtoList);
+    }
 }
