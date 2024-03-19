@@ -209,7 +209,7 @@ const PetAdopterHome = () => {
   const handlePetClick = (petId) => {
     navigate("/adopter/pet",{
       state:{
-        id:petId
+        id:petId,
       }
     })
   }
@@ -312,7 +312,7 @@ const PetAdopterHome = () => {
               return (
 
                 <PetCard
-                  key={pet.petId}
+                  key={pet.petID}
                   className="bg-[#f3faff]"
                   type={pet.type}
                   breed={pet.breed}
@@ -321,7 +321,7 @@ const PetAdopterHome = () => {
                   shelterName={pet.shelterName}
                   shelterCity={pet.shelterCity}
                   shelterContact={pet.shelterContact}
-                  petId={pet.petId}
+                  petId={pet.petID}
                   handleClick={handlePetClick}
                 />)
             })

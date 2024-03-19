@@ -17,6 +17,7 @@ const PetDetail = ({
   const userId = readLocalStorage("id")
   const token = readLocalStorage("token")
   const [reqExist,setReqExist] = useState(false)
+  console.log("Hello",pet)
 
   const handleAdoptionRequest = () => {
     setReqExist(true)
@@ -27,7 +28,7 @@ const PetDetail = ({
             <img
               alt="Rusty"
               className="w-[50%] cursor-pointer transition duration-200 ease-in-out transform hover:scale-110 h-auto mx-auto"
-              src={pet.image}
+              src={pet.petImage}
             />
             <div className="p-4 dark:bg-gray-950">
 

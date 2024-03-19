@@ -92,7 +92,7 @@ const Shelter = () => {
                                     pets.map((pet) => {
                                         return (
                                             <PetCard
-                                                key={pet.petId}
+                                                key={pet.petID}
                                                 className="bg-[#f3faff]"
                                                 type={pet.type}
                                                 breed={pet.breed}
@@ -102,7 +102,11 @@ const Shelter = () => {
                                                 shelterCity={pet.shelterCity}
                                                 shelterContact={pet.shelterContact}
                                                 petId={pet.petId}
-                                                handleClick={handlePetClick}
+                                                handleClick={()=>navigate("/adopter/pet",{
+                                                    state:{
+                                                      id:pet.petID
+                                                    }
+                                                  })}
                                             />)
                                           
                                     })

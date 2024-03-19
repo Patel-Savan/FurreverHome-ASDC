@@ -35,7 +35,7 @@ const PetCard = ( {
                 Want to adopt me ? contact at {shelterContact}
             </p>
             {/* <Link to="/adopter/pet/1"> */}
-            <button className='btn btn-outline' onClick={handleClick(petId)} >
+            <button className='btn btn-outline' onClick={()=>handleClick(petId)} >
                 Details
             </button>
             {/* </Link> */}
