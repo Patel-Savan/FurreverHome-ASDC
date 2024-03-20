@@ -11,9 +11,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest
+
+@SpringBootTest()
 public class JwtServiceImplTest {
 
     @Autowired
