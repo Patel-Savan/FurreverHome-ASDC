@@ -16,7 +16,6 @@ import com.furreverhome.Furrever_Home.utils.jgravatar.GravatarRating;
 import io.getstream.chat.java.exceptions.StreamException;
 import io.getstream.chat.java.models.Channel;
 import lombok.RequiredArgsConstructor;
-import org.antlr.v4.runtime.misc.Pair;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -45,7 +44,7 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public ChatCredentialsResponse createChatSession(long fromUserId, long toUserId) throws StreamException {
         var calendar = new GregorianCalendar();
-        calendar.add(Calendar.MINUTE, 60);
+        calendar.add(Calendar.HOUR, 1);
 
         // Validate users
         var fromUser = validateUserExists(fromUserId);
@@ -58,13 +57,34 @@ public class ChatServiceImpl implements ChatService {
         String channelId = generateChannelId(entities.petAdopter().getUser().getEmail(), entities.shelter().getUser().getEmail());
 
         // Upsert both users
-        var users = upsertUsers(entities.petAdopter(), entities.shelter());
+        var petStreamUser = upsertStreamUser(entities.petAdopter());
+        var shelterStreamUser = upsertStreamUser(entities.shelter());
 
         // Create a channel with both users
-        createChannel(users.a, users.b, entities, channelId);
+        createChannel(petStreamUser, shelterStreamUser, entities, channelId);
 
         // Generate token for the 'from' user to connect to the client-side
         return generateTokenForUser(fromUser, entities.petAdopter(), entities.shelter(), calendar, channelId);
+    }
+
+    @Override
+    public ChatCredentialsResponse getChatHistory(long userId) {
+        var calendar = new GregorianCalendar();
+        calendar.add(Calendar.HOUR, 1);
+
+        var user = validateUserExists(userId);
+        var entities = determineRolesAndGetEntities(user);
+
+        // Upsert both users
+        if (entities.petAdopter() != null) {
+            upsertStreamUser(entities.petAdopter());
+        }
+
+        if (entities.shelter() != null) {
+            upsertStreamUser(entities.shelter());
+        }
+
+        return generateTokenForUser(user, entities.petAdopter(), entities.shelter(), calendar, null);
     }
 
     @Override
@@ -97,6 +117,7 @@ public class ChatServiceImpl implements ChatService {
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 
+
     private UserRoleEntities determineRolesAndGetEntities(User fromUser, User toUser) {
         Shelter shelter;
         PetAdopter petAdopter;
@@ -112,26 +133,41 @@ public class ChatServiceImpl implements ChatService {
         return new UserRoleEntities(shelter, petAdopter);
     }
 
-    private Pair<io.getstream.chat.java.models.User.UserRequestObject,
-            io.getstream.chat.java.models.User.UserRequestObject> upsertUsers(
-            PetAdopter petAdopter,
-            Shelter shelter) throws StreamException {
-        var fromStreamUser = io.getstream.chat.java.models.User.UserRequestObject.builder()
-                .id(getPetChatUserId(petAdopter.getId()))
-                .name(petAdopter.getFirstname())
-                .additionalField("image", getAvatarUrl(petAdopter.getUser().getEmail()))
-                .build();
-        var toStreamUser = io.getstream.chat.java.models.User.UserRequestObject.builder()
-                .id(getShelterChatUserId(shelter.getId()))
-                .name(shelter.getName())
-                .additionalField("image", getAvatarUrl(shelter.getUser().getEmail()))
-                .build();
+    private UserRoleEntities determineRolesAndGetEntities(User user) {
+        Shelter shelter;
+        PetAdopter petAdopter;
 
+        if (user.getRole() == Role.PETADOPTER) {
+            petAdopter = petAdopterRepository.findByUserId(user.getId()).get();
+            shelter = null;
+        } else {
+            petAdopter = null;
+            shelter = shelterRepository.findByUserId(user.getId()).get();
+        }
+
+        return new UserRoleEntities(shelter, petAdopter);
+    }
+
+    private io.getstream.chat.java.models.User.UserRequestObject upsertStreamUser(PetAdopter user) {
+        var streamUser = io.getstream.chat.java.models.User.UserRequestObject.builder()
+                .id(getPetChatUserId(user.getId()))
+                .name(user.getFirstname())
+                .additionalField("image", getAvatarUrl(user.getUser().getEmail()))
+                .build();
         var usersUpsertRequest = io.getstream.chat.java.models.User.upsert();
-        usersUpsertRequest.user(fromStreamUser);
-        usersUpsertRequest.user(toStreamUser);
-        usersUpsertRequest.request();
-        return new Pair<>(fromStreamUser, toStreamUser);
+        usersUpsertRequest.user(streamUser);
+        return streamUser;
+    }
+
+    private io.getstream.chat.java.models.User.UserRequestObject upsertStreamUser(Shelter user) {
+        var streamUser = io.getstream.chat.java.models.User.UserRequestObject.builder()
+                .id(getPetChatUserId(user.getId()))
+                .name(user.getName())
+                .additionalField("image", getAvatarUrl(user.getUser().getEmail()))
+                .build();
+        var usersUpsertRequest = io.getstream.chat.java.models.User.upsert();
+        usersUpsertRequest.user(streamUser);
+        return streamUser;
     }
 
     private void createChannel(io.getstream.chat.java.models.User.UserRequestObject fromStreamUser, io.getstream.chat.java.models.User.UserRequestObject toStreamUser, UserRoleEntities userRoleEntities, String channelId) throws StreamException {

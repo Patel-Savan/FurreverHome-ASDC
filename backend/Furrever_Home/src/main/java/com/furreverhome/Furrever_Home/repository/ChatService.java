@@ -18,6 +18,14 @@ public interface ChatService {
     ChatCredentialsResponse createChatSession(long fromUserId, long toUserId) throws StreamException;
 
     /**
+     * Create chat session history for user.
+     *
+     * @param userId   the user id
+     * @return the chat credentials response
+     */
+    ChatCredentialsResponse getChatHistory(long userId) ;
+
+    /**
      * Gets avatar url.
      *
      * @param email the email
