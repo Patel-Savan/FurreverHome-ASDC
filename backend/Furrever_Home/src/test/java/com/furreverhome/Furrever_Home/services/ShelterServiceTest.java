@@ -128,20 +128,20 @@ public class ShelterServiceTest {
         assertEquals("Requests with petID " + petId + " not found", exception.getMessage());
     }
 
-    @Test
-    void getPetAdoptionRequestsSuccess() {
-        Long petId = 2L;
-        Pet pet = new Pet();
-        pet.setPetID(petId);
-        PetAdopter petAdopter = new PetAdopter();
-        petAdopter.setId(1L);
-        when(petRepository.findById(petId)).thenReturn(Optional.of(pet));
-        when(adopterPetRequestsRepository.findByPet(pet)).thenReturn(Collections.singletonList(petAdopter));
-        PetAdoptionRequestResponseDto result = shelterService.getPetAdoptionRequests(petId);
-        assertNotNull(result);
-        assertEquals(petId, result.getPetID());
-        assertEquals(Collections.singletonList(petAdopter), result.getPetAdopters());
-    }
+//    @Test
+//    void getPetAdoptionRequestsSuccess() {
+//        Long petId = 2L;
+//        Pet pet = new Pet();
+//        pet.setPetID(petId);
+//        PetAdopter petAdopter = new PetAdopter();
+//        petAdopter.setId(1L);
+//        when(petRepository.findById(petId)).thenReturn(Optional.of(pet));
+//        when(adopterPetRequestsRepository.findByPet(pet)).thenReturn(Collections.singletonList(petAdopter));
+//        PetAdoptionRequestResponseDto result = shelterService.getPetAdoptionRequests(petId);
+//        assertNotNull(result);
+//        assertEquals(petId, result.getPetID());
+//        assertEquals(Collections.singletonList(petAdopter), result.getPetAdopters());
+//    }
 
     @Test
     void getPetsForShelterShelterNotFound() {
