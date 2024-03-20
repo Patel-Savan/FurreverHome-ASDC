@@ -1,10 +1,15 @@
 package com.furreverhome.Furrever_Home.services.authenticationServices;
 
+import com.furreverhome.Furrever_Home.dto.GenericResponse;
 import com.furreverhome.Furrever_Home.dto.RefreshTokenRequest;
+import com.furreverhome.Furrever_Home.dto.user.PasswordDto;
+import com.furreverhome.Furrever_Home.entities.PasswordResetToken;
 import com.furreverhome.Furrever_Home.entities.PetAdopter;
 import com.furreverhome.Furrever_Home.entities.Shelter;
+import com.furreverhome.Furrever_Home.repository.PasswordTokenRepository;
 import com.furreverhome.Furrever_Home.repository.PetAdopterRepository;
 import com.furreverhome.Furrever_Home.repository.ShelterRepository;
+import com.furreverhome.Furrever_Home.services.emailservice.EmailService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,6 +55,12 @@ class AuthenticationServiceImplTest {
 
     @Mock
     private PasswordEncoder passwordEncoder;
+
+    @Mock
+    private PasswordTokenRepository passwordTokenRepository;
+
+    @Mock
+    private EmailService emailService;
 
     @InjectMocks
     private AuthenticationServiceImpl authenticationService;
@@ -206,4 +217,124 @@ class AuthenticationServiceImplTest {
             authenticationService.refreshToken(request);
         });
     }
+
+    @Test
+    void testVerifyByEmailUserExistsUserVerified() {
+        // Arrange
+        String email = "user@example.com";
+        User user = new User();
+        user.setEmail(email);
+        user.setVerified(false);
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+
+        // Act
+        boolean result = authenticationService.verifyByEmail(email);
+
+        // Assert
+        assertTrue(result);
+        assertTrue(user.getVerified());
+        verify(userRepository).save(user);
+    }
+
+    @Test
+    void testVerifyByEmailUserDoesNotExistReturnFalse() {
+        // Arrange
+        String email = "nonexistent@example.com";
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
+
+        // Act
+        boolean result = authenticationService.verifyByEmail(email);
+
+        // Assert
+        assertFalse(result);
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    void testResetByEmailSuccessfulReset() throws Exception {
+        // Arrange
+        String email = "user@example.com";
+        String token = "randomToken";
+        String contextPath = "http://example.com";
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(mockUser));
+        when(jwtService.generateToken(mockUser)).thenReturn(token);
+
+        // Act
+        GenericResponse response = authenticationService.resetByEmail(contextPath, email);
+
+        // Assert
+        assertNotNull(response);
+        assertTrue(response.getMessage().contains("A password reset email has been sent"));
+        verify(jwtService).generateToken(mockUser);
+        verify(passwordTokenRepository).save(any(PasswordResetToken.class));
+        verify(emailService).sendEmail(eq(email), eq("Password Reset"), anyString(), eq(true));
+    }
+
+    @Test
+    void testResetByEmailUserNotFound() {
+        // Arrange
+        String email = "nonexistent@example.com";
+        String contextPath = "http://example.com";
+        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThrows(RuntimeException.class, () -> {
+            authenticationService.resetByEmail(contextPath, email);
+        }, "Expected exception for user not found");
+    }
+
+
+    @Test
+    void testResetPasswordWithInvalidTokenReturnsErrorMessage() {
+        // Arrange
+        String token = "invalidToken";
+        PasswordDto passwordDto = new PasswordDto();
+        passwordDto.setToken(token);
+        passwordDto.setNewPassword("newPassword");
+        when(authenticationService.validatePasswordResetToken(token)).thenReturn(null);
+
+        // Act
+        GenericResponse response = authenticationService.resetPassword(passwordDto);
+
+        // Assert
+        assertEquals(token,response.getMessage());
+    }
+
+//    @Test
+//    void resetPassword_WithValidTokenAndUserPresent_PasswordResetSuccessfully() {
+//        // Arrange
+//        String token = "validToken";
+//        PasswordDto passwordDto = new PasswordDto();
+//        passwordDto.setNewPassword("newPassword");
+//
+//        when(authenticationService.validatePasswordResetToken(token)).thenReturn(null);
+//        when(authenticationService.getUserByPasswordResetToken(token)).thenReturn(Optional.of(mockUser));
+//        // Simulating finding a user
+//
+//        // Act
+//        GenericResponse response = authenticationService.resetPassword(passwordDto);
+//
+//        // Assert
+//        assertEquals("Password reset successfully", response.getMessage());
+//    }
+
+//    @Test
+//    void resetPassword_WithValidTokenButNoUser_ReturnsErrorMessage() {
+//        // Arrange
+//        String token = "validTokenButNoUser";
+//        PasswordDto passwordDto = new PasswordDto();
+//        passwordDto.setToken("validTokenButNoUser");
+//        when(authenticationService.validatePasswordResetToken(passwordDto.getToken())).thenReturn(null);
+//        when(authenticationService.getUserByPasswordResetToken(passwordDto.getToken())).thenReturn();
+//        PasswordResetToken validToken = new PasswordResetToken(token, new User());
+//        when(passwordTokenRepository.findByToken(token)).thenReturn(validToken);
+//        // Act
+//        GenericResponse response = authenticationService.resetPassword(passwordDto);
+//
+//        // Assert
+//        assertNotNull(response.getMessage());
+//        assertEquals("This username is invalid, or does not exist", response.getMessage());
+//    }
 }
