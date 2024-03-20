@@ -41,15 +41,15 @@ public class PetAdopterServiceTest {
     @Test
     void adoptPetRequestSuccess() {
         PetAdoptionRequestDto petAdoptionRequestDto = new PetAdoptionRequestDto();
-        petAdoptionRequestDto.setPetAdopterID(1L);
+        petAdoptionRequestDto.setPetAdopterID(2L);
         petAdoptionRequestDto.setPetID(2L);
         PetAdopter petAdopter = new PetAdopter();
         Pet pet = new Pet();
         when(petAdopterRepository.findById(petAdoptionRequestDto.getPetAdopterID())).thenReturn(Optional.of(petAdopter));
         when(petRepository.findById(petAdoptionRequestDto.getPetID())).thenReturn(Optional.of(pet));
         GenericResponse response = petAdopterService.adoptPetRequest(petAdoptionRequestDto);
-        verify(petAdopterRepository, times(1)).findById(petAdoptionRequestDto.getPetAdopterID());
-        verify(petRepository, times(1)).findById(petAdoptionRequestDto.getPetID());
+        verify(petAdopterRepository, times(2)).findById(petAdoptionRequestDto.getPetAdopterID());
+        verify(petRepository, times(2)).findById(petAdoptionRequestDto.getPetID());
         verify(adopterPetRequestsRepository, times(1)).save(any());
         assertEquals("Adoption Request Successful.", response.getMessage());
     }
