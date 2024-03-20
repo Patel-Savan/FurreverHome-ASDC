@@ -62,7 +62,7 @@ public class Shelter {
         shelterResponseDto.setLicense(license);
         shelterResponseDto.setEmail(user.getEmail());
         shelterResponseDto.setUser(user);
-//        shelterResponseDto.setVerified(user.getVerified());
+        shelterResponseDto.setVerified(user.getVerified());
         shelterResponseDto.setAccepted(accepted);
         shelterResponseDto.setRejected(rejected);
         return shelterResponseDto;

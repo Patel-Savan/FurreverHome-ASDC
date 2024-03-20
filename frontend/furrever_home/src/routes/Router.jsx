@@ -9,7 +9,7 @@ import PetAdopterRegister from '../components/Register/PetAdopterRegister'
 import ShelterRegister from '../components/Register/ShelterRegister'
 import PetAdopterHome from "../pages/PetAdopterHome"
 import ShelterHome from "../pages/ShelterHome"
-
+import PetForShelter from '../components/Pet/PetForShelter'
 import PrivateRoutes from './PrivateRoutes'
 import PrivateRoutesShelter from './PrivateRoutesShelter'
 import PrivateRoutesAdopter from './PrivateRoutesAdopter'
@@ -53,6 +53,7 @@ const Router = () => {
                 <Route element={<PrivateRoutesShelter />}>
                     <Route path="/shelter/home" element={<Layout><ShelterHome /></Layout>} />
                     <Route path="/shelter/profile" element={<Layout><ShelterProfile/></Layout>}/>
+                    <Route path="/shelter/pet" element={<Layout><PetForShelter/></Layout>}/>
                 </Route>
 
                 <Route path="/chat/:shelterId" element={<Layout><Shelterchat /></Layout>}/>

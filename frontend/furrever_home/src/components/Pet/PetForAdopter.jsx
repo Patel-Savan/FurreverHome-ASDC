@@ -30,7 +30,6 @@ const PetForAdopter = () => {
     const [vaccine,setVaccine] = useState([])
     const token = readLocalStorage("token");
     
-    
     useEffect(() =>{
 
       axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/petadopter/pets/${petId}`,{
@@ -40,7 +39,7 @@ const PetForAdopter = () => {
       })
       .then((response) => {
         
-        console.log("petforadapter",response.data)
+        console.log(response.data)
         const DOB = response.data.birthdate.substring(0,10)
         setPet({
           type:response.data.type,

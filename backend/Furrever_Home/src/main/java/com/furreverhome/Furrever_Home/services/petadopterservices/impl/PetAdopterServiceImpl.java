@@ -72,9 +72,9 @@ public class PetAdopterServiceImpl implements PetAdopterService {
 
         Example<Shelter> shelterExample = Example.of(shelter, exampleMatcher);
         List<Shelter> shelterList = shelterRepository.findAll(shelterExample);
-        ShelterResponseDtoListDto shelterResponseDtoListDto = new ShelterResponseDtoListDto();
-        shelterResponseDtoListDto.setShelterResponseDtoList(shelterList.stream().map(Shelter::getShelterResponseDto).collect(Collectors.toList()));
-        return shelterResponseDtoListDto;
+       ShelterResponseDtoListDto shelterResponseDtoListDto = new ShelterResponseDtoListDto();
+       shelterResponseDtoListDto.setShelterResponseDtoList(shelterList.stream().map(Shelter::getShelterResponseDto).collect(Collectors.toList()));
+       return shelterResponseDtoListDto;
     }
 
     @Override

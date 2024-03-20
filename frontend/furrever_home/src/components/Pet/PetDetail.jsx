@@ -9,18 +9,55 @@ import axios from 'axios'
 
 const PetDetail = ({
   pet,
-  petId,
-  shelterId
+  petId
 }) => {
 
   const role = readLocalStorage("role")
-  const userId = readLocalStorage("id")
+  const userId = readLocalStorage("petadopterID")
   const token = readLocalStorage("token")
   const [reqExist,setReqExist] = useState(false)
-  console.log("Hello",pet)
+  const sid = readLocalStorage("shelterID")
+  console.log(role)
+
+  if(role === "PETADOPTER"){
+    useEffect(()=> {
+
+    axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/petadopter/pet/adopt/requestexists`,{
+      params:{
+        petID: petId,
+        petAdopterID:userId
+      },
+      headers : {
+        Authorization :`Bearer ${token}`
+      }
+    })
+    .then(response => {
+      setReqExist(true)
+    })
+    .catch(error => {
+      console.log(error)
+    })
+    },[])
+  }
 
   const handleAdoptionRequest = () => {
-    setReqExist(true)
+    axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/petadopter/pet/adopt`,{
+      petID : petId,
+      petAdopterID : userId
+    },{
+      headers : {
+        Authorization :`Bearer ${token}`
+      }
+    })
+    .then(response => {
+      setReqExist(true)
+      toast.success("Adoption request sent")
+    })
+    .catch(error => {
+      console.log(petId + " " + petAdopterID)
+      console.log(error)
+      toast.error("Cannot send request, Please Try again later")
+    })
   }
 
   return (
@@ -34,15 +71,22 @@ const PetDetail = ({
 
             <h2 className="text-2xl font-bold">Type : {pet.type}</h2>
             <div className="grid gap-2 text-lg font-normal py-2">
-              <p className="flex items-center gap-1">Birth date : {pet.birthDate}</p>
+              <p className="flex items-center gap-1">Birth date : {pet.birthdate}</p>
               <p className="flex items-center gap-1">Gender : {pet.gender}</p>
               <p className="flex items-center gap-1">Breed : {pet.breed}</p>
-              <p className="flex items-center gap-1">Color : {pet.color}</p>          
+              <p className="flex items-center gap-1">Color : {pet.colour}</p>          
             </div>
             <div>
-            { role == "PETADOPTER" &&
-                reqExist ? <p className="flex items-center fonr-bold text-green-500 gap-1">You have sent request for this pet </p> : <button type="button" onClick={handleAdoptionRequest} className="btn btn-orange mx-auto lg:h-10 sm:h-15">Adopt</button>/* : <UpdatePetDetails petId={petId} sid={shelterId} />*/
+
+            { role === "PETADOPTER" ?
+                reqExist ? <p className="flex items-center fonr-bold text-green-500 gap-1">You have sent request for this pet </p> : <button type="button" onClick={handleAdoptionRequest} className="btn btn-orange mx-auto lg:h-10 sm:h-15">Adopt</button> 
+                : 
+                <div className="flex justify-center"> 
+                    <span className="text-lg font-normal py-2 mr-3">Want to edit Pet details ? </span>
+                    <UpdatePetDetails pets={pet} sid={sid} />
+                </div>
             }
+
             </div>
               
             </div>
