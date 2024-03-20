@@ -1,6 +1,5 @@
 package com.furreverhome.Furrever_Home.services;
 
-import com.furreverhome.Furrever_Home.dto.chat.ChatCredentialsResponse;
 import com.furreverhome.Furrever_Home.entities.PetAdopter;
 import com.furreverhome.Furrever_Home.entities.Shelter;
 import com.furreverhome.Furrever_Home.entities.User;
@@ -9,26 +8,17 @@ import com.furreverhome.Furrever_Home.repository.PetAdopterRepository;
 import com.furreverhome.Furrever_Home.repository.ShelterRepository;
 import com.furreverhome.Furrever_Home.repository.UserRepository;
 import com.furreverhome.Furrever_Home.services.chat.ChatServiceImpl;
-import io.getstream.chat.java.exceptions.StreamException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
