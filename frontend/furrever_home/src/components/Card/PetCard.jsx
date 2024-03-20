@@ -1,15 +1,15 @@
 import React from 'react'
-
+import { Link } from 'react-router-dom'
 const PetCard = ( {
     className,
     type,
     breed,
-    age,
     thumbnailSrc,
     shelterName,
     shelterCity,
     shelterContact,
-    petId
+    petId,
+    handleClick
 }) => {
 
     const thumbnailAlt = "Alternate Image"
@@ -29,11 +29,14 @@ const PetCard = ( {
                 {breed}
             </h5>
             <p className="font-normal text-gray-500 cursor-pointer text-lg duration-300 transition hover:text-[#FA5252] mt-2">
-                {shelterName} 
+                {shelterName} , {shelterCity}
             </p>
             <p className="font-normal text-gray-500 cursor-pointer text-lg duration-300 transition hover:text-[#FA5252] mt-2">
                 Want to adopt me ? contact at {shelterContact}
             </p>
+            <button className='btn btn-outline' onClick={() => handleClick(petId)} >
+                Details
+            </button>
     </div>
   )
 }

@@ -1,16 +1,21 @@
 package com.furreverhome.Furrever_Home.services.shelterService;
 
 import com.furreverhome.Furrever_Home.dto.GenericResponse;
-import com.furreverhome.Furrever_Home.dto.PetDto;
+import com.furreverhome.Furrever_Home.dto.Pet.PetAdoptionRequestDto;
+import com.furreverhome.Furrever_Home.dto.Pet.PetAdoptionRequestResponseDto;
+import com.furreverhome.Furrever_Home.dto.Pet.PetDto;
 import com.furreverhome.Furrever_Home.dto.shelter.RegisterPetRequest;
 import com.furreverhome.Furrever_Home.entities.Pet;
+import com.furreverhome.Furrever_Home.entities.PetAdopter;
 import com.furreverhome.Furrever_Home.entities.Shelter;
+import com.furreverhome.Furrever_Home.repository.AdopterPetRequestsRepository;
 import com.furreverhome.Furrever_Home.repository.PetRepository;
 import com.furreverhome.Furrever_Home.repository.ShelterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -25,6 +30,9 @@ public class ShelterServiceImpl implements ShelterService{
 
     @Autowired
     ShelterRepository shelterRepository;
+
+    @Autowired
+    AdopterPetRequestsRepository adopterPetRequestsRepository;
 
     public PetDto registerPet(RegisterPetRequest registerPetRequest){
         Pet pet = new Pet();
@@ -68,6 +76,9 @@ public class ShelterServiceImpl implements ShelterService{
             if (updatePetRequest.getPetImage()!=null){
                 pet.setPetImage(updatePetRequest.getPetImage());
             }
+            if (updatePetRequest.getPetMedicalHistory()!=null){
+                pet.setPetMedicalHistory(updatePetRequest.getPetMedicalHistory());
+            }
             petRepository.save(pet);
 
             return mapPetToDto(pet);
@@ -107,6 +118,7 @@ public class ShelterServiceImpl implements ShelterService{
         petDto.setGender(pet.getGender());
         petDto.setBirthdate(pet.getBirthdate());
         petDto.setPetImage(pet.getPetImage());
+        petDto.setPetMedicalHistory(pet.getPetMedicalHistory());
         petDto.setShelter(pet.getShelter());
         petDto.setAdopted(pet.isAdopted());
         return petDto;
@@ -128,4 +140,21 @@ public class ShelterServiceImpl implements ShelterService{
         return false;
     }
 
+    public PetAdoptionRequestResponseDto getPetAdoptionRequests(Long petID){
+        Optional<Pet> optionalPet = petRepository.findById(petID);
+        if (optionalPet.isPresent()){
+            Pet pet = optionalPet.get();
+            List<PetAdopter> petAdopters = adopterPetRequestsRepository.findByPet(pet);
+            PetAdoptionRequestResponseDto petAdoptionRequestResponseDto = new PetAdoptionRequestResponseDto();
+            petAdoptionRequestResponseDto.setPetID(petID);
+            List<Long> petAdopterIDList = new ArrayList<>();
+            for (PetAdopter petAdopter : petAdopters) {
+                petAdopterIDList.add(petAdopter.getId());
+            }
+            petAdoptionRequestResponseDto.setPetAdopters(petAdopterIDList);
+            return petAdoptionRequestResponseDto;
+        }else {
+            throw new RuntimeException("Requests with petID " + petID + " not found");
+        }
+    }
 }

@@ -54,13 +54,13 @@ public class ShelterAuthenticationService {
         shelter.setRejected(Boolean.FALSE);
         shelter.setUser(result);
 
-//        String url = appUrl + "/api/auth/verify/" + signupRequest.getEmail();
-//        String linkText = "Click here to verify your email.";
-//        String message = "<p>Please use the link below to verify your email.</p>"
-//                + "<a href=\"" + url + "\">" + linkText + "</a>";
-//        // TODO: Separate the logic for the code to send email from here.
-//        emailService.sendEmail(signupRequest.getEmail(), "Email Verification",
-//                message, true);
+        String url = appUrl + "/api/auth/verify/" + signupRequest.getEmail();
+        String linkText = "Click here to verify your email.";
+        String message = "<p>Please use the link below to verify your email.</p>"
+                + "<a href=\"" + url + "\">" + linkText + "</a>";
+        // TODO: Separate the logic for the code to send email from here.
+        emailService.sendEmail(signupRequest.getEmail(), "Email Verification",
+                message, true);
 
         shelterRepository.save(shelter);
 

@@ -38,11 +38,12 @@ const Login = () => {
         }
         else{
           console.log(response);
-          toast.success("Login Successfull");
-          saveLocalStorage("id",response.data.userId);
-          saveLocalStorage("token",response.data.token);
-          saveLocalStorage("role",response.data.userRole);
+          toast.success("Login Successfull")
+          saveLocalStorage("id",response.data.userId)
+          saveLocalStorage("token",response.data.token)
+          saveLocalStorage("role",response.data.userRole)
           saveLocalStorage("shelterID",response.data.shelterId)
+          saveLocalStorage("petadopterID",response.data.petAdopterId)
           console.log(response.data)
 
             if(response.data.userRole == "PETADOPTER")
