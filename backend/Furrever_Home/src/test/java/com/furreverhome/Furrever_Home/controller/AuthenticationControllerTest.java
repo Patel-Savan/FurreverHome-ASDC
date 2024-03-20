@@ -85,6 +85,48 @@ class AuthenticationControllerTest {
         assertEquals(frontendConfigurationProperties.getLoginUrl(), redirectView.getUrl());
     }
 
+    @Test
+    public void testShowChangePasswordPage_InvalidToken() {
+        // Given
+        String token = "invalidToken";
+        when(authenticationService.validatePasswordResetToken(token)).thenReturn("invalidToken");
+        when(frontendConfigurationProperties.getLoginUrl()).thenReturn("http://example.com/login");
+
+        // When
+        RedirectView redirectView = authenticationController.showChangePasswordPage(token);
+
+        // Then
+        assertEquals("http://example.com/login?message=Invalid+token.", redirectView.getUrl());
+    }
+
+    @Test
+    public void testShowChangePasswordPage_ExpiredToken() {
+        // Given
+        String token = "expiredToken";
+        when(authenticationService.validatePasswordResetToken(token)).thenReturn("expired");
+        when(frontendConfigurationProperties.getLoginUrl()).thenReturn("http://example.com/login");
+
+        // When
+        RedirectView redirectView = authenticationController.showChangePasswordPage(token);
+
+        // Then
+        assertEquals("http://example.com/login?message=Token+has+expired.", redirectView.getUrl());
+    }
+
+    @Test
+    public void testShowChangePasswordPage_ValidToken() {
+        // Given
+        String token = "validToken";
+        when(authenticationService.validatePasswordResetToken(token)).thenReturn(null);
+        when(frontendConfigurationProperties.getUpdatePasswordUrl()).thenReturn("http://example.com/updatePassword");
+
+        // When
+        RedirectView redirectView = authenticationController.showChangePasswordPage(token);
+
+        // Then
+        assertEquals("http://example.com/updatePassword?token=validToken", redirectView.getUrl());
+    }
+
 
 
 }
