@@ -1,5 +1,6 @@
 package com.furreverhome.Furrever_Home.services;
 
+import com.furreverhome.Furrever_Home.dto.chat.ChatCredentialsResponse;
 import com.furreverhome.Furrever_Home.entities.PetAdopter;
 import com.furreverhome.Furrever_Home.entities.Shelter;
 import com.furreverhome.Furrever_Home.entities.User;
@@ -7,6 +8,7 @@ import com.furreverhome.Furrever_Home.enums.Role;
 import com.furreverhome.Furrever_Home.repository.PetAdopterRepository;
 import com.furreverhome.Furrever_Home.repository.ShelterRepository;
 import com.furreverhome.Furrever_Home.repository.UserRepository;
+import com.furreverhome.Furrever_Home.services.chat.ChatProviderService;
 import com.furreverhome.Furrever_Home.services.chat.ChatServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,151 +16,186 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ChatServiceImplTest {
+    @Mock
+    private ChatProviderService chatProviderService;
 
     @Mock
     private UserRepository userRepository;
+
     @Mock
     private PetAdopterRepository petAdopterRepository;
+
     @Mock
     private ShelterRepository shelterRepository;
 
     @InjectMocks
     private ChatServiceImpl chatService;
 
+    private User petAdopterUser;
+    private PetAdopter petAdopter;
+    private User shelterUser;
+    private Shelter shelter;
+
     @BeforeEach
     void setUp() {
-//        mockUserRepositoryBehavior();
-//        mockPetAdopterRepositoryBehavior();
-//        mockShelterRepositoryBehavior();
+        // Initialize User, PetAdopter, and Shelter objects
+        petAdopterUser = new User();
+        petAdopterUser.setId(1L);
+        petAdopterUser.setEmail("adopter@example.com");
+        petAdopterUser.setRole(Role.PETADOPTER);
+
+        petAdopter = new PetAdopter();
+        petAdopter.setId(1L);
+        petAdopter.setUser(petAdopterUser);
+        petAdopter.setFirstname("John");
+
+        shelterUser = new User();
+        shelterUser.setId(2L);
+        shelterUser.setEmail("shelter@example.com");
+        shelterUser.setRole(Role.SHELTER);
+
+        shelter = new Shelter();
+        shelter.setId(1L);
+        shelter.setUser(shelterUser);
+        shelter.setName("Happy Paws");
     }
 
     @Test
-    void createChatSession_ShouldCreateSessionForValidUsers() {
-        assertTrue(true);
-    }
+    void createChatSession_fromPetAdopterToShelter_createsSessionSuccessfully() throws Exception {
+        // Mock the repository and service method responses
+        when(userRepository.findById(petAdopterUser.getId())).thenReturn(Optional.of(petAdopterUser));
+        when(userRepository.findById(shelterUser.getId())).thenReturn(Optional.of(shelterUser));
+        when(petAdopterRepository.findByUserId(petAdopterUser.getId())).thenReturn(Optional.of(petAdopter));
+        when(shelterRepository.findByUserId(shelterUser.getId())).thenReturn(Optional.of(shelter));
 
+        doNothing().when(chatProviderService).createChatChannel(any(), any(), any());
+        when(chatProviderService.getApiKey()).thenReturn("apiKey");
+        when(chatProviderService.getPetChatUserId(anyLong())).thenReturn("petId");
+        when(chatProviderService.getToken(any(), any(), any())).thenReturn("token");
 
-    @Test
-    void createChatSession_ShouldThrowExceptionWhenFromUserNotFound() {
-        // Test exception handling when fromUser is not found
-        assertTrue(true);
-    }
+        // Call the method under test
+        ChatCredentialsResponse response = chatService.createChatSession(petAdopterUser.getId(), shelterUser.getId());
 
-    @Test
-    void createChatSession_ShouldThrowExceptionWhenToUserNotFound() {
-        // Test exception handling when toUser is not found
-        assertTrue(true);
-    }
+        // Assert the response is as expected
+        assertNotNull(response);
+        assertEquals("apiKey", response.apiKey());
+        assertEquals("token", response.token());
 
-    @Test
-    void getChatHistory_ShouldReturnChatHistoryForValidUser() {
-        // Test happy path for getChatHistory
-        assertTrue(true);
-    }
-
-    @Test
-    void getChatHistory_ShouldThrowExceptionWhenUserNotFound() {
-        // Test exception handling when user is not found
-        assertTrue(true);
-    }
-
-    @Test
-    void getAvatarUrl_ShouldReturnValidUrlForEmail() {
-        // Test that getAvatarUrl returns a correctly formatted URL
-        assertTrue(true);
+        // Verify interactions with mocks
+        verify(petAdopterRepository).findByUserId(petAdopterUser.getId());
+        verify(shelterRepository).findByUserId(shelterUser.getId());
+        verify(chatProviderService).createChatChannel(any(PetAdopter.class), any(Shelter.class), anyString());
+        verify(chatProviderService).getApiKey();
+        verify(chatProviderService).getToken(anyString(), any(), any());
     }
 
     @Test
-    void generateChannelId_ShouldGenerateExpectedId() {
-        // Test that generateChannelId generates the expected channel ID
-        assertTrue(true);
+    void createChatSession_fromShelterToPetAdopter_createsSessionSuccessfully() throws Exception {
+        // Mock the repository and service method responses
+        when(userRepository.findById(petAdopterUser.getId())).thenReturn(Optional.of(petAdopterUser));
+        when(userRepository.findById(shelterUser.getId())).thenReturn(Optional.of(shelterUser));
+        when(petAdopterRepository.findByUserId(petAdopterUser.getId())).thenReturn(Optional.of(petAdopter));
+        when(shelterRepository.findByUserId(shelterUser.getId())).thenReturn(Optional.of(shelter));
+
+        doNothing().when(chatProviderService).createChatChannel(any(), any(), any());
+        when(chatProviderService.getApiKey()).thenReturn("apiKey");
+        when(chatProviderService.getShelterChatUserId(anyLong())).thenReturn("shelterId");
+        when(chatProviderService.getToken(any(), any(), any())).thenReturn("token");
+
+        // Call the method under test
+        ChatCredentialsResponse response = chatService.createChatSession(shelterUser.getId(), petAdopterUser.getId());
+
+        // Assert the response is as expected
+        assertNotNull(response);
+        assertEquals("apiKey", response.apiKey());
+        assertEquals("token", response.token());
+
+        // Verify interactions with mocks
+        verify(petAdopterRepository).findByUserId(petAdopterUser.getId());
+        verify(shelterRepository).findByUserId(shelterUser.getId());
+        verify(chatProviderService).createChatChannel(any(PetAdopter.class), any(Shelter.class), anyString());
+        verify(chatProviderService).getApiKey();
+        verify(chatProviderService).getToken(anyString(), any(), any());
     }
 
+    @Test
+    void getPetChatHistory_withValidUserId_returnsChatHistorySuccessfully() throws Exception {
+        // Assuming getChatHistory simply validates the user and returns a token
+        when(userRepository.findById(petAdopterUser.getId())).thenReturn(Optional.of(petAdopterUser));
+        when(petAdopterRepository.findByUserId(petAdopterUser.getId())).thenReturn(Optional.of(petAdopter));
 
-    // Utility methods for creating test objects, mock responses, etc.
+        when(chatProviderService.getApiKey()).thenReturn("apiKey");
+        when(chatProviderService.getPetChatUserId(anyLong())).thenReturn("petId");
+        when(chatProviderService.getToken(anyString(), any(), any())).thenReturn("token");
 
-    private void mockUserRepositoryBehavior() {
-        // Mocking a typical user find operation
-        when(userRepository.findById(anyLong())).thenAnswer(invocation -> {
-            Long userId = invocation.getArgument(0);
-            if (userId.equals(1L)) {
-                return Optional.of(createUserMock(1L, "adopter@example.com", Role.PETADOPTER, true));
-            } else if (userId.equals(2L)) {
-                return Optional.of(createUserMock(2L, "shelter@example.com", Role.SHELTER, true));
-            }
-            return Optional.empty();
-        });
+        // Call the method under test
+        ChatCredentialsResponse response = chatService.getChatHistory(petAdopterUser.getId());
+
+        // Assert the response is as expected
+        assertNotNull(response);
+        assertEquals("apiKey", response.apiKey());
+        assertNull(response.channelId()); // Expected null channelId for chat history
+        assertEquals("token", response.token());
+
+        // Verify interactions with mocks
+        verify(userRepository).findById(anyLong());
+        verify(petAdopterRepository).findByUserId(petAdopterUser.getId());
+        verify(chatProviderService, never()).createChatChannel(any(), any(), anyString());
+        verify(chatProviderService).getApiKey();
+        verify(chatProviderService).getToken(anyString(), any(), any());
     }
 
-    private void mockPetAdopterRepositoryBehavior() {
-        // Mocking a typical pet adopter find operation
-        when(petAdopterRepository.findByUserId(anyLong())).thenAnswer(invocation -> {
-            Long userId = invocation.getArgument(0);
-            if (userId.equals(1L)) {
-                return Optional.of(createPetAdopterMock(1L, "John Doe", "adopter@example.com"));
-            }
-            return Optional.empty();
-        });
+    @Test
+    void getShelterChatHistory_withValidUserId_returnsChatHistorySuccessfully() throws Exception {
+        // Assuming getChatHistory simply validates the user and returns a token
+        when(userRepository.findById(shelterUser.getId())).thenReturn(Optional.of(shelterUser));
+        when(shelterRepository.findByUserId(shelterUser.getId())).thenReturn(Optional.of(shelter));
+
+        when(chatProviderService.getApiKey()).thenReturn("apiKey");
+        when(chatProviderService.getShelterChatUserId(anyLong())).thenReturn("shelterId");
+        when(chatProviderService.getToken(anyString(), any(), any())).thenReturn("token");
+
+        // Call the method under test
+        ChatCredentialsResponse response = chatService.getChatHistory(shelterUser.getId());
+
+        // Assert the response is as expected
+        assertNotNull(response);
+        assertEquals("apiKey", response.apiKey());
+        assertNull(response.channelId()); // Expected null channelId for chat history
+        assertEquals("token", response.token());
+
+        // Verify interactions with mocks
+        verify(userRepository).findById(anyLong());
+        verify(shelterRepository).findByUserId(shelterUser.getId());
+        verify(chatProviderService, never()).createChatChannel(any(), any(), anyString());
+        verify(chatProviderService).getApiKey();
+        verify(chatProviderService).getToken(anyString(), any(), any());
     }
 
-    private void mockShelterRepositoryBehavior() {
-        // Mocking a typical shelter find operation
-        when(shelterRepository.findByUserId(anyLong())).thenAnswer(invocation -> {
-            Long userId = invocation.getArgument(0);
-            if (userId.equals(2L)) {
-                return Optional.of(createShelterMock(2L, "Happy Paws Shelter", "shelter@example.com"));
-            }
-            return Optional.empty();
-        });
+    @Test
+    void createChatSession_withNonexistentUserId_throwsResponseStatusException() {
+        long nonexistentUserId = 999L;
+        when(userRepository.findById(nonexistentUserId)).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class, () -> chatService.createChatSession(nonexistentUserId, petAdopterUser.getId()));
+        assertThrows(ResponseStatusException.class, () -> chatService.createChatSession(petAdopterUser.getId(), nonexistentUserId));
     }
 
-    private User createUserMock(Long id, String email, Role role, Boolean verified) {
-        User user = new User();
-        user.setId(id);
-        user.setEmail(email);
-        user.setPassword("password");
-        user.setRole(role);
-        user.setVerified(verified);
-        return user;
+    @Test
+    void getChatHistory_withNonexistentUserId_throwsResponseStatusException() {
+        long nonexistentUserId = 999L; // Assuming this ID doesn't exist
+        when(userRepository.findById(nonexistentUserId)).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class, () -> chatService.getChatHistory(nonexistentUserId));
     }
 
-    private PetAdopter createPetAdopterMock(Long userId, String name, String email) {
-        PetAdopter petAdopter = new PetAdopter();
-        petAdopter.setId(userId);
-        petAdopter.setFirstname(name.split(" ")[0]);
-        petAdopter.setLastname(name.split(" ")[1]);
-        petAdopter.setPhone_number("1234567890");
-        petAdopter.setAddress("123 Pet Street");
-        petAdopter.setUser(createUserMock(userId, email, Role.PETADOPTER, true));
-        petAdopter.setCity("Petville");
-        petAdopter.setCountry("Petland");
-        petAdopter.setZipcode("12345");
-        return petAdopter;
-    }
-
-    private Shelter createShelterMock(Long userId, String name, String email) {
-        Shelter shelter = new Shelter();
-        shelter.setId(userId);
-        shelter.setName(name);
-        shelter.setCapacity(100L);
-        shelter.setContact("9876543210");
-        shelter.setImageBase64("base64Image==");
-        shelter.setLicense("License123");
-        shelter.setUser(createUserMock(userId, email, Role.SHELTER, true));
-        shelter.setAddress("456 Shelter Avenue");
-        shelter.setCity("Sheltertown");
-        shelter.setCountry("Shelterland");
-        shelter.setZipcode("67890");
-        shelter.setRejected(false);
-        return shelter;
-    }
 }
