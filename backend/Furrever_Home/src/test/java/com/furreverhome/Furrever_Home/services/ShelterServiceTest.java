@@ -135,12 +135,13 @@ public class ShelterServiceTest {
         pet.setPetID(petId);
         PetAdopter petAdopter = new PetAdopter();
         petAdopter.setId(1L);
-        when(petRepository.findById(petId)).thenReturn(Optional.of(pet));
+        Optional<Pet> optionalPet = Optional.of(pet);
+        when(petRepository.findById(petId)).thenReturn(optionalPet);
         when(adopterPetRequestsRepository.findByPet(pet)).thenReturn(Collections.singletonList(petAdopter));
         PetAdoptionRequestResponseDto result = shelterService.getPetAdoptionRequests(petId);
         assertNotNull(result);
         assertEquals(petId, result.getPetID());
-        assertEquals(Collections.singletonList(petAdopter), result.getPetAdopters());
+        assertEquals(Collections.singletonList(petAdopter.getId()), result.getPetAdopters());
     }
 
     @Test
@@ -161,6 +162,51 @@ public class ShelterServiceTest {
         var petDtos = shelterService.getPetsForShelter(shelterId);
         assertNotNull(petDtos);
         assertTrue(petDtos.isEmpty());
+    }
+
+    @Test
+    void testChangePetAdoptedStatusWhenPetNotFound(){
+        when(petRepository.findById(1L)).thenReturn(Optional.empty());
+
+        boolean result = shelterService.changeAdoptedStatus(1L,"Adopted");
+
+        assertFalse(result);
+    }
+
+    @Test
+    void registerPet_ShouldSavePetAndReturnPetDto() throws Exception {
+
+        RegisterPetRequest updatePetRequest = new RegisterPetRequest();
+        updatePetRequest.setType("Dog");
+        updatePetRequest.setBreed("Labrador");
+        updatePetRequest.setColour("Golden");
+        updatePetRequest.setGender("Male");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        updatePetRequest.setBirthdate(sdf.parse("11/06/2001"));
+        updatePetRequest.setPetImage("dog.jpg");
+
+        PetDto expectedDto = new PetDto();
+        expectedDto.setType("Dog");
+        expectedDto.setBreed("Labrador");
+        expectedDto.setColour("Golden");
+        expectedDto.setGender("Male");
+        expectedDto.setBirthdate(sdf.parse("11/06/2001"));
+        expectedDto.setPetImage("dog.jpg");
+        expectedDto.setPetMedicalHistory(null);
+        expectedDto.setShelter(null);
+        expectedDto.setAdopted(false);
+
+
+        when(shelterRepository.findById(updatePetRequest.getShelter())).thenReturn(Optional.empty());
+
+        PetDto result = shelterService.registerPet(updatePetRequest);
+
+        assertNotNull(result);
+        assertEquals(expectedDto, result);
+
+        verify(shelterRepository).findById(updatePetRequest.getShelter());
+        verify(petRepository).save(any(Pet.class));
+
     }
 
 
