@@ -6,6 +6,7 @@ import com.furreverhome.Furrever_Home.dto.user.PasswordDto;
 import com.furreverhome.Furrever_Home.entities.PasswordResetToken;
 import com.furreverhome.Furrever_Home.entities.PetAdopter;
 import com.furreverhome.Furrever_Home.entities.Shelter;
+import com.furreverhome.Furrever_Home.enums.Role;
 import com.furreverhome.Furrever_Home.repository.PasswordTokenRepository;
 import com.furreverhome.Furrever_Home.repository.PetAdopterRepository;
 import com.furreverhome.Furrever_Home.repository.ShelterRepository;
@@ -300,6 +301,33 @@ class AuthenticationServiceImplTest {
 
         // Assert
         assertEquals(token,response.getMessage());
+    }
+
+    @Test
+    public void testWhenNoAdminAccountExistsThenCreateAdminAccount() {
+        // Arrange
+        when(userRepository.findByRole(Role.ADMIN)).thenReturn(null);
+
+        // Act
+        authenticationService.createAdminAccount();
+
+        // Assert
+        verify(userRepository, times(1)).save(any(User.class));
+    }
+
+    @Test
+    public void testWhenAdminAccountExistsThenDoNotCreateAdminAccount() {
+        // Arrange
+        User existingAdmin = new User();
+        existingAdmin.setEmail("admin@gmail.com");
+        existingAdmin.setRole(Role.ADMIN);
+        when(userRepository.findByRole(Role.ADMIN)).thenReturn(existingAdmin);
+
+        // Act
+        authenticationService.createAdminAccount();
+
+        // Assert
+        verify(userRepository, never()).save(any(User.class));
     }
 
 //    @Test
