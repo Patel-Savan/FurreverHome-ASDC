@@ -22,7 +22,8 @@ import ShelterProfile from '../components/Shelter/ShelterProfile'
 import PetForAdopter from '../components/Pet/PetForAdopter'
 import Shelter from '../components/Adopter/Shelter'
 import LostAndFoundHome from '../components/LostAndFound/LostAndFoundHome'
-import Shelterchat from '../components/Chat/Shelterchat'
+import AdopterChat from '../components/Chat/AdopterChat'
+import ShelterChat from '../components/Chat/ShelterChat'
 
 const Router = () => {
     return (
@@ -48,15 +49,18 @@ const Router = () => {
                     <Route path="/adopter/profile" element={<Layout><AdopterProfile/></Layout>}/>
                     <Route path="/adopter/pet" element={<Layout><PetForAdopter/></Layout>}/>
                     <Route path="/adopter/shelter/:id" element={<Layout><Shelter/></Layout>}/>
+                    <Route path="/chat/:shelterId" element={<Layout><AdopterChat /></Layout>}/>
                     <Route path="/lost-found" element={<Layout><LostAndFoundHome/></Layout>} />
                 </Route>
                 <Route element={<PrivateRoutesShelter />}>
                     <Route path="/shelter/home" element={<Layout><ShelterHome /></Layout>} />
                     <Route path="/shelter/profile" element={<Layout><ShelterProfile/></Layout>}/>
                     <Route path="/shelter/pet" element={<Layout><PetForShelter/></Layout>}/>
+                    <Route path="/chat/shelter" element={<Layout><ShelterChat /></Layout>}/>
                 </Route>
 
-                <Route path="/chat/:shelterId" element={<Layout><Shelterchat /></Layout>}/>
+                
+                
 
 
                 
