@@ -5,7 +5,9 @@ import com.furreverhome.Furrever_Home.dto.Pet.PetDto;
 import com.furreverhome.Furrever_Home.dto.Pet.PetVaccineDto;
 import com.furreverhome.Furrever_Home.entities.Pet;
 import com.furreverhome.Furrever_Home.entities.PetVaccination;
+import com.furreverhome.Furrever_Home.entities.PetVaccinationInfo;
 import com.furreverhome.Furrever_Home.repository.PetRepository;
+import com.furreverhome.Furrever_Home.repository.PetVaccinationInfoRepository;
 import com.furreverhome.Furrever_Home.repository.PetVaccinationRepository;
 import com.furreverhome.Furrever_Home.services.petservice.PetServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -16,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,6 +35,8 @@ public class PetServiceTest {
 
     @Mock
     private PetVaccinationRepository petVaccinationRepository;
+    @Mock
+    private PetVaccinationInfoRepository petVaccinationInfoRepository;
 
     @Test
     void getPetInfoSuccess() {
@@ -94,10 +99,17 @@ public class PetServiceTest {
         petVaccineDto.setVaccineGiven(true);
         when(petRepository.findById(petID)).thenReturn(Optional.of(pet));
         when(petVaccinationRepository.existsByPetAndVaccineName(pet, "Rabies")).thenReturn(false);
+        PetVaccination petVaccination = new PetVaccination();
+        petVaccination.setDate(new Date());
+        when(petVaccinationRepository.findFirstByPetAndDateGreaterThanOrderByDateAsc(eq(pet), any(Date.class)))
+                .thenReturn(Optional.of(petVaccination));
+        when(petVaccinationInfoRepository.findById(petID)).thenReturn(Optional.of(new PetVaccinationInfo()));
+
         GenericResponse response = petService.addVaccinationDetails(petVaccineDto, petID);
         verify(petRepository, times(1)).findById(petID);
         verify(petVaccinationRepository, times(1)).existsByPetAndVaccineName(pet, "Rabies");
         verify(petVaccinationRepository, times(1)).save(any(PetVaccination.class));
+        verify(petVaccinationInfoRepository, times(1)).save(any(PetVaccinationInfo.class));
         assertEquals("Vaccination added.", response.getMessage());
     }
 }
