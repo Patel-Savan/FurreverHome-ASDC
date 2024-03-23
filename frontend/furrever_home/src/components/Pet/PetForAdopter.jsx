@@ -9,6 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 const PetForAdopter = () => {
     
     const location = useLocation();
+    console.log(location)
     const petId = location.state.id;
     const [pet,setPet] = useState({
       type:"",

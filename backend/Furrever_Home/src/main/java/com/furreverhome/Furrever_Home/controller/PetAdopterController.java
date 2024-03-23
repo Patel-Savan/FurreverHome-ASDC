@@ -12,6 +12,7 @@ import com.furreverhome.Furrever_Home.dto.petadopter.ShelterResponseDto;
 import com.furreverhome.Furrever_Home.entities.LostPet;
 import com.furreverhome.Furrever_Home.services.petadopterservices.LostPetService;
 import com.furreverhome.Furrever_Home.services.petadopterservices.PetAdopterService;
+import com.furreverhome.Furrever_Home.services.shelterService.ShelterService;
 import jakarta.validation.Valid;
 import com.furreverhome.Furrever_Home.services.petservice.PetService;
 import com.furreverhome.Furrever_Home.services.petservice.PetServiceImpl;
@@ -34,6 +35,7 @@ public class PetAdopterController {
     private final LostPetService lostPetService;
     private final PetService petService;
 
+    private final ShelterService shelterService;
     @GetMapping("/shelters")
     public ResponseEntity<List<ShelterResponseDto>> getAllShelters() {
         List<ShelterResponseDto> shelterResponseDtoList = petAdopterService.getAllShelter();
@@ -94,4 +96,15 @@ public class PetAdopterController {
         return ResponseEntity.ok(lostPetService.updateLostPetDetails(lostPetDto));
     }
 
+
+    @GetMapping("/{shelterID}/pets")
+    public ResponseEntity<List<PetDto>> getPetInShelter(@PathVariable Long shelterID) {
+        return ResponseEntity.ok(shelterService.getPetsForShelter(shelterID));
+    }
+
+    @GetMapping("/lostpets")
+    public ResponseEntity<List<LostPetDto>> getAllLostpets() {
+        List<LostPetDto> lostPetDtoList = lostPetService.getAllLostPets();
+        return ResponseEntity.ok(lostPetDtoList);
+    }
 }
