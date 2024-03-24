@@ -26,7 +26,7 @@ import "stream-chat-react/dist/css/index.css";
 // // TS tweak No1
 const sort = { last_message_at: -1 };
 
-const App = () => {
+const AdopterChat = () => {
 
     const userid = readLocalStorage("id")
     const token = readLocalStorage("token")
@@ -143,4 +143,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default AdopterChat;
