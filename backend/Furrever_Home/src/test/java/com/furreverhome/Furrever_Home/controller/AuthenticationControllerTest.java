@@ -1,15 +1,10 @@
 package com.furreverhome.Furrever_Home.controller;
 
 import com.furreverhome.Furrever_Home.config.FrontendConfigurationProperties;
-import com.furreverhome.Furrever_Home.dto.GenericResponse;
 import com.furreverhome.Furrever_Home.dto.JwtAuthenticationResponse;
 import com.furreverhome.Furrever_Home.dto.RefreshTokenRequest;
 import com.furreverhome.Furrever_Home.dto.SigninRequest;
-import com.furreverhome.Furrever_Home.dto.user.PasswordDto;
-import com.furreverhome.Furrever_Home.dto.user.ResetEmailRequest;
 import com.furreverhome.Furrever_Home.services.AuthenticationService;
-import com.furreverhome.Furrever_Home.services.authenticationServices.PetAdopterAuthenticationService;
-import com.furreverhome.Furrever_Home.services.authenticationServices.ShelterAuthenticationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -23,13 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 class AuthenticationControllerTest {
-
-    @Mock
-    private PetAdopterAuthenticationService petAdopterAuthenticationService;
-
-    @Mock
-    private ShelterAuthenticationService shelterAuthenticationService;
-
+    
     @Mock
     private AuthenticationService authenticationService;
 
