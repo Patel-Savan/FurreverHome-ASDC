@@ -1,6 +1,7 @@
 package com.furreverhome.Furrever_Home.controller;
 
 import com.furreverhome.Furrever_Home.dto.*;
+import com.furreverhome.Furrever_Home.services.JwtService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthenticationController {
 
+    private final JwtService jwtService;
     private final AuthenticationService authenticationService;
     private final FrontendConfigurationProperties frontendConfigurationProperties;
 
@@ -55,7 +57,7 @@ public class AuthenticationController {
 
     @PostMapping("/refresh")
     public ResponseEntity<JwtAuthenticationResponse> refresh (@RequestBody RefreshTokenRequest refreshTokenRequest) {
-        return ResponseEntity.ok(authenticationService.refreshToken(refreshTokenRequest));
+        return ResponseEntity.ok(jwtService.refreshToken(refreshTokenRequest));
     }
 
     @PostMapping("/forgetPassword")

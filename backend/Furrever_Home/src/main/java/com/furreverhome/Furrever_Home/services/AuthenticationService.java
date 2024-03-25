@@ -10,7 +10,6 @@ import jakarta.mail.MessagingException;
 public interface AuthenticationService {
     boolean signup(String appUrl, SignupRequest signupRequest) throws MessagingException;
     JwtAuthenticationResponse signin(SigninRequest signinRequest);
-    JwtAuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest);
 
     GenericResponse resetByEmail(final String contextPath, String email);
 

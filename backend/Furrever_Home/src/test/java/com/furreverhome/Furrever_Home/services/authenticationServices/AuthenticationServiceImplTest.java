@@ -1,7 +1,6 @@
 package com.furreverhome.Furrever_Home.services.authenticationServices;
 
-import com.furreverhome.Furrever_Home.dto.GenericResponse;
-import com.furreverhome.Furrever_Home.dto.RefreshTokenRequest;
+import com.furreverhome.Furrever_Home.dto.*;
 import com.furreverhome.Furrever_Home.dto.user.PasswordDto;
 import com.furreverhome.Furrever_Home.entities.PasswordResetToken;
 import com.furreverhome.Furrever_Home.entities.PetAdopter;
@@ -11,6 +10,7 @@ import com.furreverhome.Furrever_Home.repository.PasswordTokenRepository;
 import com.furreverhome.Furrever_Home.repository.PetAdopterRepository;
 import com.furreverhome.Furrever_Home.repository.ShelterRepository;
 import com.furreverhome.Furrever_Home.services.emailservice.EmailService;
+import jakarta.mail.MessagingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,8 +25,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.furreverhome.Furrever_Home.dto.JwtAuthenticationResponse;
-import com.furreverhome.Furrever_Home.dto.SigninRequest;
 import com.furreverhome.Furrever_Home.entities.User;
 import com.furreverhome.Furrever_Home.repository.UserRepository;
 import com.furreverhome.Furrever_Home.services.JwtService;
@@ -75,6 +73,88 @@ class AuthenticationServiceImplTest {
         mockUser.setEmail("user@example.com");
         mockUser.setPassword(passwordEncoder.encode("password"));
         mockUser.setVerified(true);
+    }
+
+    @Test
+    void testSuccessfulPetAdopterSignup() throws MessagingException {
+        // Arrange
+        PetAdopterSignupRequest signupRequest = new PetAdopterSignupRequest();
+
+        signupRequest.setEmail("johndoe@example.com");
+        signupRequest.setPassword("password123");
+        signupRequest.setRole("PET_ADOPTER");
+        signupRequest.setCheckRole(1);
+        signupRequest.setFirstName("John");
+        signupRequest.setLastName("Doe");
+        signupRequest.setPhone_number("1234567890");
+        signupRequest.setAddress("1234 Maple Street");
+        signupRequest.setCity("Springfield");
+        signupRequest.setCountry("Neverland");
+        signupRequest.setZipcode("98765");
+
+        String encodedPassword = "encodedPassword";
+        when(userRepository.existsByEmail(signupRequest.getEmail())).thenReturn(false);
+        when(passwordEncoder.encode(signupRequest.getPassword())).thenReturn(encodedPassword);
+        doNothing().when(emailService).sendEmail(anyString(), anyString(), anyString(), eq(true));
+
+        // Act
+        boolean result = authenticationService.signup("http://localhost:8080", signupRequest);
+
+        // Assert
+        assertTrue(result);
+        verify(userRepository, times(1)).save(any(User.class));
+        verify(petAdopterRepository, times(1)).save(any(PetAdopter.class));
+        verify(emailService, times(1)).sendEmail(
+                eq(signupRequest.getEmail()),
+                anyString(),
+                anyString(),
+                eq(true));
+    }
+
+    @Test
+    void testSuccessfulShelterSignup() throws Exception {
+        //Arange
+        ShelterSignupRequest signupRequest = new ShelterSignupRequest();
+        signupRequest.setEmail("shelter@example.com");
+        signupRequest.setPassword("securePassword");
+        signupRequest.setCheckRole(2);
+
+        when(userRepository.existsByEmail(signupRequest.getEmail())).thenReturn(false);
+        when(passwordEncoder.encode(signupRequest.getPassword())).thenReturn("encodedPassword");
+        doNothing().when(emailService).sendEmail(anyString(), anyString(), anyString(), eq(true));
+
+        // Act
+        boolean result = authenticationService.signup("http://localhost:8080", signupRequest);
+
+        // Assert
+        assertTrue(result);
+        verify(userRepository, times(1)).save(any(User.class));
+        verify(shelterRepository, times(1)).save(any(Shelter.class));
+        verify(emailService, times(1)).sendEmail(
+                eq(signupRequest.getEmail()),
+                anyString(),
+                anyString(),
+                eq(true));
+    }
+
+    @Test
+    void testSignupWithExistingEmail() {
+        // Arrange
+        PetAdopterSignupRequest signupRequest = new PetAdopterSignupRequest();
+        signupRequest.setEmail("existingemail@example.com");
+        signupRequest.setPassword("password");
+
+        when(userRepository.existsByEmail(signupRequest.getEmail())).thenReturn(true);
+        // Act & Assert
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            authenticationService.signup("http://localhost:8080", signupRequest);
+        });
+
+        String expectedMessage = "User Already Exists";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+        verify(userRepository, never()).save(any(User.class));
     }
 
     @Test
@@ -167,57 +247,6 @@ class AuthenticationServiceImplTest {
         assertFalse(response.getVerified());
     }
 
-
-    @Test
-    void testRefreshTokenSuccess() {
-        String fakeToken = "fakeToken";
-        String userEmail = "user@example.com";
-
-        RefreshTokenRequest request = new RefreshTokenRequest();
-        request.setToken(fakeToken);
-
-        when(jwtService.extractUserName(fakeToken)).thenReturn(userEmail);
-        when(userRepository.findByEmail(userEmail)).thenReturn(Optional.of(mockUser));
-        when(jwtService.isTokenValid(fakeToken, mockUser)).thenReturn(true);
-        when(jwtService.generateToken(mockUser)).thenReturn("newToken");
-
-        JwtAuthenticationResponse response = authenticationService.refreshToken(request);
-
-        assertNotNull(response);
-        assertNotNull(response.getToken());
-        assertEquals("newToken", response.getToken());
-        assertEquals(fakeToken, response.getRefreshToken());
-    }
-
-    @Test
-    void testRefreshTokenInvalidToken() {
-        String invalidToken = "invalidToken";
-        String userEmail = "user@example.com";
-        RefreshTokenRequest request = new RefreshTokenRequest();
-        request.setToken(invalidToken);
-
-        when(jwtService.extractUserName(invalidToken)).thenReturn(userEmail);
-        when(userRepository.findByEmail(userEmail)).thenReturn(Optional.of(mockUser));
-        when(jwtService.isTokenValid(invalidToken, mockUser)).thenReturn(false);
-
-        JwtAuthenticationResponse response = authenticationService.refreshToken(request);
-
-        assertNull(response);
-    }
-
-    @Test
-    void testRefreshTokenUserNotFound() {
-        String fakeToken = "fakeToken";
-        RefreshTokenRequest request = new RefreshTokenRequest();
-        request.setToken(fakeToken);
-
-        when(jwtService.extractUserName(fakeToken)).thenReturn("nonexistent@example.com");
-        when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
-
-        assertThrows(RuntimeException.class, () -> {
-            authenticationService.refreshToken(request);
-        });
-    }
 
     @Test
     void testVerifyByEmailUserExistsUserVerified() {
