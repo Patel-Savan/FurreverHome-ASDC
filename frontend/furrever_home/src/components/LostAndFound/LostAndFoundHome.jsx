@@ -5,33 +5,51 @@ import {
     TabsBody,
     TabsHeader,
 } from "@material-tailwind/react";
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { readLocalStorage, saveLocalStorage } from '../../utils/helper';
 
 import PetCard from "../../components/Card/PetCard";
 // import pets from "../../dummydata/pets";
 import axios from "axios";
+import RegisterLostPet from "./RegisterLostPet";
 
 
 const LostAndFoundHome = () => {
     const [activeTab, setActiveTab] = React.useState("1");
     const token = readLocalStorage("token")
+    const userId = readLocalStorage("id")
     const [pets, setPets] = useState([]);
+    const [particularPet, setParticularPet] = useState({})
     const baseurl = `${import.meta.env.VITE_BACKEND_BASE_URL}`;
     const [loading, setLoading] = useState(false)
+    const [change, setChange] = useState(false)
 
     useEffect(() => {
-        axios.get(`${baseurl}/petadopter/lostpets`,{
+        axios.get(`${baseurl}/petadopter/lostpets`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
-        
+
         })
-        .then((response) => {
-            setPets(response.data);
-            setLoading(true);
-        });
-    },[])
+            .then((response) => {
+                setPets(response.data);
+                setLoading(true);
+            });
+
+        axios.get(`${baseurl}/petadopter/lostpet/${userId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+
+        })
+            .then((response) => {
+                setParticularPet(response.data.lostPetDtoList);
+                setLoading(true);
+            });
+    }, [change])
+
+
+
 
 
     return (
@@ -69,52 +87,55 @@ const LostAndFoundHome = () => {
                     <div className="grid gap-10 grid-cols-1 m-5 md:grid-cols-4 p-3 sm:p-8">
                         {
                             loading
-                            ?
-                            pets.map((pet) => {
-                                return (
-                                    <PetCard
-                                        key={pet.petId}
-                                        className="bg-[#f3faff]"
-                                        type={pet.type}
-                                        breed={pet.breed}
-                                        age={pet.age}
-                                        thumbnailSrc={pet.petImage}
-                                        shelterName={pet.shelterName}
-                                        shelterCity={pet.shelterCity}
-                                        shelterContact={pet.shelterContact}
-                                        petId={pet.petId}
-                                    // onClick={handlePetClick}
-                                    />)
-                            })
-                            :
-                            <></>
+                                ?
+                                pets.map((pet) => {
+                                    return (
+                                        <PetCard
+                                            key={pet.petId}
+                                            className="bg-[#f3faff]"
+                                            type={pet.type}
+                                            breed={pet.breed}
+                                            age={pet.age}
+                                            thumbnailSrc={pet.petImage}
+                                            shelterName={pet.shelterName}
+                                            shelterCity={pet.shelterCity}
+                                            shelterContact={pet.shelterContact}
+                                            petId={pet.petId}
+                                        // onClick={handlePetClick}
+                                        />)
+                                })
+                                :
+                                <></>
                         }
                     </div>
                 </TabPanel>
 
                 <TabPanel key="2" value="2">
+                    <RegisterLostPet
+                    setChange={setChange}
+                    />
                     <div className="grid gap-10 grid-cols-1 m-5 md:grid-cols-4 p-3 sm:p-8">
                         {
                             loading
-                            ?
-                            pets.map((pet) => {
-                                return (
-                                    <PetCard
-                                        key={pet.petId}
-                                        className="bg-[#f3faff]"
-                                        type={pet.type}
-                                        breed={pet.breed}
-                                        age={pet.age}
-                                        thumbnailSrc={pet.petImage}
-                                        shelterName={pet.shelterName}
-                                        shelterCity={pet.shelterCity}
-                                        shelterContact={pet.shelterContact}
-                                        petId={pet.petId}
-                                    // onClick={handlePetClick}
-                                    />)
-                            })
-                            :
-                            <></>
+                                ?
+                                particularPet?.map((pet) => {
+                                    return (
+                                        <PetCard
+                                            key={pet.petId}
+                                            className="bg-[#f3faff]"
+                                            type={pet.type}
+                                            breed={pet.breed}
+                                            age={pet.age}
+                                            thumbnailSrc={pet.petImage}
+                                            shelterName={pet.shelterName}
+                                            shelterCity={pet.shelterCity}
+                                            shelterContact={pet.shelterContact}
+                                            petId={pet.petId}
+                                        // onClick={handlePetClick}
+                                        />)
+                                })
+                                :
+                                <></>
                         }
                     </div>
                 </TabPanel>

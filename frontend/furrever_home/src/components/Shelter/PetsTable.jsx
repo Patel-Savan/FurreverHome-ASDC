@@ -16,7 +16,7 @@ import { readLocalStorage } from '../../utils/helper';
 import RegisterPet from './RegisterPet';
 import UpdatePetDetails from './UpdatePetDetails';
 
-const PetsTable = ({ pets }) => {
+const PetsTable = ({ pets,setChange }) => {
 
     const [search, setSearch] = useState('');
 
@@ -26,7 +26,7 @@ const PetsTable = ({ pets }) => {
     const token = readLocalStorage("token")
     const sid = readLocalStorage("shelterID")
     const navigate = useNavigate()
-
+    
     const handleChange = (e) => {
         setSearch(e.target.value)
     }
@@ -157,7 +157,7 @@ const PetsTable = ({ pets }) => {
                             <button className="btn btn-orange m-5">Chat</button>
                         </Link>
 
-                        <RegisterPet />
+                        <RegisterPet setChange={setChange}/>
                         {/* <Button className="flex items-center gap-3" size="sm">
                             <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add member
                         </Button> */}

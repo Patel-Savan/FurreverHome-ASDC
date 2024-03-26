@@ -10,6 +10,7 @@ const ShelterHome = ({ children }) => {
   const [search, setSearch] = useState('');
 
   const baseurl = `${import.meta.env.VITE_BACKEND_BASE_URL}`;
+  const [change, setChange] = useState(false)
   const token = readLocalStorage("token")
   const [pets, setPets] = useState([])
   const sid = readLocalStorage("shelterID");
@@ -51,7 +52,7 @@ const ShelterHome = ({ children }) => {
 
     getPet()
 
-  }, [pets.length])
+  }, [pets.length,change])
 
 
 
@@ -68,7 +69,7 @@ const ShelterHome = ({ children }) => {
 
         <div className=' sm:w-full'>
 
-          <PetsTable pets={pets} />
+          <PetsTable pets={pets} setChange={setChange}/>
 
         </div>
 
