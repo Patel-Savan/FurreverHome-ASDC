@@ -13,6 +13,8 @@ import PetCard from "../../components/Card/PetCard";
 import axios from "axios";
 import RegisterLostPet from "./RegisterLostPet";
 
+import LostPetCard from "../../components/Card/LostPetCard";
+
 
 const LostAndFoundHome = () => {
     const [activeTab, setActiveTab] = React.useState("1");
@@ -22,7 +24,9 @@ const LostAndFoundHome = () => {
     const [particularPet, setParticularPet] = useState({})
     const baseurl = `${import.meta.env.VITE_BACKEND_BASE_URL}`;
     const [loading, setLoading] = useState(false)
+    const [particularloading, setParticularLoading] = useState(false)
     const [change, setChange] = useState(false)
+
 
     useEffect(() => {
         axios.get(`${baseurl}/petadopter/lostpets`, {
@@ -44,7 +48,8 @@ const LostAndFoundHome = () => {
         })
             .then((response) => {
                 setParticularPet(response.data.lostPetDtoList);
-                setLoading(true);
+                console.log(response.data.lostPetDtoList)
+                setParticularLoading(true);
             });
     }, [change])
 
@@ -89,6 +94,7 @@ const LostAndFoundHome = () => {
                             loading
                                 ?
                                 pets.map((pet) => {
+                                    
                                     return (
                                         <PetCard
                                             key={pet.petId}
@@ -102,6 +108,7 @@ const LostAndFoundHome = () => {
                                             shelterContact={pet.shelterContact}
                                             petId={pet.petId}
                                         // onClick={handlePetClick}
+
                                         />)
                                 })
                                 :
@@ -110,28 +117,32 @@ const LostAndFoundHome = () => {
                     </div>
                 </TabPanel>
 
+
                 <TabPanel key="2" value="2">
                     <RegisterLostPet
-                    setChange={setChange}
+                        setChange={setChange}
                     />
+                    {/* <UpdateLostPet /> */}
                     <div className="grid gap-10 grid-cols-1 m-5 md:grid-cols-4 p-3 sm:p-8">
                         {
-                            loading
+                            particularloading
                                 ?
-                                particularPet?.map((pet) => {
+                                particularPet.map((pet) => {
+                                    console.log(pet)
                                     return (
-                                        <PetCard
+                                        <LostPetCard
                                             key={pet.petId}
+                                            petId={pet.petId}
                                             className="bg-[#f3faff]"
                                             type={pet.type}
                                             breed={pet.breed}
-                                            age={pet.age}
-                                            thumbnailSrc={pet.petImage}
-                                            shelterName={pet.shelterName}
-                                            shelterCity={pet.shelterCity}
-                                            shelterContact={pet.shelterContact}
-                                            petId={pet.petId}
-                                        // onClick={handlePetClick}
+                                            colour={pet.colour}
+                                            gender={pet.gender}
+                                            phone={pet.phone}
+                                            email={pet.email}
+                                            petImage={pet.petImage}
+
+                                            // handleClick={UpdateLostPet}
                                         />)
                                 })
                                 :

@@ -140,21 +140,21 @@ const AdopterChat = () => {
       //   )}
       // </Chat>
 
-<Chat client={chatClient}>
-<ChannelList filters={filters} sort={sort} />
-<Channel>
-  <Window>
-    <ChannelHeader />
-    <VirtualizedMessageList
-      additionalVirtuosoProps={{
-        increaseViewportBy: { top: 400, bottom: 200 },
-      }}
-    />
-    <MessageInput />
-  </Window>
-  <Thread />
-</Channel>
-</Chat>
+      <Chat client={chatClient}>
+        <ChannelList filters={filters} sort={sort} />
+        <Channel>
+          <Window>
+            <ChannelHeader />
+            <VirtualizedMessageList
+              additionalVirtuosoProps={{
+                increaseViewportBy: { top: 400, bottom: 200 },
+              }}
+            />
+            <MessageInput />
+          </Window>
+          <Thread />
+        </Channel>
+      </Chat>
 
   );
 };

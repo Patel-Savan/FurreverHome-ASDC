@@ -27,6 +27,7 @@ const PetAdopterHome = () => {
   };
 
   useEffect(() => {
+    // navigate(0)
 
     axios.get(`${baseurl}/${id}`, {
       headers: {

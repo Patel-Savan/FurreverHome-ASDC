@@ -1,3 +1,4 @@
+import { PencilIcon } from "@heroicons/react/24/solid";
 import {
     Card,
     CardBody,
@@ -10,28 +11,25 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { readLocalStorage } from '../../utils/helper';
 
-const RegisterLostPet = ({ setChange }) => {
+const UpdatePetDetails = ({ pets }) => {
     const [open, setOpen] = React.useState(false);
     const [response, setResponse] = useState({})
     const [loading, setLoading] = useState(true)
     const handleOpen = () => setOpen((cur) => !cur);
     const navigate = useNavigate();
-    const sid = readLocalStorage("shelterID");
     const token = readLocalStorage("token")
-    console.log("Bearer " + token)
-    const [image, setPetImage] = useState("");
-
+    console.log(pets)
     const [formData, setFormData] = useState({
-        type: "",
-        breed: "",
-        colour: "",
-        gender: "",
-        phone: "",
-        email: "",
-        petImage: ""
+
+        type: pets.type,
+        breed: pets.breed,
+        colour: pets.colour,
+        gender: pets.gender,
+        phone: pets.phone,
+        email: pets.email,
+        petImage: pets.petImage,
+        id: pets.petId
     });
-
-
 
     const handleChange = (event) => {
 
@@ -46,9 +44,11 @@ const RegisterLostPet = ({ setChange }) => {
         const reader = new FileReader();
         reader.readAsDataURL(image);
         reader.onload = function (e) {
-            console.log(e.target.result)
-
-            setPetImage(e.target.result)
+            //   console.log(e.target.result)
+            const newData = { ...formData }
+            newData.petImage = e.target.result
+            setFormData(newData)
+            //   console.log(typeof (image))
         };
 
         reader.onerror = function () {
@@ -56,35 +56,23 @@ const RegisterLostPet = ({ setChange }) => {
         };
     }
 
-
+    // const token = readLocalStorage("token")
 
     const handleSubmit = (event) => {
 
         event.preventDefault();
 
-        const data = {
-            type: "",
-            breed: "",
-            colour: "",
-            gender: "",
-            phone: "",
-            email: "",
-            petImage: ""
-        }
-        console.log(data)
-
-        axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/petadopter/lostpet`, data, {
+        axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/petadopter/lostpet/update`, formData, {
             headers: {
-                Authorization: "Bearer " + token,
+                Authorization: `Bearer ${token}`,
             }
         })
             .then((res) => {
                 console.log(res)
-                setChange(true)
                 setResponse(res)
                 setLoading(true)
-                toast.success("New Pet added!");
-                // navigate(0)
+                toast.success("Pet Updated!");
+                navigate(0)
                 handleOpen();
                 setFormData({
                     type: "",
@@ -93,7 +81,8 @@ const RegisterLostPet = ({ setChange }) => {
                     gender: "",
                     phone: "",
                     email: "",
-                    petImage: ""
+                    petImage: "",
+                    id: pets.petId
                 })
 
             })
@@ -108,16 +97,17 @@ const RegisterLostPet = ({ setChange }) => {
                     gender: "",
                     phone: "",
                     email: "",
-                    petImage: ""
+                    petImage: "",
+                    id: pets.petId
                 })
             })
     }
 
-
+    console.log(pets.petId)
 
     return (
         <>
-            <button className="btn btn-orange m-5" onClick={handleOpen}>Add new Pet</button>
+            <button className="btn btn-outline" onClick={handleOpen}>Update</button>
             <Dialog
                 size="lg"
                 open={open}
@@ -127,14 +117,7 @@ const RegisterLostPet = ({ setChange }) => {
                 <Card className="mx-auto w-full max-w-[30rem] ">
                     <CardBody className="flex flex-col gap-4">
                         <Typography variant="h4" color="blue-gray">
-                            Register Lost Pet
-                        </Typography>
-                        <Typography
-                            className="mb-3 font-normal"
-                            variant="paragraph"
-                            color="gray"
-                        >
-                            Enter details of new pet
+                            Edit Pet Details
                         </Typography>
 
                         <form method="POST" onSubmit={handleSubmit}>
@@ -159,6 +142,8 @@ const RegisterLostPet = ({ setChange }) => {
                                     />
                                 </div>
                             </div>
+
+                            
 
                             <div>
 
@@ -190,7 +175,7 @@ const RegisterLostPet = ({ setChange }) => {
                                         id="colour"
                                         name="colour"
                                         type="text"
-                                        value={formData.name}
+                                        value={formData.colour}
                                         onChange={handleChange}
                                         autoComplete="text"
                                         required
@@ -219,7 +204,6 @@ const RegisterLostPet = ({ setChange }) => {
                                     />
                                 </div>
                             </div>
-
                             <div>
                                 <label htmlFor="email" className="text-sm font-medium leading-6 text-gray-900 flex">
                                     Email address
@@ -292,4 +276,4 @@ const RegisterLostPet = ({ setChange }) => {
     );
 }
 
-export default RegisterLostPet
+export default UpdatePetDetails
