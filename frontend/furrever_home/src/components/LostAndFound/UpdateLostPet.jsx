@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { readLocalStorage } from '../../utils/helper';
 
-const UpdatePetDetails = ({ pets }) => {
+const UpdatePetDetails = ({ pets,setChange }) => {
     const [open, setOpen] = React.useState(false);
     const [response, setResponse] = useState({})
     const [loading, setLoading] = useState(true)
@@ -28,7 +28,7 @@ const UpdatePetDetails = ({ pets }) => {
         phone: pets.phone,
         email: pets.email,
         petImage: pets.petImage,
-        id: pets.petId
+        id: pets.id
     });
 
     const handleChange = (event) => {
@@ -44,11 +44,13 @@ const UpdatePetDetails = ({ pets }) => {
         const reader = new FileReader();
         reader.readAsDataURL(image);
         reader.onload = function (e) {
-            //   console.log(e.target.result)
+              console.log(e.target.result)
             const newData = { ...formData }
             newData.petImage = e.target.result
+            console.log(newData)
             setFormData(newData)
-            //   console.log(typeof (image))
+            console.log(formData)
+            
         };
 
         reader.onerror = function () {
@@ -71,39 +73,40 @@ const UpdatePetDetails = ({ pets }) => {
                 console.log(res)
                 setResponse(res)
                 setLoading(true)
+                setChange(true)
                 toast.success("Pet Updated!");
-                navigate(0)
+                // navigate(0)
                 handleOpen();
-                setFormData({
-                    type: "",
-                    breed: "",
-                    colour: "",
-                    gender: "",
-                    phone: "",
-                    email: "",
-                    petImage: "",
-                    id: pets.petId
-                })
+                // setFormData({
+                //     type: "",
+                //     breed: "",
+                //     colour: "",
+                //     gender: "",
+                //     phone: "",
+                //     email: "",
+                //     petImage: "",
+                //     id: pets.id
+                // })
 
             })
             .catch((err) => {
                 console.log(err)
                 toast.error(err.message)
                 handleOpen();
-                setFormData({
-                    type: "",
-                    breed: "",
-                    colour: "",
-                    gender: "",
-                    phone: "",
-                    email: "",
-                    petImage: "",
-                    id: pets.petId
-                })
+                // setFormData({
+                //     type: "",
+                //     breed: "",
+                //     colour: "",
+                //     gender: "",
+                //     phone: "",
+                //     email: "",
+                //     petImage: "",
+                //     id: pets.id
+                // })
             })
     }
 
-    console.log(pets.petId)
+    // console.log(pets.petId)
 
     return (
         <>
@@ -230,8 +233,8 @@ const UpdatePetDetails = ({ pets }) => {
                                 </label>
                                 <div className="mt-1">
                                     <input
-                                        id="phone_number"
-                                        name="phone_number"
+                                        id="phone"
+                                        name="phone"
                                         value={formData.phone}
                                         onChange={handleChange}
                                         type="tel"

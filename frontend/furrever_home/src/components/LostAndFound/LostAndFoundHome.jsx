@@ -49,6 +49,7 @@ const LostAndFoundHome = () => {
             .then((response) => {
                 setParticularPet(response.data.lostPetDtoList);
                 console.log(response.data.lostPetDtoList)
+                console.log(response)
                 setParticularLoading(true);
             });
     }, [change])
@@ -131,8 +132,8 @@ const LostAndFoundHome = () => {
                                     console.log(pet)
                                     return (
                                         <LostPetCard
-                                            key={pet.petId}
-                                            petId={pet.petId}
+                                            key={pet.id}
+                                            id={pet.id}
                                             className="bg-[#f3faff]"
                                             type={pet.type}
                                             breed={pet.breed}
@@ -141,6 +142,7 @@ const LostAndFoundHome = () => {
                                             phone={pet.phone}
                                             email={pet.email}
                                             petImage={pet.petImage}
+                                            setChange={setChange}
 
                                             // handleClick={UpdateLostPet}
                                         />)

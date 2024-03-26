@@ -9,7 +9,8 @@ const PetCard = ({
     phone,
     email,
     petImage,
-    petId
+    id,
+    setChange
 }) => {
 
     const pet = {
@@ -20,9 +21,10 @@ const PetCard = ({
         phone,
         email,
         petImage,
-        petId
+        id,
+
     }
-    console.log(petId)
+    console.log(id)
     const thumbnailAlt = "Alternate Image"
     return (
         <div className={`rounded-lg p-6 shadow-sm ${className}`}>
@@ -45,7 +47,7 @@ const PetCard = ({
             <p className="font-normal text-gray-500 cursor-pointer text-lg duration-300 transition hover:text-[#FA5252] mt-2">
                 Phone:  {phone}
             </p>
-            <UpdateLostPet pets={pet} />
+            <UpdateLostPet pets={pet} setChange={setChange} />
         </div>
     )
 }

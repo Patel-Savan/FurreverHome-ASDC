@@ -97,7 +97,7 @@ public class LostPetServiceImpl implements LostPetService {
         if(optionalLostPet.isPresent()) {
             LostPet lostPet = optionalLostPet.get();
             lostPet.setType(lostPetDto.getType());
-            lostPet.setPetImage(lostPet.getPetImage());
+            lostPet.setPetImage(lostPetDto.getPetImage());
             lostPet.setColour(lostPetDto.getColour());
             lostPet.setGender(lostPetDto.getGender());
             lostPet.setPhone(lostPetDto.getPhone());
