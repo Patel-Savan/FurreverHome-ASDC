@@ -6,19 +6,19 @@ stages:
   - publish
   - deploy
 
-# build:
-#   stage: build
-#   tags:
-#     - furrever-gl-runner
-#     # - autoscale-runner.cs.dal.ca
-#   image: maven:latest
-#   script:
-#     - cd backend/Furrever_Home
-#     - mvn clean package
-#     - ls -l target/
-#   artifacts:
-#     paths:
-#       - backend/Furrever_Home/target/*.jar
+build:
+  stage: build
+  tags:
+    - furrever-gl-runner
+    # - autoscale-runner.cs.dal.ca
+  image: maven:latest
+  script:
+    - cd backend/Furrever_Home
+    - mvn clean package
+    - ls -l target/
+  artifacts:
+    paths:
+      - backend/Furrever_Home/target/*.jar
 
 
 build-frontend:
@@ -45,17 +45,17 @@ test:
     - cd backend/Furrever_Home
     - mvn test
 
-# quality:
-#   stage: quality
-#   image: openjdk:11
-#   script:
-#     - echo "Compiling the project"
-#     - mkdir smells/
-#     - java -jar $CI_PROJECT_DIR/.gitlab/DesigniteJava.jar -i $CI_PROJECT_DIR -o $CI_PROJECT_DIR/smells/ -d
-#   artifacts:
-#     paths:
-#       - smells/
-#       - $CI_PROJECT_DIR
+quality:
+  stage: quality
+  image: openjdk:11
+  script:
+    - echo "Compiling the project"
+    - mkdir smells/
+    - java -jar $CI_PROJECT_DIR/.gitlab/DesigniteJava.jar -i $CI_PROJECT_DIR -o $CI_PROJECT_DIR/smells/ -d
+  artifacts:
+    paths:
+      - smells/
+      - $CI_PROJECT_DIR
 
 publish:
   image: docker:latest
