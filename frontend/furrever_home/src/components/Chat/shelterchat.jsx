@@ -45,9 +45,8 @@ const ShelterChat = () => {
     await client.connectUser(
       {
         id: data.userChatId,
-        name: data.userChatId,
-        image:
-          "https://www.gravatar.com/avatar/e1f4d0f8f39124293034fded1762ffe0.jpg?s=50&d=identicon",
+        name: User.name,
+        image: `https://ui-avatars.com/api/?name=${User.name}`,
       },
       data.token
     );
@@ -58,7 +57,7 @@ const ShelterChat = () => {
 
   useEffect(() => {
 
-    axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/shelter/single/${userid}`, {
+    axios.get(`${baseurl}/shelter/single/${userid}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       }
@@ -72,7 +71,7 @@ const ShelterChat = () => {
         console.log(error);
       })
 
-    axios.get(`http://localhost:8080/api/chats/history/${userid}`, {
+    axios.get(`${baseurl}/chats/history/${userid}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       }

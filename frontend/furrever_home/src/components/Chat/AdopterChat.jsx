@@ -51,6 +51,7 @@ const AdopterChat = () => {
   // TS tweak No2
   const [chatClient, setChatClient] = useState(null);
   const [activeChannel, setActiveChannel] = useState(null);
+  const baseurl = `${import.meta.env.VITE_BACKEND_BASE_URL}`;
   // Filter channels by tag
   const filters = {
     type: "messaging",
@@ -65,9 +66,9 @@ const AdopterChat = () => {
     await client.connectUser(
       {
         id: data.userChatId,
-        name: "Hola",
+        name: User.firstName,
         image:
-          "http://www.gravatar.com/avatar/01844c0abfb31c1c86ed54e30c81c267.jpg?s=50&d=identicon",
+          `https://ui-avatars.com/api/?name=${User.firstname}+${User.lastname}`,
       },
       data.token
     );
@@ -84,7 +85,7 @@ const AdopterChat = () => {
   };
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/api/chats/from/${userid}/to/${shelterId}`, {
+    axios.get(`${baseurl}/chats/from/${userid}/to/${shelterId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       }
@@ -120,24 +121,40 @@ const AdopterChat = () => {
       ?
       <></>
       :
-      <Chat client={chatClient}>
-        {/* Use filters to only show channels with the specified tag */}
-        <ChannelList
-          filters={filters}
-          sort={sort}
-          setActiveChannel={setActiveChannel}
-        />
-        {activeChannel && (
-          <Channel channel={activeChannel}>
-            <Window>
-              <ChannelHeader />
-              <VirtualizedMessageList />
-              <MessageInput />
-            </Window>
-            <Thread />
-          </Channel>
-        )}
-      </Chat>
+      // <Chat client={chatClient}>
+      //   {/* Use filters to only show channels with the specified tag */}
+      //   <ChannelList
+      //     filters={filters}
+      //     sort={sort}
+      //     setActiveChannel={setActiveChannel}
+      //   />
+      //   {activeChannel && (
+      //     <Channel channel={activeChannel}>
+      //       <Window>
+      //         <ChannelHeader />
+      //         <VirtualizedMessageList />
+      //         <MessageInput />
+      //       </Window>
+      //       <Thread />
+      //     </Channel>
+      //   )}
+      // </Chat>
+
+<Chat client={chatClient}>
+<ChannelList filters={filters} sort={sort} />
+<Channel>
+  <Window>
+    <ChannelHeader />
+    <VirtualizedMessageList
+      additionalVirtuosoProps={{
+        increaseViewportBy: { top: 400, bottom: 200 },
+      }}
+    />
+    <MessageInput />
+  </Window>
+  <Thread />
+</Channel>
+</Chat>
 
   );
 };
