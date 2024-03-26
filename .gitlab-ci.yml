@@ -30,11 +30,12 @@ build-frontend:
   script:
     - cd frontend/furrever_home
     - npm config set registry http://registry.npmjs.org/
+    - rmdir node_modules
     - npm install 
     - echo $VITE_BACKEND_TEST_BASE_URL
     - export VITE_BACKEND_BASE_URL=$VITE_BACKEND_TEST_BASE_URL
     - echo $VITE_BACKEND_BASE_URL
-    - echo pwd
+    - pwd
     - npm run build
   artifacts:
     paths:
