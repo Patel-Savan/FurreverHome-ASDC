@@ -24,8 +24,8 @@ build:
 build-frontend:
   stage: build
   tags:
-    # - furrever-gl-runner
-    - autoscale-runner.cs.dal.ca
+    - furrever-gl-runner
+    # - autoscale-runner.cs.dal.ca
   image: node:latest
   script:
     - cd frontend/furrever_home
