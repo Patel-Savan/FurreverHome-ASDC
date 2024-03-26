@@ -6,19 +6,19 @@ stages:
   - publish
   - deploy
 
-build:
-  stage: build
-  tags:
-    - furrever-gl-runner
-    # - autoscale-runner.cs.dal.ca
-  image: maven:latest
-  script:
-    - cd backend/Furrever_Home
-    - mvn clean package
-    - ls -l target/
-  artifacts:
-    paths:
-      - backend/Furrever_Home/target/*.jar
+# build:
+#   stage: build
+#   tags:
+#     - furrever-gl-runner
+#     # - autoscale-runner.cs.dal.ca
+#   image: maven:latest
+#   script:
+#     - cd backend/Furrever_Home
+#     - mvn clean package
+#     - ls -l target/
+#   artifacts:
+#     paths:
+#       - backend/Furrever_Home/target/*.jar
 
 
 build-frontend:
@@ -29,7 +29,7 @@ build-frontend:
   image: node:18-alpine
   script:
     - cd frontend/furrever_home
-    - npm install --prefer-offline --no-audit
+    - npm install 
     - echo $VITE_BACKEND_TEST_BASE_URL
     - export VITE_BACKEND_BASE_URL=$VITE_BACKEND_TEST_BASE_URL
     - echo $VITE_BACKEND_BASE_URL
