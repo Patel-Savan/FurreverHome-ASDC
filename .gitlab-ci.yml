@@ -29,7 +29,7 @@ build-frontend:
   image: node:18-alpine
   script:
     - cd frontend/furrever_home
-    - npm ci 
+    - npm i 
     - echo $VITE_BACKEND_TEST_BASE_URL
     - export VITE_BACKEND_BASE_URL=$VITE_BACKEND_TEST_BASE_URL
     - echo $VITE_BACKEND_BASE_URL
