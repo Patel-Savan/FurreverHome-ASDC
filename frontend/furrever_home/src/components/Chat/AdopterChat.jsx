@@ -1,19 +1,18 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { StreamChat } from "stream-chat";
-import { deleteLocalStorage, readLocalStorage, saveLocalStorage } from '../../utils/helper'
 import { useParams } from 'react-router-dom';
+import { StreamChat } from "stream-chat";
 import {
-  Chat,
   Channel,
   ChannelHeader,
   ChannelList,
-  LoadingIndicator,
+  Chat,
   MessageInput,
-  VirtualizedMessageList,
   Thread,
-  Window,
+  VirtualizedMessageList,
+  Window
 } from "stream-chat-react";
+import { readLocalStorage } from '../../utils/helper';
 
 import { Spinner } from "@material-tailwind/react";
 
@@ -28,27 +27,27 @@ const sort = { last_message_at: -1 };
 
 const AdopterChat = () => {
 
-    const userid = readLocalStorage("id")
-    const token = readLocalStorage("token")
-    const User = JSON.parse(readLocalStorage("User"))
+  const userid = readLocalStorage("id")
+  const token = readLocalStorage("token")
+  const User = JSON.parse(readLocalStorage("User"))
 
-    const [data,setData] = useState(null)
-    const [loading,setLoading] = useState(false)
+  const [data, setData] = useState(null)
+  const [loading, setLoading] = useState(false)
 
-    const { shelterId } = useParams();
+  const { shelterId } = useParams();
 
-    // useEffect(()=>{
-    //     // axios.get(`http://localhost:8080/api/chats/from/${userid}/to/${id}`)
-    //     // .then()
+  // useEffect(()=>{
+  //     // axios.get(`http://localhost:8080/api/chats/from/${userid}/to/${id}`)
+  //     // .then()
 
-       
-    // },[])
 
-    // Assuming you fetch these values from the backend somehow
-// const userToken = token; // from backend
-// const apiKey = data.apikey; // from backend
-// const userId = data.userChatId; // from backend
-// const channelId = data.channelId; // from backend
+  // },[])
+
+  // Assuming you fetch these values from the backend somehow
+  // const userToken = token; // from backend
+  // const apiKey = data.apikey; // from backend
+  // const userId = data.userChatId; // from backend
+  // const channelId = data.channelId; // from backend
   // TS tweak No2
   const [chatClient, setChatClient] = useState(null);
   const [activeChannel, setActiveChannel] = useState(null);
@@ -85,23 +84,23 @@ const AdopterChat = () => {
   };
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/api/chats/from/${userid}/to/${shelterId}`,{
-        headers: {
-          Authorization: `Bearer ${token}`,
-        }
-      })
-    .then(response => {
+    axios.get(`http://localhost:8080/api/chats/from/${userid}/to/${shelterId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+      .then(response => {
         console.log(response.data)
         // setData(response.data)       
-        return response.data   
-    })
-    .then(data=> {
-        
+        return response.data
+      })
+      .then(data => {
+
         initChat(data)
-    })
-    .catch(error => {
+      })
+      .catch(error => {
         console.log(error);
-    })
+      })
     // initChat();
     // Make sure to disconnect the user when the component unmounts
     return () => {
@@ -118,28 +117,28 @@ const AdopterChat = () => {
   return (
 
     loading
-    ?
-    <></>
-    :
-    <Chat client={chatClient}>
-      {/* Use filters to only show channels with the specified tag */}
-      <ChannelList
-        filters={filters}
-        sort={sort}
-        setActiveChannel={setActiveChannel}
-      />
-      {activeChannel && (
-        <Channel channel={activeChannel}>
-          <Window>
-            <ChannelHeader />
-            <VirtualizedMessageList />
-            <MessageInput />
-          </Window>
-          <Thread />
-        </Channel>
-      )}
-    </Chat>
-    
+      ?
+      <></>
+      :
+      <Chat client={chatClient}>
+        {/* Use filters to only show channels with the specified tag */}
+        <ChannelList
+          filters={filters}
+          sort={sort}
+          setActiveChannel={setActiveChannel}
+        />
+        {activeChannel && (
+          <Channel channel={activeChannel}>
+            <Window>
+              <ChannelHeader />
+              <VirtualizedMessageList />
+              <MessageInput />
+            </Window>
+            <Thread />
+          </Channel>
+        )}
+      </Chat>
+
   );
 };
 

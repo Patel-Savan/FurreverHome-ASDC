@@ -1,18 +1,18 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { StreamChat } from "stream-chat";
 import {
-  Chat,
   Channel,
   ChannelHeader,
   ChannelList,
+  Chat,
   LoadingIndicator,
   MessageInput,
-  VirtualizedMessageList,
   Thread,
+  VirtualizedMessageList,
   Window,
 } from "stream-chat-react";
-import { deleteLocalStorage, readLocalStorage, saveLocalStorage } from '../../utils/helper'
-import axios from "axios";
+import { readLocalStorage, saveLocalStorage } from '../../utils/helper';
 
 import "stream-chat-react/dist/css/index.css";
 
@@ -22,7 +22,7 @@ import "stream-chat-react/dist/css/index.css";
 const ShelterChat = () => {
   // TS tweak No2
   const [chatClient, setChatClient] = useState(null);
-  const [shelter,setShelter] = useState({})
+  const [shelter, setShelter] = useState({})
 
   const sort = { last_message_at: -1 };
 
@@ -33,11 +33,11 @@ const ShelterChat = () => {
 
   console.log(User)
 
-    const filters = {
-      type: "messaging",
-      // Assuming 'tag' is a custom field you've set on the channel metadata
-      shelter: User.email
-    };
+  const filters = {
+    type: "messaging",
+    // Assuming 'tag' is a custom field you've set on the channel metadata
+    shelter: User.email
+  };
 
   const initChat = async (data) => {
     const client = StreamChat.getInstance(data.apiKey);
@@ -58,14 +58,14 @@ const ShelterChat = () => {
 
   useEffect(() => {
 
-    axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/shelter/single/${userid}`,{
+    axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/shelter/single/${userid}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       }
     })
       .then(response => {
         console.log(response.data)
-        saveLocalStorage("User",JSON.stringify(response.data));
+        saveLocalStorage("User", JSON.stringify(response.data));
         setLoading(true)
       })
       .catch(error => {
@@ -90,7 +90,7 @@ const ShelterChat = () => {
         console.log(error);
       })
 
-      
+
     // initChat();
     // Make sure to disconnect the user when the component unmounts
     return () => {

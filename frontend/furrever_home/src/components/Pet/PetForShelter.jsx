@@ -1,61 +1,61 @@
+import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import { toast } from "react-toastify"
+import { readLocalStorage } from '../../utils/helper'
 import PetDetail from './PetDetail'
 import ShelterDetail from './ShelterDetail'
-import { readLocalStorage } from '../../utils/helper'
-import { ToastContainer, toast } from "react-toastify"
-import axios from 'axios'
 
 const PetForShelter = () => {
-    const location = useLocation();
-    const petId = location.state.id;
-    const [pet,setPet] = useState({
-      type:"",
-      breed:"",
-      birthDate:"",
-      gender:"",
-      color:"",
-      image:"",
-      petId:""
-    })
-    const [shelter,setShelter] = useState({
-      name:"",
-      address:"",
-      city:"",
-      country:"",
-      contact:"",
-    });
-    const [vaccine,setVaccine] = useState([])
-    const token = readLocalStorage("token")
+  const location = useLocation();
+  const petId = location.state.id;
+  const [pet, setPet] = useState({
+    type: "",
+    breed: "",
+    birthDate: "",
+    gender: "",
+    color: "",
+    image: "",
+    petId: ""
+  })
+  const [shelter, setShelter] = useState({
+    name: "",
+    address: "",
+    city: "",
+    country: "",
+    contact: "",
+  });
+  const [vaccine, setVaccine] = useState([])
+  const token = readLocalStorage("token")
 
-    useEffect(() =>{
-      axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/shelter/${petId}`,{
-        headers : {
-          Authorization : `Bearer ${token}`
-        }
-      })
+  useEffect(() => {
+    axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/shelter/${petId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
       .then(response => {
         console.log(response.data)
-        const DOB = response.data.birthdate.substring(0,10)
+        const DOB = response.data.birthdate.substring(0, 10)
         setPet({
-          type:response.data.type,
-          breed:response.data.breed,
-          birthdate:DOB,
-          gender:response.data.gender,
-          colour:response.data.colour,
-          petImage:response.data.petImage,
-          petID:response.data.petID
+          type: response.data.type,
+          breed: response.data.breed,
+          birthdate: DOB,
+          gender: response.data.gender,
+          colour: response.data.colour,
+          petImage: response.data.petImage,
+          petID: response.data.petID
         })
 
         const res = response.data.shelter
         console.log(res)
 
         setShelter({
-          name:res.name,
-          address:res.address,
-          city:res.city,
-          country:res.country,
-          contact:res.contact
+          name: res.name,
+          address: res.address,
+          city: res.city,
+          country: res.country,
+          contact: res.contact
         })
         setVaccine(response.data.vaccineNameList)
       })
@@ -63,9 +63,9 @@ const PetForShelter = () => {
         toast.error("Cannot get pet details")
       })
 
-    },[])
+  }, [])
 
-    console.log(petId);
+  console.log(petId);
 
   return (
 
@@ -73,7 +73,7 @@ const PetForShelter = () => {
       <div className="container mx-auto py-8">
         <div className="grid gap-6 grid-cols-2">
           <PetDetail pet={pet} petId={petId} />
-          <ShelterDetail shelter={shelter} vaccine={vaccine}  petId={petId}/>
+          <ShelterDetail shelter={shelter} vaccine={vaccine} petId={petId} />
         </div>
       </div>
     </div>

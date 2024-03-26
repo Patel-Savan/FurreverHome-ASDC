@@ -1,20 +1,14 @@
-import React, { useState } from "react";
 import {
-    Button,
-    Dialog,
     Card,
-    CardHeader,
     CardBody,
-    CardFooter,
-    Typography,
-    Input,
-    Checkbox,
-
+    Dialog,
+    Typography
 } from "@material-tailwind/react";
 import axios from 'axios';
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { deleteLocalStorage, readLocalStorage, saveLocalStorage } from '../../utils/helper'
+import { deleteLocalStorage, readLocalStorage, saveLocalStorage } from '../../utils/helper';
 
 const UpdateAdopterProfile = ({ id, token }) => {
     const [open, setOpen] = React.useState(false);
@@ -25,13 +19,13 @@ const UpdateAdopterProfile = ({ id, token }) => {
 
 
     const [formData, setFormData] = useState({
-        firstName:"",
-        lastName:"",
-        phoneNumber:"",
-        address:"",
-        city:"",
-        country:"",
-        zipcode:""
+        firstName: "",
+        lastName: "",
+        phoneNumber: "",
+        address: "",
+        city: "",
+        country: "",
+        zipcode: ""
     });
 
     const handleChange = (event) => {
@@ -48,7 +42,7 @@ const UpdateAdopterProfile = ({ id, token }) => {
         const userId = readLocalStorage("id")
         const token = readLocalStorage("token")
 
-        axios.put(`${import.meta.env.VITE_BACKEND_BASE_URL}/users/${userId}`,formData, {
+        axios.put(`${import.meta.env.VITE_BACKEND_BASE_URL}/users/${userId}`, formData, {
             headers: {
                 Authorization: `Bearer ${token} `,
             }
@@ -57,19 +51,20 @@ const UpdateAdopterProfile = ({ id, token }) => {
                 console.log(res)
                 setLoading(true)
                 deleteLocalStorage("User")
-                saveLocalStorage("User",JSON.stringify(res.data))
+                saveLocalStorage("User", JSON.stringify(res.data))
                 toast.success("Successfully Updated User info");
                 navigate("/adopter/home")
                 handleOpen();
                 setFormData({
-                    firstName:"",
-                    lastName:"",
-                    phoneNumber:"",
-                    address:"",
-                    city:"",
-                    country:"",
-                    zipcode:""
-                 })})
+                    firstName: "",
+                    lastName: "",
+                    phoneNumber: "",
+                    address: "",
+                    city: "",
+                    country: "",
+                    zipcode: ""
+                })
+            })
             .catch((err) => {
                 console.log(err)
                 toast.error(err.message)
@@ -233,15 +228,15 @@ const UpdateAdopterProfile = ({ id, token }) => {
                                 </label>
                                 <div className="mt-1">
                                     <input
-                                       id="zipcode"
-                                       name="zipcode"
-                                       type="text"
-                                       value={formData.zipcode}
-                                       onChange={handleChange}
-                                       autoComplete="text"
-                                       required
-                                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                       placeholder='Enter Zipcode'
+                                        id="zipcode"
+                                        name="zipcode"
+                                        type="text"
+                                        value={formData.zipcode}
+                                        onChange={handleChange}
+                                        autoComplete="text"
+                                        required
+                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        placeholder='Enter Zipcode'
                                     />
                                 </div>
                             </div>
@@ -260,6 +255,6 @@ const UpdateAdopterProfile = ({ id, token }) => {
             </Dialog>
         </>
     );
-  }
+}
 
 export default UpdateAdopterProfile

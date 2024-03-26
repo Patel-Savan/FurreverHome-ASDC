@@ -1,24 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import { deleteLocalStorage, readLocalStorage, saveLocalStorage } from '../utils/helper'
-import { useNavigate } from 'react-router-dom'
-import ShelterCard from '../components/Card/ShelterCard'
-import PetCard from '../components/Card/PetCard'
 import {
-  Card,
-  Typography,
-  List,
-  ListItem,
-  ListItemPrefix,
-} from "@material-tailwind/react";
-import {
-  UserCircleIcon,
-  Cog6ToothIcon,
-  InboxIcon,
-  PowerIcon,
-} from "@heroicons/react/24/solid";
+  Card
+} from "@material-tailwind/react"
 import axios from 'axios'
-import { Link } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { toast } from "react-toastify"
+import PetCard from '../components/Card/PetCard'
+import ShelterCard from '../components/Card/ShelterCard'
+import { readLocalStorage, saveLocalStorage } from '../utils/helper'
 
 const PetAdopterHome = () => {
 
@@ -197,19 +186,19 @@ const PetAdopterHome = () => {
     setSearchQuery(event.target.value);
   }
 
-  const handleShelterClick = (shelterId,userId) => {
+  const handleShelterClick = (shelterId, userId) => {
     console.log(userId)
-    navigate(`/adopter/shelter/${shelterId}`,{
-      state:{
+    navigate(`/adopter/shelter/${shelterId}`, {
+      state: {
         userId: userId
       }
     })
   }
 
   const handlePetClick = (petId) => {
-    navigate("/adopter/pet",{
-      state:{
-        id:petId,
+    navigate("/adopter/pet", {
+      state: {
+        id: petId,
       }
     })
   }
@@ -219,8 +208,8 @@ const PetAdopterHome = () => {
     <section className='lg:flex'>
 
       <Card className="lg:h-[calc(100vh-2rem)] sm:w-full  lg:max-w-[20rem] m-2 p-4 bg-primary shadow-xl shadow-white-900/5 ">
-        
-         <div className='flex align-middle justify-center mt-2'>
+
+        <div className='flex align-middle justify-center mt-2'>
           <form onSubmit={handleSearch} className='flex-col container mx-4'>
             <input className=' rounded-2xl flex m-4' type="text" onChange={handleSearchChange} />
             <select
@@ -267,27 +256,9 @@ const PetAdopterHome = () => {
       </Card>
       <div>
 
-       
+
 
         <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 p-3 sm:p-8">
-          {/* <Card
-          className="bg-[#fcf4ff]"
-          heading="Heading"
-          description="Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam euismod volutpat."
-          thumbnailSrc={shelter_image}
-        />
-        <Card
-          className="bg-[#fefaf0]"
-          heading="Heading"
-          description="Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam euismod volutpat."
-          thumbnailSrc={shelter_image}
-        />
-        <Card
-          className="bg-[#f3faff]"
-          heading="Heading"
-          description="Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam euismod volutpat."
-          thumbnailSrc={shelter_image}
-        /> */}
 
           {filter === "Shelter" &&
             data

@@ -1,14 +1,11 @@
-import React, { useState,useEffect } from 'react'
+import React, { useEffect, useState } from 'react';
 
-import Sidebar from '../components/Shelter/Sidebar'
 import PetsTable from '../components/Shelter/PetsTable';
-import { deleteLocalStorage, readLocalStorage, saveLocalStorage } from '../utils/helper'
+import { readLocalStorage, saveLocalStorage } from '../utils/helper';
 
-import pets from '../dummydata/pets'
 import axios from 'axios';
-import { toast } from "react-toastify";
 
-const ShelterHome = ({children}) => {
+const ShelterHome = ({ children }) => {
 
   const [search, setSearch] = useState('');
 
@@ -19,42 +16,42 @@ const ShelterHome = ({children}) => {
   const id = readLocalStorage("id");
   console.log(id)
 
-  const getPet =()=>{
+  const getPet = () => {
     axios.get(`${baseurl}/shelter/${sid}/pets`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        }
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
     })
-        .then(response => {
-            setPets(response.data)
-            console.log(response.data)
-            setLoading(true)
-            console.log(pets)
+      .then(response => {
+        setPets(response.data)
+        console.log(response.data)
+        setLoading(true)
+        console.log(pets)
 
-        })
-        .catch(error => {
-            console.log(error);
-        })
-}
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  }
 
-  useEffect(()=>{
+  useEffect(() => {
 
-    axios.get(`${baseurl}/shelters/${id}`,{
+    axios.get(`${baseurl}/shelters/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       }
     })
       .then(response => {
         console.log(response.data)
-        saveLocalStorage("User",JSON.stringify(response.data));
+        saveLocalStorage("User", JSON.stringify(response.data));
       })
       .catch(error => {
         console.log(error);
       })
 
-      getPet()
+    getPet()
 
-  },[pets.length])
+  }, [pets.length])
 
 
 

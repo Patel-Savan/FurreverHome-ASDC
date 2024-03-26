@@ -1,27 +1,25 @@
 import React from 'react';
 
-import ImgLogo from '/img/logo/LogoWithText_NoBG.png'
-import { Link } from 'react-router-dom';
-import verifyAuthentication from '../hooks/verifyAuthentication';
-import { deleteLocalStorage, readLocalStorage } from '../utils/helper';
-import { useNavigate } from 'react-router-dom';
-import Modal from './Modal/Modal';
-import InitialsAvatar from 'react-initials-avatar';
-import 'react-initials-avatar/lib/ReactInitialsAvatar.css';
 import {
   Avatar, Menu,
   MenuHandler,
-  MenuList,
   MenuItem,
-  Button,
+  MenuList
 } from "@material-tailwind/react";
+import InitialsAvatar from 'react-initials-avatar';
+import 'react-initials-avatar/lib/ReactInitialsAvatar.css';
+import { Link, useNavigate } from 'react-router-dom';
+import verifyAuthentication from '../hooks/verifyAuthentication';
+import { deleteLocalStorage, readLocalStorage } from '../utils/helper';
+import Modal from './Modal/Modal';
+import ImgLogo from '/img/logo/LogoWithText_NoBG.png';
 
 const Header = () => {
   const userToken = verifyAuthentication()
   const user = JSON.parse(readLocalStorage("User"))
   console.log(userToken)
   const navigate = useNavigate();
-  
+
 
   const handleLogout = () => {
     deleteLocalStorage("token");
@@ -129,15 +127,15 @@ const Header = () => {
                     )
                     :
                     userToken.userRole === "PETADOPTER"
-                    ?
-                    (
-                      <Menu>
-                        <MenuHandler>
-                          <button>
-                          <InitialsAvatar name={`${user.firstname} ${user.lastname}`} />
-                          </button>
-                        </MenuHandler>
-                        <MenuList>
+                      ?
+                      (
+                        <Menu>
+                          <MenuHandler>
+                            <button>
+                              <InitialsAvatar name={`${user.firstname} ${user.lastname}`} />
+                            </button>
+                          </MenuHandler>
+                          <MenuList>
                             <MenuItem>
                               <Link to="/adopter/profile">
                                 Profile
@@ -154,18 +152,18 @@ const Header = () => {
                             >
                               Sign Out
                             </button>
-                        </MenuList>
-                      </Menu>
+                          </MenuList>
+                        </Menu>
                       )
-                    :
-                    (
-                      <Menu>
-                        <MenuHandler>
-                          <button>
-                          <InitialsAvatar name={`ADMIN`} />
-                          </button>
-                        </MenuHandler>
-                        <MenuList>
+                      :
+                      (
+                        <Menu>
+                          <MenuHandler>
+                            <button>
+                              <InitialsAvatar name={`ADMIN`} />
+                            </button>
+                          </MenuHandler>
+                          <MenuList>
                             <MenuItem>
                               <Link to="/adopter/profile">
                                 Profile
@@ -182,8 +180,8 @@ const Header = () => {
                             >
                               Sign Out
                             </button>
-                        </MenuList>
-                      </Menu>
+                          </MenuList>
+                        </Menu>
                       )
                 }
 

@@ -1,31 +1,20 @@
-import React, { useState, useEffect } from 'react'
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { TrashIcon } from "@heroicons/react/24/solid";
 import {
+    Avatar,
     Card,
     CardHeader,
-    Input,
-    Typography,
-    Button,
-    CardBody,
     Chip,
-    CardFooter,
-    Tabs,
-    TabsHeader,
-    Tab,
-    Avatar,
-    IconButton,
-    Tooltip,
+    Input,
+    Typography
 } from "@material-tailwind/react";
 import { DataGrid } from '@mui/x-data-grid';
+import axios from 'axios';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { readLocalStorage } from '../../utils/helper';
 import RegisterPet from './RegisterPet';
 import UpdatePetDetails from './UpdatePetDetails';
-import axios from 'axios';
-import { toast } from "react-toastify";
-import { deleteLocalStorage, readLocalStorage, saveLocalStorage } from '../../utils/helper'
-import pet1 from "../../dummydata/pets"
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 
 const PetsTable = ({ pets }) => {
 
@@ -165,9 +154,9 @@ const PetsTable = ({ pets }) => {
                             view all
                         </Button> */}
                         <Link to="/chat/shelter">
-                        <button className="btn btn-orange m-5">Chat</button>
+                            <button className="btn btn-orange m-5">Chat</button>
                         </Link>
-                        
+
                         <RegisterPet />
                         {/* <Button className="flex items-center gap-3" size="sm">
                             <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add member

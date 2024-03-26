@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
-import Logo from '../Logo'
-import { Link } from 'react-router-dom';
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import axios from 'axios';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from "react-toastify";
 import { validatePassword } from '../../utils/helper';
+import Logo from '../Logo';
 
 const ShelterRegister = () => {
 
@@ -23,9 +22,9 @@ const ShelterRegister = () => {
     role: "shelter",
     capacity: "",
     address: "",
-    city:"",
-    country:"",
-    zipcode:""
+    city: "",
+    country: "",
+    zipcode: ""
   })
 
   const [image, setImage] = useState([])
@@ -87,9 +86,9 @@ const ShelterRegister = () => {
       imageBase64: image,
       license: license,
       address: formData.address,
-      city:formData.city,
-      country:formData.country,
-      zipcode:formData.zipcode
+      city: formData.city,
+      country: formData.country,
+      zipcode: formData.zipcode
 
     }
 

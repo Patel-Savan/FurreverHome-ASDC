@@ -1,21 +1,15 @@
-import React, { useState } from "react";
+import { PencilIcon } from "@heroicons/react/24/solid";
 import {
-    Button,
-    Dialog,
     Card,
-    CardHeader,
     CardBody,
-    CardFooter,
-    Typography,
-    Input,
-    Checkbox,
-
+    Dialog,
+    Typography
 } from "@material-tailwind/react";
 import axios from 'axios';
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { deleteLocalStorage, readLocalStorage, saveLocalStorage } from '../../utils/helper'
-import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { readLocalStorage } from '../../utils/helper';
 
 const UpdatePetDetails = ({ pets, sid }) => {
     const [open, setOpen] = React.useState(false);

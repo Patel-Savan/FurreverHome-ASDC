@@ -1,4 +1,3 @@
-import React from 'react'
 
 const verifyAuthentication = () => {
 
@@ -6,9 +5,9 @@ const verifyAuthentication = () => {
     const userRole = localStorage.getItem('role')
     console.log(userRole)
 
-    if(user){
-        return {user,userRole}
-    }else{
+    if (user) {
+        return { user, userRole }
+    } else {
         return false
     }
 }
