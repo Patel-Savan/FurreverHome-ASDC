@@ -29,7 +29,6 @@ build-frontend:
   image: node:18-alpine
   script:
     - cd frontend/furrever_home
-    - npm config set registry http://registry.npmjs.org/
     - npm ci 
     - echo $VITE_BACKEND_TEST_BASE_URL
     - export VITE_BACKEND_BASE_URL=$VITE_BACKEND_TEST_BASE_URL
