@@ -106,8 +106,10 @@ public class PetAdopterServiceImpl implements PetAdopterService {
         Optional<Pet> optionalPet = petRepository.findById(petAdoptionRequestDto.getPetID());
         if (optionalPet.isPresent() && optionalPetAdopter.isPresent()) {
             Pet pet = optionalPet.get();
-            if (pet.isAdopted() == true || requestExists(petAdoptionRequestDto.getPetID(), petAdoptionRequestDto.getPetAdopterID())) {
+            if (pet.isAdopted() == true ) {
                 return new GenericResponse("Pet already adopted");
+            } else if (requestExists(petAdoptionRequestDto.getPetID(), petAdoptionRequestDto.getPetAdopterID())) {
+                return new GenericResponse("Pet adoption request already exists.");
             } else {
                 AdopterPetRequests adopterPetRequests = new AdopterPetRequests();
                 PetAdopter petAdopter = optionalPetAdopter.get();
