@@ -67,9 +67,9 @@ const Header = () => {
                       {/* <Link to='/'>
                         Pets
                       </Link> */}
-                      <Link to='/'>
+                      {/* <Link to='/'>
                         Adopt
-                      </Link>
+                      </Link> */}
                       <Link to='/lost-found'>
                         Lost&Found
                       </Link>
