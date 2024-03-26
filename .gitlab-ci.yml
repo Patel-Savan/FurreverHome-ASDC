@@ -26,7 +26,7 @@ build-frontend:
   tags:
     - furrever-gl-runner
     # - autoscale-runner.cs.dal.ca
-  image: node:latest
+  image: node:18-alpine
   script:
     - cd frontend/furrever_home
     - npm config set registry http://registry.npmjs.org/
