@@ -10,5 +10,5 @@ import java.util.Map;
 @Data
 public class PetAdoptionRequestResponseDto {
     private Long petID;
-    private List<Map<Long, String>> petAdopters;
+    private List<PetAdopter> petAdopters;
 }

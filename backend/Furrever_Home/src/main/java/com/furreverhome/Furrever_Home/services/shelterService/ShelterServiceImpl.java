@@ -145,12 +145,12 @@ public class ShelterServiceImpl implements ShelterService{
             PetAdoptionRequestResponseDto petAdoptionRequestResponseDto = new PetAdoptionRequestResponseDto();
             petAdoptionRequestResponseDto.setPetID(petID);
             List<Map<Long, String>> petAdopterList = new ArrayList<>();
-            for (PetAdopter petAdopter : petAdopters) {
-                Map<Long, String> petAdopterMap = new HashMap<>();
-                petAdopterMap.put(petAdopter.getId(), petAdopter.getFirstname()+" "+petAdopter.getLastname());
-                petAdopterList.add(petAdopterMap);
-            }
-            petAdoptionRequestResponseDto.setPetAdopters(petAdopterList);
+//            for (PetAdopter petAdopter : petAdopters) {
+//                Map<Long, String> petAdopterMap = new HashMap<>();
+//                petAdopterMap.put(petAdopter.getId(), petAdopter.getFirstname()+" "+petAdopter.getLastname());
+//                petAdopterList.add(petAdopterMap);
+//            }
+            petAdoptionRequestResponseDto.setPetAdopters(petAdopters);
             return petAdoptionRequestResponseDto;
         }else {
             throw new RuntimeException("Requests with petID " + petID + " not found");
