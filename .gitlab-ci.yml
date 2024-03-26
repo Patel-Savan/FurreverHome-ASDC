@@ -29,7 +29,8 @@ build-frontend:
   image: node:latest
   script:
     - cd frontend/furrever_home
-    - npm i 
+    - npm config set registry http://registry.npmjs.org/
+    - npm ci 
     - echo $VITE_BACKEND_TEST_BASE_URL
     - export VITE_BACKEND_BASE_URL=$VITE_BACKEND_TEST_BASE_URL
     - echo $VITE_BACKEND_BASE_URL
