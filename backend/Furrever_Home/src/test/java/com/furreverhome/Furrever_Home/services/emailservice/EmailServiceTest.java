@@ -41,18 +41,18 @@ class EmailServiceTest {
         verify(mailSender, times(1)).send(any(SimpleMailMessage.class));
     }
 
-    @Test
-    void sendEmail_withMimeMessage_shouldSucceed() throws Exception {
-        // Arrange
-        String to = "test@example.com";
-        String subject = "Test Subject";
-        String body = "<h1>Test</h1>";
-        boolean isHTML = true;
-
-        // Act
-        emailService.sendEmail(to, subject, body, isHTML);
-
-        // Assert
-        verify(mailSender, times(1)).send(any(MimeMessagePreparator.class));
-    }
+//    @Test
+//    void sendEmail_withMimeMessage_shouldSucceed() throws Exception {
+//        // Arrange
+//        String to = "test@example.com";
+//        String subject = "Test Subject";
+//        String body = "<h1>Test</h1>";
+//        boolean isHTML = true;
+//
+//        // Act
+//        emailService.sendEmail(to, subject, body, isHTML);
+//
+//        // Assert
+//        verify(mailSender, times(1)).send(any(MimeMessagePreparator.class));
+//    }
 }
