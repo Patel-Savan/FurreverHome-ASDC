@@ -25,8 +25,9 @@ import { toast } from "react-toastify";
 import { deleteLocalStorage, readLocalStorage, saveLocalStorage } from '../../utils/helper'
 import pet1 from "../../dummydata/pets"
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-const PetsTable = ({pets}) => {
+const PetsTable = ({ pets }) => {
 
     const [search, setSearch] = useState('');
 
@@ -43,7 +44,7 @@ const PetsTable = ({pets}) => {
 
 
 
-    const deletePet = (id)=>{
+    const deletePet = (id) => {
         axios.delete(`${baseurl}/shelter/deletePet/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -67,12 +68,12 @@ const PetsTable = ({pets}) => {
     // }, [pets.length])
 
     const handlePetClick = (petId) => {
-        navigate("/shelter/pet",{
-          state:{
-            id:petId
-          }
+        navigate("/shelter/pet", {
+            state: {
+                id: petId
+            }
         })
-      }
+    }
     const columns = [
         { field: 'petID', headerName: 'PetID', width: 90 },
         {
@@ -133,8 +134,8 @@ const PetsTable = ({pets}) => {
                 return (
 
                     <div className="flex gap-4">
-                        <UpdatePetDetails pets={param.row} sid={sid}/>
-                        <button variant="text" onClick={()=>{deletePet(param.row.petID)}}>
+                        <UpdatePetDetails pets={param.row} sid={sid} />
+                        <button variant="text" onClick={() => { deletePet(param.row.petID) }}>
                             <TrashIcon className="h-4 w-4 text-red-600" />
                         </button>
                     </div>
@@ -158,10 +159,15 @@ const PetsTable = ({pets}) => {
                             See information about all pets
                         </Typography>
                     </div>
+
                     <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
                         {/* <Button variant="outlined" size="sm">
                             view all
                         </Button> */}
+                        <Link to="/chat/shelter">
+                        <button className="btn btn-orange m-5">Chat</button>
+                        </Link>
+                        
                         <RegisterPet />
                         {/* <Button className="flex items-center gap-3" size="sm">
                             <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add member

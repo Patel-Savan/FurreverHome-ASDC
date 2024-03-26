@@ -128,6 +128,8 @@ const Header = () => {
                       </Menu>
                     )
                     :
+                    userToken.userRole === "PETADOPTER"
+                    ?
                     (
                       <Menu>
                         <MenuHandler>
@@ -153,7 +155,36 @@ const Header = () => {
                               Sign Out
                             </button>
                         </MenuList>
-                      </Menu>)
+                      </Menu>
+                      )
+                    :
+                    (
+                      <Menu>
+                        <MenuHandler>
+                          <button>
+                          <InitialsAvatar name={`ADMIN`} />
+                          </button>
+                        </MenuHandler>
+                        <MenuList>
+                            <MenuItem>
+                              <Link to="/adopter/profile">
+                                Profile
+                              </Link>
+                            </MenuItem>
+                            <MenuItem>
+                              <Link to="/adopter/home">
+                                Dashboard
+                              </Link>
+                            </MenuItem>
+                            <button type="submit"
+                              className="btn btn-outline align-middle justify-center"
+                              onClick={handleLogout}
+                            >
+                              Sign Out
+                            </button>
+                        </MenuList>
+                      </Menu>
+                      )
                 }
 
 

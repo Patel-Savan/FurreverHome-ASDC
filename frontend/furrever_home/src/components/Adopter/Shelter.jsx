@@ -12,6 +12,7 @@ const Shelter = () => {
     const { id } = useParams()
     const {state} = useLocation()
     console.log(state)
+    const [shelter,setShelter] = useState({})
     const [pets,setPets] = useState({})
     const [loading,setLoading] = useState(false)
     const baseurl = `${import.meta.env.VITE_BACKEND_BASE_URL}`
@@ -27,6 +28,21 @@ const Shelter = () => {
       }
 
       useEffect(() => {
+
+        axios.get(`${baseurl}/shelters/${id}`,{
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
+        .then(()=>{
+            setLoading(true)
+            setShelter(response.data)
+        }         
+        )
+        .catch(error => {
+            console.log(error);
+        })
+
         axios.get(`${baseurl}/petadopter/${state.userId}/pets`, {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -34,12 +50,6 @@ const Shelter = () => {
         })
             .then(response => {
                 setPets(response.data)
-                console.log(response.data);
-                setLoading(true)
-                console.log(pets)
-                console.log("HIIII")
-                console.log(pets)
-    
             })
             .catch(error => {
                 console.log(error);
@@ -65,10 +75,10 @@ const Shelter = () => {
                             
                             <div className="flex flex-col items-center">
                                 
-                                <img src={pets[0].shelter.imageBase64} className="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0">
+                                <img src={shelter.imageBase64} className="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0">
 
                                 </img>
-                                <h1 className="text-xl font-bold">{pets[0].shelter.name}</h1>
+                                <h1 className="text-xl font-bold">{shelter.name}</h1>
                                 {/* <p className="text-gray-700">Capacity: {user.capacity}</p> */}
                                 <div className="mt-6 flex flex-wrap gap-4 justify-center">
                                     <Link to={`/chat/${id}`}>
@@ -80,10 +90,10 @@ const Shelter = () => {
                             <div className="flex flex-col">
                                 <span className="text-gray-700 uppercase tracking-wider mb-2">Address</span>
                                 <ul>
-                                    <li className="mb-2">Address: {pets[0].shelter.address}</li>
-                                <li className="mb-2">City: {pets[0].shelter.city}</li>
-                                    <li className="mb-2">Country: {pets[0].shelter.country}</li>
-                                    <li className="mb-2">Zipcode: {pets[0].shelter.zipcode}</li>
+                                    <li className="mb-2">Address: {shelter.address}</li>
+                                <li className="mb-2">City: {shelter.city}</li>
+                                    <li className="mb-2">Country: {shelter.country}</li>
+                                    <li className="mb-2">Zipcode: {shelter.zipcode}</li>
                                 </ul>
                             </div>
                         </div>
@@ -94,7 +104,8 @@ const Shelter = () => {
                             <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 p-3 sm:p-8">
 
                                 {
-                                    
+                                    pets.length > 0
+                                    ?
                                     pets.map((pet) => {
                                         return (
                                             <PetCard
@@ -114,8 +125,10 @@ const Shelter = () => {
                                                     }
                                                   })}
                                             />)
+                                        
                                           
                                     })
+                                    :<></>
                                     
                                 }
                             </div>

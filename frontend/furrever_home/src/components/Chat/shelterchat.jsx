@@ -22,14 +22,16 @@ import "stream-chat-react/dist/css/index.css";
 const ShelterChat = () => {
   // TS tweak No2
   const [chatClient, setChatClient] = useState(null);
+  const [shelter,setShelter] = useState({})
 
   const sort = { last_message_at: -1 };
 
   const userid = readLocalStorage("id")
   const token = readLocalStorage("token")
   const User = JSON.parse(readLocalStorage("User"))
+  const baseurl = `${import.meta.env.VITE_BACKEND_BASE_URL}`
 
- 
+  console.log(User)
 
     const filters = {
       type: "messaging",
@@ -55,6 +57,21 @@ const ShelterChat = () => {
 
 
   useEffect(() => {
+
+    axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/shelter/single/${userid}`,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+      .then(response => {
+        console.log(response.data)
+        saveLocalStorage("User",JSON.stringify(response.data));
+        setLoading(true)
+      })
+      .catch(error => {
+        console.log(error);
+      })
+
     axios.get(`http://localhost:8080/api/chats/history/${userid}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -72,6 +89,8 @@ const ShelterChat = () => {
       .catch(error => {
         console.log(error);
       })
+
+      
     // initChat();
     // Make sure to disconnect the user when the component unmounts
     return () => {

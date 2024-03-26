@@ -23,7 +23,7 @@ import PetForAdopter from '../components/Pet/PetForAdopter'
 import Shelter from '../components/Adopter/Shelter'
 import LostAndFoundHome from '../components/LostAndFound/LostAndFoundHome'
 import AdopterChat from '../components/Chat/AdopterChat'
-import ShelterChat from '../components/Chat/ShelterChat'
+import ShelterChat from '../components/Chat/shelterchat'
 
 const Router = () => {
     return (

@@ -4,16 +4,20 @@ import com.furreverhome.Furrever_Home.dto.GenericResponse;
 import com.furreverhome.Furrever_Home.dto.Pet.PetAdoptionRequestDto;
 import com.furreverhome.Furrever_Home.dto.Pet.PetAdoptionRequestResponseDto;
 import com.furreverhome.Furrever_Home.dto.Pet.PetDto;
+import com.furreverhome.Furrever_Home.dto.petadopter.ShelterResponseDto;
 import com.furreverhome.Furrever_Home.dto.shelter.RegisterPetRequest;
 import com.furreverhome.Furrever_Home.entities.Pet;
 import com.furreverhome.Furrever_Home.entities.PetAdopter;
 import com.furreverhome.Furrever_Home.entities.Shelter;
+import com.furreverhome.Furrever_Home.exception.UserNotFoundException;
 import com.furreverhome.Furrever_Home.repository.AdopterPetRequestsRepository;
 import com.furreverhome.Furrever_Home.repository.PetRepository;
 import com.furreverhome.Furrever_Home.repository.ShelterRepository;
+import com.furreverhome.Furrever_Home.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.furreverhome.Furrever_Home.entities.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +37,9 @@ public class ShelterServiceImpl implements ShelterService{
 
     @Autowired
     AdopterPetRequestsRepository adopterPetRequestsRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     public PetDto registerPet(RegisterPetRequest registerPetRequest){
         Pet pet = new Pet();
@@ -155,6 +162,25 @@ public class ShelterServiceImpl implements ShelterService{
             return petAdoptionRequestResponseDto;
         }else {
             throw new RuntimeException("Requests with petID " + petID + " not found");
+        }
+    }
+
+    @Override
+    public ShelterResponseDto getShelterDetailsById(Long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            Optional<Shelter> optionalShelter = shelterRepository.findByUserId(user.getId());
+
+            if (optionalShelter.isPresent()) {
+                Shelter shelter = optionalShelter.get();
+                return shelter.getShelterResponseDto();
+            } else {
+                throw new UserNotFoundException("Shelter Not Found");
+            }
+        } else {
+            throw new UserNotFoundException("User Not Found");
         }
     }
 }
