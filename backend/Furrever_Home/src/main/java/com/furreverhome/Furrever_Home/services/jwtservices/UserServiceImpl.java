@@ -13,6 +13,11 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    /**
+     * Retrieves a UserDetailsService instance for loading user details by username.
+     *
+     * @return A UserDetailsService instance.
+     */
     @Override
     public UserDetailsService userDetailsService() {
         return new UserDetailsService() {

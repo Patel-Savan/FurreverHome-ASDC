@@ -12,10 +12,22 @@ import org.passay.*;
 
 public class PasswordConstraintValidator implements ConstraintValidator<ValidPassword, String> {
 
+    /**
+     * Initializes the constraint validator.
+     *
+     * @param arg0 The annotation instance for the constraint.
+     */
     @Override
     public void initialize(final ValidPassword arg0) {
     }
 
+    /**
+     * Validates whether the given password meets the defined criteria.
+     *
+     * @param password The password to be validated.
+     * @param context  The context in which the constraint is evaluated.
+     * @return         {@code true} if the password is valid, {@code false} otherwise.
+     */
     @Override
     public boolean isValid(final String password, final ConstraintValidatorContext context) {
         // @formatter:off

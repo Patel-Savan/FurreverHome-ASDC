@@ -23,11 +23,23 @@ public class StreamChatProvider implements ChatProviderService {
     @Value("${io.getstream.chat.apiKey}")
     private String apiKey;
 
+    /**
+     * Retrieves the Stream Chat API key.
+     *
+     * @return The Stream Chat API key.
+     */
     @Override
     public String getApiKey() {
         return apiKey;
     }
 
+    /**
+     * Creates a chat channel between a pet adopter and a shelter.
+     *
+     * @param petAdopter The pet adopter entity.
+     * @param shelter    The shelter entity.
+     * @param channelId  The unique ID for the chat channel.
+     */
     @Override
     public void createChatChannel(PetAdopter petAdopter, Shelter shelter, String channelId) {
         // Upsert both users
@@ -50,11 +62,28 @@ public class StreamChatProvider implements ChatProviderService {
         }
     }
 
+    /**
+     * Adds a user to the chat provider.
+     *
+     * @param userId    The ID of the user.
+     * @param username  The username of the user.
+     * @param imageUrl  The URL of the user's avatar image.
+     */
     @Override
     public void addUser(String userId, String username, String imageUrl) {
         upsertUser(userId, username, imageUrl);
     }
 
+    /**
+     * Creates a chat channel with specified users and channel details.
+     *
+     * @param fromStreamUser    The user initiating the chat.
+     * @param toStreamUser      The user receiving the chat.
+     * @param userRoleEntities  The entities representing user roles.
+     * @param channelId         The unique ID for the chat channel.
+     * @param imageUrl          The URL of the channel's image.
+     * @throws StreamException If an error occurs while creating the channel.
+     */
     private void createStreamChannel(
             User.UserRequestObject fromStreamUser,
             User.UserRequestObject toStreamUser,
@@ -80,6 +109,14 @@ public class StreamChatProvider implements ChatProviderService {
                 .request();
     }
 
+    /**
+     * Upserts a user in the chat provider.
+     *
+     * @param userId    The ID of the user.
+     * @param username  The username of the user.
+     * @param imageUrl  The URL of the user's avatar image.
+     * @return The user request object.
+     */
     public User.UserRequestObject upsertUser(String userId, String username, String imageUrl) {
         var streamUser = io.getstream.chat.java.models.User.UserRequestObject.builder()
                 .id(userId)
@@ -91,6 +128,14 @@ public class StreamChatProvider implements ChatProviderService {
         return streamUser;
     }
 
+    /**
+     * Generates a token for user authentication.
+     *
+     * @param userId     The ID of the user.
+     * @param expiresAt  The expiration date for the token.
+     * @param issuedAt   The issue date for the token.
+     * @return The generated token.
+     */
     @Override
     public String getToken(String userId, Date expiresAt, Date issuedAt) {
         return User.createToken(userId, expiresAt, issuedAt);
