@@ -1,19 +1,24 @@
+import React from 'react'
+import { useState } from 'react';
 import {
-    Card,
-    CardBody,
+    Button,
     Dialog,
-    Typography
+    Card,
+    CardHeader,
+    CardBody,
+    CardFooter,
+    Typography,
+    Input,
+    Checkbox,
+
 } from "@material-tailwind/react";
 import axios from 'axios';
-import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { readLocalStorage } from '../../utils/helper';
 
-const AddVaccine = ({ petId }) => {
+const AddVaccine = ({petId}) => {
     const [open, setOpen] = React.useState(false);
-    const [response, setResponse] = useState({})
-    const [loading, setLoading] = useState(true)
     const handleOpen = () => setOpen((cur) => !cur);
     const navigate = useNavigate();
     const token = readLocalStorage("token")
@@ -21,8 +26,8 @@ const AddVaccine = ({ petId }) => {
 
     const [formData, setFormData] = useState({
         vaccineName: "",
-        vaccineGiven: true,
-        date: ""
+        vaccineGiven:true,
+        date:""
     });
 
     const handleChange = (event) => {
@@ -36,7 +41,7 @@ const AddVaccine = ({ petId }) => {
     const handleSubmit = (event) => {
 
         event.preventDefault();
-
+        
         axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/shelter/${petId}/addvaccine`, formData, {
             headers: {
                 Authorization: `Bearer ${token} `,
@@ -49,9 +54,9 @@ const AddVaccine = ({ petId }) => {
                 navigate(0)
                 handleOpen();
                 setFormData({
-                    vaccineName: "",
-                    vaccineGiven: true,
-                    date: ""
+                    vaccineName:"",
+                    vaccineGiven:true,
+                    date:""
                 })
             })
             .catch((err) => {
@@ -59,9 +64,9 @@ const AddVaccine = ({ petId }) => {
                 toast.error(err.message)
                 handleOpen();
                 setFormData({
-                    vaccineName: "",
-                    vaccineGiven: true,
-                    date: ""
+                    vaccineName:"",
+                    vaccineGiven:true,
+                    date:""
                 })
             })
     }
@@ -88,7 +93,7 @@ const AddVaccine = ({ petId }) => {
 
                             <div>
                                 <label htmlFor="lastName" className="text-sm font-medium leading-6 text-gray-900 flex">
-                                    Vaccine Name
+                                   Vaccine Name
                                 </label>
                                 <div className="mt-1">
                                     <input
@@ -106,22 +111,34 @@ const AddVaccine = ({ petId }) => {
                             </div>
 
                             <div>
-                                <label htmlFor="shelterName" className="text-sm font-medium leading-6 text-gray-900 flex">
-                                    Date
+                                <label htmlFor="lastName" className="text-sm font-medium leading-6 text-gray-900 flex">
+                                   Is Vaccine given or not ?
                                 </label>
                                 <div className="mt-1">
-                                    <input
-                                        id="date"
-                                        name="date"
-                                        type="date"
-                                        value={formData.date}
-                                        onChange={handleChange}
-                                        autoComplete="text"
-                                        required
-                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        placeholder='Enter Shelter Name'
-                                    />
+                                    <select name="adopted" id="adopted" value={formData.vaccineGiven} onChange={handleChange}>
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
                                 </div>
+                            </div>
+
+                            <div>
+                            <label htmlFor="shelterName" className="text-sm font-medium leading-6 text-gray-900 flex">
+                                Date on which vaccine should be given
+                            </label>
+                            <div className="mt-1">
+                                <input
+                                    id="date"
+                                    name="date"
+                                    type="date"
+                                    value={formData.date}
+                                    onChange={handleChange}
+                                    autoComplete="text"
+                                    required
+                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    placeholder='Enter Date'
+                                />
+                            </div>
                             </div>
 
                             <div className="pt-0 flex gap-4 mt-4">
