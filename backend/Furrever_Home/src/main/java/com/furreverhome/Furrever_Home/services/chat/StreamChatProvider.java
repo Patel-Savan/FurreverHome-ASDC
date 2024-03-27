@@ -17,6 +17,9 @@ import static com.furreverhome.Furrever_Home.services.chat.ChatUtils.getAvatarUr
 @RequiredArgsConstructor
 public class StreamChatProvider implements ChatProviderService {
 
+    private final String CHATPETUSERIDCONSTANT = "petuser";
+    private final String CHATSHELTERUSERIDCONSTANT = "shelteruser";
+
     @Value("${io.getstream.chat.apiKey}")
     private String apiKey;
 
@@ -28,15 +31,10 @@ public class StreamChatProvider implements ChatProviderService {
     @Override
     public void createChatChannel(PetAdopter petAdopter, Shelter shelter, String channelId) {
         // Upsert both users
-        String petAdopterUserId = getPetChatUserId(petAdopter.getId());
-        String petAdopterUsername = petAdopter.getFirstname();
-        String petAdopterAvatarUrl = getAvatarUrl(petAdopter.getUser().getEmail());
-        var petStreamUser = upsertUser(petAdopterUserId, petAdopterUsername, petAdopterAvatarUrl);
-
-        String shelterUserId = getPetChatUserId(shelter.getId());
-        String shelterUsername = shelter.getName();
-        String shelterAvatarUrl = getAvatarUrl(shelter.getUser().getEmail());
-        var shelterStreamUser = upsertUser(shelterUserId, shelterUsername, shelterAvatarUrl);
+        var petStreamUser = upsertUser(CHATPETUSERIDCONSTANT, petAdopter.getFirstname(),
+                getAvatarUrl(petAdopter.getUser().getEmail()));
+        var shelterStreamUser = upsertUser(CHATSHELTERUSERIDCONSTANT, shelter.getName(),
+                getAvatarUrl(shelter.getUser().getEmail()));
 
         try {
             createStreamChannel(petStreamUser,
@@ -96,15 +94,5 @@ public class StreamChatProvider implements ChatProviderService {
     @Override
     public String getToken(String userId, Date expiresAt, Date issuedAt) {
         return User.createToken(userId, expiresAt, issuedAt);
-    }
-
-    @Override
-    public String getPetChatUserId(long userId) {
-        return "testpetuser1";
-    }
-
-    @Override
-    public String getShelterChatUserId(long userId) {
-        return "testshelteruser1";
     }
 }

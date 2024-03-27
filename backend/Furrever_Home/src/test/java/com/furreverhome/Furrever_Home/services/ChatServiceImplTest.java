@@ -79,7 +79,6 @@ public class ChatServiceImplTest {
 
         doNothing().when(chatProviderService).createChatChannel(any(), any(), any());
         when(chatProviderService.getApiKey()).thenReturn("apiKey");
-        when(chatProviderService.getPetChatUserId(anyLong())).thenReturn("petId");
         when(chatProviderService.getToken(any(), any(), any())).thenReturn("token");
 
         // Call the method under test
@@ -108,7 +107,7 @@ public class ChatServiceImplTest {
 
         doNothing().when(chatProviderService).createChatChannel(any(), any(), any());
         when(chatProviderService.getApiKey()).thenReturn("apiKey");
-        when(chatProviderService.getShelterChatUserId(anyLong())).thenReturn("shelterId");
+//        when(chatProviderService.getShelterChatUserId(anyLong())).thenReturn("shelterId");
         when(chatProviderService.getToken(any(), any(), any())).thenReturn("token");
 
         // Call the method under test
@@ -134,7 +133,6 @@ public class ChatServiceImplTest {
         when(petAdopterRepository.findByUserId(petAdopterUser.getId())).thenReturn(Optional.of(petAdopter));
 
         when(chatProviderService.getApiKey()).thenReturn("apiKey");
-        when(chatProviderService.getPetChatUserId(anyLong())).thenReturn("petId");
         when(chatProviderService.getToken(anyString(), any(), any())).thenReturn("token");
 
         // Call the method under test
@@ -156,12 +154,10 @@ public class ChatServiceImplTest {
 
     @Test
     void getShelterChatHistory_withValidUserId_returnsChatHistorySuccessfully() throws Exception {
-        // Assuming getChatHistory simply validates the user and returns a token
         when(userRepository.findById(shelterUser.getId())).thenReturn(Optional.of(shelterUser));
         when(shelterRepository.findByUserId(shelterUser.getId())).thenReturn(Optional.of(shelter));
 
         when(chatProviderService.getApiKey()).thenReturn("apiKey");
-        when(chatProviderService.getShelterChatUserId(anyLong())).thenReturn("shelterId");
         when(chatProviderService.getToken(anyString(), any(), any())).thenReturn("token");
 
         // Call the method under test
