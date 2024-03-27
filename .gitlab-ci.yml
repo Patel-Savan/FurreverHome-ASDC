@@ -47,7 +47,7 @@ test:
 
 quality:
   stage: quality
-  image: amazoncorretto:17
+  image: openjdk:17-alpine
   script:
     - echo "Compiling the project"
     - mkdir smells/
