@@ -91,6 +91,9 @@ public class ShelterServiceImpl implements ShelterService{
         if (updatePetRequest.getPetMedicalHistory() != null) {
             pet.setPetMedicalHistory(updatePetRequest.getPetMedicalHistory());
         }
+        if (updatePetRequest.isAdopted()) {
+            pet.setAdopted(true);
+        }
     }
 
     public GenericResponse deletePet(Long petId) {
