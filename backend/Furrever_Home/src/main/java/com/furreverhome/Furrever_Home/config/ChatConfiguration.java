@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ChatConfiguration {
-
     @Bean
     public ChatProviderService chatProviderService() {
         return new StreamChatProvider();
@@ -26,6 +25,4 @@ public class ChatConfiguration {
             ShelterRepository shelterRepository) {
         return new ChatServiceImpl(chatProviderService, userRepository, petAdopterRepository, shelterRepository);
     }
-
-
 }

@@ -19,6 +19,7 @@ const PetDetail = ({
   const sid = readLocalStorage("shelterID")
   console.log(role)
   const navigate = useNavigate()
+ 
 
   if(role === "PETADOPTER"){
     useEffect(()=> {
@@ -91,6 +92,8 @@ const PetDetail = ({
                 reqExist ? <p className="flex items-center fonr-bold text-green-500 gap-1">You have sent request for this pet </p> : <button type="button" onClick={handleAdoptionRequest} className="btn btn-orange mx-auto lg:h-10 sm:h-15">Adopt</button> 
                 : 
 
+                  
+
                 <>
                   <div className="flex justify-center"> 
                     <span className="text-lg font-normal py-2 mr-3">Want to edit Pet details ? </span>
@@ -101,6 +104,7 @@ const PetDetail = ({
                   </div>
                 
                 </>
+                
                 
             }
 

@@ -1,17 +1,14 @@
 package com.furreverhome.Furrever_Home.controller;
 
 import com.furreverhome.Furrever_Home.dto.*;
-import com.furreverhome.Furrever_Home.services.authenticationServices.PetAdopterAuthenticationService;
-import com.furreverhome.Furrever_Home.services.authenticationServices.ShelterAuthenticationService;
+import com.furreverhome.Furrever_Home.services.JwtService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 import com.furreverhome.Furrever_Home.config.FrontendConfigurationProperties;
 import com.furreverhome.Furrever_Home.dto.GenericResponse;
 import com.furreverhome.Furrever_Home.dto.JwtAuthenticationResponse;
-import com.furreverhome.Furrever_Home.dto.PetAdopterSignupRequest;
 import com.furreverhome.Furrever_Home.dto.RefreshTokenRequest;
 import com.furreverhome.Furrever_Home.dto.SigninRequest;
 import com.furreverhome.Furrever_Home.dto.user.PasswordDto;
@@ -21,29 +18,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.view.RedirectView;
-import com.furreverhome.Furrever_Home.dto.*;
-import com.furreverhome.Furrever_Home.dto.user.PasswordDto;
-import com.furreverhome.Furrever_Home.dto.user.ResetEmailRequest;
-import com.furreverhome.Furrever_Home.services.AuthenticationService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,23 +32,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthenticationController {
 
-//    private final AuthenticationServiceImpl authenticationService;
-
-    private final PetAdopterAuthenticationService petAdopterAuthenticationService;
-
-    private final ShelterAuthenticationService shelterAuthenticationService;
+    private final JwtService jwtService;
     private final AuthenticationService authenticationService;
     private final FrontendConfigurationProperties frontendConfigurationProperties;
 
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(HttpServletRequest request, @RequestBody SignupRequest signupRequest) throws MessagingException {
-        if (signupRequest instanceof PetAdopterSignupRequest) {
-            return ResponseEntity.ok(petAdopterAuthenticationService.signup(getAppUrl(request), (PetAdopterSignupRequest) signupRequest));
-        } else if (signupRequest instanceof ShelterSignupRequest) {
-            return ResponseEntity.ok(shelterAuthenticationService.signup(getAppUrl(request), (ShelterSignupRequest) signupRequest));
-        }
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(authenticationService.signup(getAppUrl(request), signupRequest));
     }
 
     @GetMapping("/verify/{email}")
@@ -91,7 +57,7 @@ public class AuthenticationController {
 
     @PostMapping("/refresh")
     public ResponseEntity<JwtAuthenticationResponse> refresh (@RequestBody RefreshTokenRequest refreshTokenRequest) {
-        return ResponseEntity.ok(authenticationService.refreshToken(refreshTokenRequest));
+        return ResponseEntity.ok(jwtService.refreshToken(refreshTokenRequest));
     }
 
     @PostMapping("/forgetPassword")

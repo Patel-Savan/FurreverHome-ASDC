@@ -1,16 +1,15 @@
 package com.furreverhome.Furrever_Home.services.authenticationServices;
 
 
-import com.furreverhome.Furrever_Home.dto.GenericResponse;
-import com.furreverhome.Furrever_Home.dto.JwtAuthenticationResponse;
-import com.furreverhome.Furrever_Home.dto.RefreshTokenRequest;
-import com.furreverhome.Furrever_Home.dto.SigninRequest;
+import com.furreverhome.Furrever_Home.dto.*;
 import com.furreverhome.Furrever_Home.dto.user.PasswordDto;
 import com.furreverhome.Furrever_Home.entities.PasswordResetToken;
 import com.furreverhome.Furrever_Home.entities.PetAdopter;
 import com.furreverhome.Furrever_Home.entities.Shelter;
 import com.furreverhome.Furrever_Home.entities.User;
 import com.furreverhome.Furrever_Home.enums.Role;
+import com.furreverhome.Furrever_Home.exception.EmailExistsException;
+import com.furreverhome.Furrever_Home.exception.GlobalExceptionHandler;
 import com.furreverhome.Furrever_Home.repository.PasswordTokenRepository;
 import com.furreverhome.Furrever_Home.repository.PetAdopterRepository;
 import com.furreverhome.Furrever_Home.repository.ShelterRepository;
@@ -32,6 +31,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -71,6 +71,73 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
+    public boolean signup(String appUrl, SignupRequest signupRequest) throws MessagingException {
+        int shelterCheckRole = 2;
+        int petAdopterCheckRole = 1;
+
+        if(userRepository.existsByEmail(signupRequest.getEmail())) {
+            try {
+                throw new EmailExistsException("User Already Exists");
+            } catch (EmailExistsException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        User user = new User();
+        user.setEmail(signupRequest.getEmail());
+        user.setVerified(Boolean.FALSE);
+        user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
+
+        if (signupRequest.getCheckRole() == petAdopterCheckRole) {
+            PetAdopter petAdopter = new PetAdopter();
+
+            petAdopter.setFirstname(((PetAdopterSignupRequest) signupRequest).getFirstName());
+            petAdopter.setLastname(((PetAdopterSignupRequest) signupRequest).getLastName());
+            petAdopter.setPhone_number(((PetAdopterSignupRequest) signupRequest).getPhone_number());
+            petAdopter.setAddress(((PetAdopterSignupRequest) signupRequest).getAddress());
+            petAdopter.setCity(((PetAdopterSignupRequest) signupRequest).getCity());
+            petAdopter.setCountry(((PetAdopterSignupRequest) signupRequest).getCountry());
+            petAdopter.setZipcode(((PetAdopterSignupRequest) signupRequest).getZipcode());
+
+            user.setRole(Role.PETADOPTER);
+            User result = userRepository.save(user);
+            petAdopter.setUser(result);
+
+            petAdopterRepository.save(petAdopter);
+        } else if (signupRequest.getCheckRole() == shelterCheckRole){
+            Shelter shelter = new Shelter();
+            shelter.setName(((ShelterSignupRequest) signupRequest).getName());
+            shelter.setContact(((ShelterSignupRequest) signupRequest).getContact());
+            shelter.setLicense(((ShelterSignupRequest) signupRequest).getLicense());
+            shelter.setCapacity(((ShelterSignupRequest) signupRequest).getCapacity());
+            shelter.setImageBase64(((ShelterSignupRequest) signupRequest).getImageBase64());
+            shelter.setCity(((ShelterSignupRequest) signupRequest).getCity());
+            shelter.setCountry(((ShelterSignupRequest) signupRequest).getCountry());
+            shelter.setAddress(((ShelterSignupRequest) signupRequest).getAddress());
+            shelter.setZipcode(((ShelterSignupRequest) signupRequest).getZipcode());
+            shelter.setRejected(Boolean.FALSE);
+
+            user.setRole(Role.SHELTER);
+            User result = userRepository.save(user);
+            shelter.setUser(result);
+
+            shelterRepository.save(shelter);
+        } else {
+            throw new RuntimeException("Registration details is incorrect.");
+        }
+
+        String url = appUrl + "/api/auth/verify/" + signupRequest.getEmail();
+        String linkText = "Click here to verify your email.";
+        String message = "<p>Please use the link below to verify your email.</p>"
+                + "<a href=\"" + url + "\">" + linkText + "</a>";
+        // TODO: Separate the logic for the code to send email from here.
+        emailService.sendEmail(signupRequest.getEmail(), "Email Verification",
+                message, true);
+
+        return true;
+    }
+
+
     public JwtAuthenticationResponse signin(SigninRequest signinRequest) throws
             BadCredentialsException,
             DisabledException,
@@ -83,7 +150,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new BadCredentialsException("Incorrect username or password");
         }
 
-        var user = userRepository.findByEmail(signinRequest.getEmail()).orElseThrow(() -> new IllegalArgumentException("Invalid email and password"));
+        var user = userRepository.findByEmail(signinRequest.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid email and password"));
         JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
         if(user.getVerified()) {
             Optional<Shelter> optionalShelter = shelterRepository.findByUserId(user.getId());
@@ -106,22 +174,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         jwtAuthenticationResponse.setVerified(user.getVerified());
         return jwtAuthenticationResponse;
-    }
-
-    public JwtAuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
-        String userEmail = jwtService.extractUserName(refreshTokenRequest.getToken());
-        User user = userRepository.findByEmail(userEmail).orElseThrow();
-
-        if(jwtService.isTokenValid(refreshTokenRequest.getToken(), user)) {
-            var jwt = jwtService.generateToken(user);
-
-            JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
-
-            jwtAuthenticationResponse.setToken(jwt);
-            jwtAuthenticationResponse.setRefreshToken(refreshTokenRequest.getToken());
-            return jwtAuthenticationResponse;
-        }
-        return null;
     }
 
     public boolean verifyByEmail(String email) {

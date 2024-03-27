@@ -19,10 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.furreverhome.Furrever_Home.entities.User;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -64,33 +61,35 @@ public class ShelterServiceImpl implements ShelterService{
         Optional<Pet> optionalPet = petRepository.findById(petID);
         if (optionalPet.isPresent()){
             Pet pet = optionalPet.get();
-
-            if (updatePetRequest.getType()!=null){
-                pet.setType(updatePetRequest.getType());
-            }
-            if (updatePetRequest.getBreed()!=null){
-                pet.setBreed(updatePetRequest.getBreed());
-            }
-            if (updatePetRequest.getColour()!=null){
-                pet.setColour(updatePetRequest.getColour());
-            }
-            if (updatePetRequest.getGender()!=null){
-                pet.setGender(updatePetRequest.getGender());
-            }
-            if (updatePetRequest.getBirthdate()!=null){
-                pet.setBirthdate(updatePetRequest.getBirthdate());
-            }
-            if (updatePetRequest.getPetImage()!=null){
-                pet.setPetImage(updatePetRequest.getPetImage());
-            }
-            if (updatePetRequest.getPetMedicalHistory()!=null){
-                pet.setPetMedicalHistory(updatePetRequest.getPetMedicalHistory());
-            }
+            updatePetFields(pet, updatePetRequest);
             petRepository.save(pet);
-
             return mapPetToDto(pet);
         }else {
             throw new RuntimeException("Pet with ID "+petID+" not found");
+        }
+    }
+
+    private void updatePetFields(Pet pet, RegisterPetRequest updatePetRequest) {
+        if (updatePetRequest.getType() != null) {
+            pet.setType(updatePetRequest.getType());
+        }
+        if (updatePetRequest.getBreed() != null) {
+            pet.setBreed(updatePetRequest.getBreed());
+        }
+        if (updatePetRequest.getColour() != null) {
+            pet.setColour(updatePetRequest.getColour());
+        }
+        if (updatePetRequest.getGender() != null) {
+            pet.setGender(updatePetRequest.getGender());
+        }
+        if (updatePetRequest.getBirthdate() != null) {
+            pet.setBirthdate(updatePetRequest.getBirthdate());
+        }
+        if (updatePetRequest.getPetImage() != null) {
+            pet.setPetImage(updatePetRequest.getPetImage());
+        }
+        if (updatePetRequest.getPetMedicalHistory() != null) {
+            pet.setPetMedicalHistory(updatePetRequest.getPetMedicalHistory());
         }
     }
 
@@ -151,14 +150,10 @@ public class ShelterServiceImpl implements ShelterService{
         Optional<Pet> optionalPet = petRepository.findById(petID);
         if (optionalPet.isPresent()){
             Pet pet = optionalPet.get();
-            List<PetAdopter> petAdopters = adopterPetRequestsRepository.findByPet(pet);
+            List<PetAdopter> petAdopters = adopterPetRequestsRepository.findPetAdoptersByPet(pet);
             PetAdoptionRequestResponseDto petAdoptionRequestResponseDto = new PetAdoptionRequestResponseDto();
             petAdoptionRequestResponseDto.setPetID(petID);
-            List<Long> petAdopterIDList = new ArrayList<>();
-            for (PetAdopter petAdopter : petAdopters) {
-                petAdopterIDList.add(petAdopter.getId());
-            }
-            petAdoptionRequestResponseDto.setPetAdopters(petAdopterIDList);
+            petAdoptionRequestResponseDto.setPetAdopters(petAdopters);
             return petAdoptionRequestResponseDto;
         }else {
             throw new RuntimeException("Requests with petID " + petID + " not found");

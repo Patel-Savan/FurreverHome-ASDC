@@ -91,7 +91,7 @@ public class PetServiceImpl implements PetService {
         petDto.setGender(pet.getGender());
         petDto.setBirthdate(pet.getBirthdate());
         petDto.setPetImage(pet.getPetImage());
-        petDto.setPetMedicalHistory(petDto.getPetMedicalHistory());
+        petDto.setPetMedicalHistory(pet.getPetMedicalHistory());
         List<PetVaccination> petVaccinationList = petVaccinationRepository.findByPet(pet);
         List<String> vaccineNameList = new ArrayList<>();
         for (PetVaccination petVaccine : petVaccinationList) {

@@ -33,6 +33,9 @@ public class ChatServiceImpl implements ChatService {
     private final PetAdopterRepository petAdopterRepository;
     private final ShelterRepository shelterRepository;
 
+    private final String CHATPETUSERIDCONSTANT = "petuser";
+    private final String CHATSHELTERUSERIDCONSTANT = "shelteruser";
+
 
     @Override
     public ChatCredentialsResponse createChatSession(long fromUserId, long toUserId){
@@ -59,12 +62,18 @@ public class ChatServiceImpl implements ChatService {
         var entities = determineRolesAndGetEntities(user);
 
         // Upsert both users
+        String shelterUserId = entities.petAdopter().getId().toString();
+        String shelterUsername = entities.petAdopter().getFirstname();
+        String shelterImageUrl = getAvatarUrl(entities.petAdopter().getUser().getEmail());
         if (entities.petAdopter() != null) {
-            chatProviderService.addUser(entities.petAdopter().getId().toString(), entities.petAdopter().getFirstname(), getAvatarUrl(entities.petAdopter().getUser().getEmail()));
+            chatProviderService.addUser(shelterUserId, shelterUsername, shelterImageUrl);
         }
 
+        String petAdopterUserId = entities.shelter().getId().toString();
+        String petAdopterUsername = entities.shelter().getName();
+        String petAdopterImageUrl = getAvatarUrl(entities.shelter().getUser().getEmail());
         if (entities.shelter() != null) {
-            chatProviderService.addUser(entities.shelter().getId().toString(), entities.shelter().getName(), getAvatarUrl(entities.shelter().getUser().getEmail()));
+            chatProviderService.addUser(petAdopterUserId, petAdopterUsername, petAdopterImageUrl);
         }
 
         return generateTokenForUser(user, entities.petAdopter(), entities.shelter(), null);
@@ -72,8 +81,9 @@ public class ChatServiceImpl implements ChatService {
 
 
     private String generateChannelId(String petAdopterEmail, String shelterEmail) {
+        int maxLength = 14;
         String rawId = DigestUtils.sha256Hex(petAdopterEmail + shelterEmail);
-        return rawId.substring(0, Math.min(rawId.length(), 14));
+        return rawId.substring(0, Math.min(rawId.length(), maxLength));
     }
 
     private User validateUserExists(long userId) throws ResponseStatusException {
@@ -116,17 +126,16 @@ public class ChatServiceImpl implements ChatService {
         var calendar = new GregorianCalendar();
         calendar.add(Calendar.HOUR, 1);
 
-
         String token;
         String userId;
         String avatarUrl;
 
         if (fromUser.getRole() == Role.PETADOPTER) {
-            userId = chatProviderService.getPetChatUserId(petAdopter.getId());
+            userId = CHATPETUSERIDCONSTANT;
             avatarUrl = getAvatarUrl(petAdopter.getUser().getEmail());
             token = chatProviderService.getToken(userId, calendar.getTime(), null);
         } else {
-            userId = chatProviderService.getShelterChatUserId(shelter.getId());
+            userId = CHATSHELTERUSERIDCONSTANT;
             avatarUrl = getAvatarUrl(shelter.getUser().getEmail());
 
             token = chatProviderService.getToken(userId, calendar.getTime(), null);

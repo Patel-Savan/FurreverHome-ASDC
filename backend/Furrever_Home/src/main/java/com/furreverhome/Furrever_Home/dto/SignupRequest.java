@@ -20,4 +20,6 @@ public abstract class SignupRequest {
     private String password;
 
     private String role;
+
+    private Integer checkRole;
 }

@@ -1,15 +1,11 @@
 package com.furreverhome.Furrever_Home.controller;
 
 import com.furreverhome.Furrever_Home.config.FrontendConfigurationProperties;
-import com.furreverhome.Furrever_Home.dto.GenericResponse;
 import com.furreverhome.Furrever_Home.dto.JwtAuthenticationResponse;
 import com.furreverhome.Furrever_Home.dto.RefreshTokenRequest;
 import com.furreverhome.Furrever_Home.dto.SigninRequest;
-import com.furreverhome.Furrever_Home.dto.user.PasswordDto;
-import com.furreverhome.Furrever_Home.dto.user.ResetEmailRequest;
 import com.furreverhome.Furrever_Home.services.AuthenticationService;
-import com.furreverhome.Furrever_Home.services.authenticationServices.PetAdopterAuthenticationService;
-import com.furreverhome.Furrever_Home.services.authenticationServices.ShelterAuthenticationService;
+import com.furreverhome.Furrever_Home.services.JwtService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -25,13 +21,9 @@ import static org.mockito.Mockito.when;
 class AuthenticationControllerTest {
 
     @Mock
-    private PetAdopterAuthenticationService petAdopterAuthenticationService;
-
-    @Mock
-    private ShelterAuthenticationService shelterAuthenticationService;
-
-    @Mock
     private AuthenticationService authenticationService;
+    @Mock
+    private JwtService jwtService;
 
     @Mock
     private FrontendConfigurationProperties frontendConfigurationProperties;
@@ -66,7 +58,7 @@ class AuthenticationControllerTest {
         JwtAuthenticationResponse expectedResponse = new JwtAuthenticationResponse();
 
         // Mocking the authentication service's behavior
-        when(authenticationService.refreshToken(refreshTokenRequest)).thenReturn(expectedResponse);
+        when(jwtService.refreshToken(refreshTokenRequest)).thenReturn(expectedResponse);
 
         // Calling the controller method
         ResponseEntity<JwtAuthenticationResponse> responseEntity = authenticationController.refresh(refreshTokenRequest);
