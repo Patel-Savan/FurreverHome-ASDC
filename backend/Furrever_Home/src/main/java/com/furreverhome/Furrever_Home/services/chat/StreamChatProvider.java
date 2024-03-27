@@ -17,8 +17,8 @@ import static com.furreverhome.Furrever_Home.services.chat.ChatUtils.getAvatarUr
 @RequiredArgsConstructor
 public class StreamChatProvider implements ChatProviderService {
 
-    private final String CHATPETUSERIDCONSTANT = "petuser";
-    private final String CHATSHELTERUSERIDCONSTANT = "shelteruser";
+    private final String CHATPETUSERIDCONSTANT = "testpetuser1";
+    private final String CHATSHELTERUSERIDCONSTANT = "testshelteruser1";
 
     @Value("${io.getstream.chat.apiKey}")
     private String apiKey;

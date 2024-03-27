@@ -33,8 +33,8 @@ public class ChatServiceImpl implements ChatService {
     private final PetAdopterRepository petAdopterRepository;
     private final ShelterRepository shelterRepository;
 
-    private final String CHATPETUSERIDCONSTANT = "petuser";
-    private final String CHATSHELTERUSERIDCONSTANT = "shelteruser";
+    private final String CHATPETUSERIDCONSTANT = "testpetuser1";
+    private final String CHATSHELTERUSERIDCONSTANT = "testshelteruser1";
 
 
     @Override
