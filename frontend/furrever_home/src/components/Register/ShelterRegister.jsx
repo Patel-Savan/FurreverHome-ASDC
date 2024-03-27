@@ -24,7 +24,8 @@ const ShelterRegister = () => {
     address: "",
     city: "",
     country: "",
-    zipcode: ""
+    zipcode: "",
+    checkRole: "2"
   })
 
   const [image, setImage] = useState([])
@@ -88,7 +89,8 @@ const ShelterRegister = () => {
       address: formData.address,
       city: formData.city,
       country: formData.country,
-      zipcode: formData.zipcode
+      zipcode: formData.zipcode,
+      checkRole: formData.checkRole
 
     }
 

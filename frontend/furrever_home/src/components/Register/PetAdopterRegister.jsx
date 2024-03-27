@@ -24,7 +24,8 @@ const PetAdopterRegister = () => {
     country: "",
     zipcode: "",
     phone_number: "",
-    role: "petadopter"
+    role: "petadopter",
+    checkRole: "1"
   })
 
   const handleChange = (event) => {
