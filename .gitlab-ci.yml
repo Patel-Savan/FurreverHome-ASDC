@@ -14,7 +14,17 @@ build:
   image: maven:latest
   script:
     - cd backend/Furrever_Home
-    - mvn clean package
+    # Determine the active profile based on the branch
+    - >
+      if [ "$CI_COMMIT_BRANCH" = "prod" ]; then
+        SPRING_PROFILE="prod"
+      elif [ "$CI_COMMIT_BRANCH" = "dev" ]; then
+        SPRING_PROFILE="dev"
+      else
+        SPRING_PROFILE="test"
+      fi
+    # Pass the determined profile to Maven
+    - mvn clean package -Dspring.profiles.active=$SPRING_PROFILE
     - ls -l target/
   artifacts:
     paths:
