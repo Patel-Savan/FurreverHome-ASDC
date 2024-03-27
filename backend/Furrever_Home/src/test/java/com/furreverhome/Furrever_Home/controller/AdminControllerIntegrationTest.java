@@ -1,3 +1,41 @@
+package com.furreverhome.Furrever_Home.controller;
+
+import com.furreverhome.Furrever_Home.ApiTestUtils;
+import io.restassured.RestAssured;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static io.restassured.RestAssured.when;
+import static org.hamcrest.Matchers.*;
+
+// Correct static imports for io.restassured.RestAssured and org.hamcrest.Matchers
+import static io.restassured.RestAssured.given;
+
+class AdminControllerIntegrationTest {
+
+    private String token;
+
+    @BeforeEach
+    public void setUp() {
+        token = ApiTestUtils.obtainAccessToken("admin@gmail.com", "Jp@32padhiyar");
+    }
+
+
+    @Test
+    public void testGetAllShelterSuccessThenOK(){
+//        when().get("http://localhost:8080/api/admin/shelters").then().statusCode(200);
+//        given().auth().preemptive().basic("admin@gmail.com", "Jp@32padhiyar")
+//                .when().get("http://localhost:8080/api/admin/shelters")
+//                .then().statusCode(200);
+        given().header("Authorization", "Bearer " + token)
+                .when().get("http://localhost:8080/api/admin/shelters")
+                .then().statusCode(200);
+    }
+}
+
+
+
+
+
 //package com.furreverhome.Furrever_Home.controller;
 //
 //import com.furreverhome.Furrever_Home.dto.petadopter.ShelterResponseDto;
@@ -34,7 +72,7 @@
 //        // Assuming there's a shelter with email "test@example.com" and we want to change its status.
 //        // This test might require setting up test data that matches these criteria.
 //        String email = "test@example.com";
-//        String status = "verified"; // Assuming 'verified' is a valid status.
+//        String status = "Approve"; // Assuming 'verified' is a valid status.
 //        ResponseEntity<?> response = restTemplate.getForEntity("/api/admin/shelter/{email}/{status}", Void.class, email, status);
 //        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 //
