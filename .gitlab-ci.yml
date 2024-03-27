@@ -82,8 +82,9 @@ publish:
     - docker build -t em492028/furrever-backend-api:$IMAGE_TAG . -f Dockerfile
     - docker push em492028/furrever-backend-api:$IMAGE_TAG
   only:
-    - main
-    - dev
+    # - main
+    # - dev
+    - branches
 
 publish-frontend:
   image: docker:latest
@@ -109,9 +110,9 @@ publish-frontend:
    - docker build --build-arg VITE_BACKEND_BASE_URL=$VITE_BACKEND_TEST_BASE_URL -t em492028/furrever-frontend:$IMAGE_TAG . -f Dockerfile
    - docker push em492028/furrever-frontend:$IMAGE_TAG
   only:
-    - main
-    - dev
-
+    # - main
+    # - dev
+    - branches
 
 deploy:
   image: alpine:latest
@@ -142,8 +143,9 @@ deploy:
     name: development
     url: http://172.17.0.170:$SERVER_PORT
   only:
-    - main
-    - dev
+    # - main
+    # - dev
+    - branches
 
 deploy-frontend:
   image: alpine:latest
@@ -171,5 +173,6 @@ deploy-frontend:
     name: development
     url: http://172.17.0.170:$SERVER_PORT
   only:
-    - main
-    - dev
+    # - main
+    # - dev
+    - branches
