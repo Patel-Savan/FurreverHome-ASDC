@@ -32,6 +32,7 @@ const UpdatePetDetails = ({ pets, sid }) => {
         colour: pets.colour,
         gender: pets.gender,
         birthdate: pets.birthdate,
+        petMedicalHistory:pets.petMedicalHistory,
         petImage: pets.petImage,
         shelter: sid,
         adopted: pets.adopted
@@ -86,6 +87,7 @@ const UpdatePetDetails = ({ pets, sid }) => {
                     colour: "",
                     gender: "",
                     birthdate: "",
+                    petMedicalHistory:"",
                     petImage: "",
                     adopted: false
                 })
@@ -101,6 +103,7 @@ const UpdatePetDetails = ({ pets, sid }) => {
                     colour: "",
                     gender: "",
                     birthdate: "",
+                    petMedicalHistory:"",
                     petImage: "",
                     adopted: false
                 })
@@ -173,6 +176,27 @@ const UpdatePetDetails = ({ pets, sid }) => {
                                         value={formData.breed}
                                         onChange={handleChange}
                                         autoComplete="text"
+                                        required
+                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        placeholder='Enter Shelter Name'
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+
+                                <label htmlFor="shelterName" className="text-sm font-medium leading-6 text-gray-900 flex">
+                                    Medical History
+                                </label>
+                                <div className="mt-1">
+                                    <input
+                                        id="petMedicalHistory"
+                                        name="petMedicalHistory"
+                                        type="text"
+                                        value={formData.petMedicalHistory}
+                                        onChange={handleChange}
+                                        autoComplete="text"
+                                        size="40"
                                         required
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         placeholder='Enter Shelter Name'

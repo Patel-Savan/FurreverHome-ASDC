@@ -17,6 +17,7 @@ const PetForAdopter = () => {
       birthdate:"",
       gender:"",
       colour:"",
+      petMedicalHistory:"",
       petImage:"",
       petID:""
     })
@@ -47,6 +48,7 @@ const PetForAdopter = () => {
           birthdate:DOB,
           gender:response.data.gender,
           colour:response.data.colour,
+          petMedicalHistory:response.data.petMedicalHistory,
           petImage:response.data.petImage,
           petID:response.data.petID
         })
