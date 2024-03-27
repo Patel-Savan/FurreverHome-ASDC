@@ -2,7 +2,7 @@
 stages:
   - build
   - test
-  # - quality
+  - quality
   - publish
   - deploy
 
