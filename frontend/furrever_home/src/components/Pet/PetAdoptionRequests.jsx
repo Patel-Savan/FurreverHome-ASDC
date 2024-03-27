@@ -47,8 +47,8 @@ const PetAdoptionRequests = () => {
         { field: 'firstname', headerName: 'First Name', width: 150 },
         { field: 'lastname', headerName: 'Last Name', width: 150 },
         { field: 'phone_number', headerName: 'Contact', width: 150 },
-        { field: 'address', headerName: 'Contact', width: 200 },
-        { field: 'city', headerName: 'Contact', width: 150 },
+        { field: 'address', headerName: 'Address', width: 200 },
+        { field: 'city', headerName: 'City', width: 150 },
         {
             field: 'chat',
             headerName: 'Chat',
