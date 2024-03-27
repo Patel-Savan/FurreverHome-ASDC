@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { readLocalStorage } from '../../utils/helper'
 import { toast } from 'react-toastify'
-import UpdatePetDetails from '../Shelter/UpdatePetDetails'
+import UpdatePetIndividualDetails from '../Shelter/UpdatePetIndividualDetails'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
@@ -97,7 +97,7 @@ const PetDetail = ({
                 <>
                   <div className="flex justify-center"> 
                     <span className="text-lg font-normal py-2 mr-3">Want to edit Pet details ? </span>
-                    <UpdatePetDetails pets={pet} sid={sid} />
+                    <UpdatePetIndividualDetails pets={pet} sid={sid} />
                   </div>
                   <div className="flex justify-center"> 
                     <button type="button" onClick={getPetAdoptionRequests} className="btn btn-orange mx-auto lg:h-10 sm:h-15">See Pet Adoption Requests</button>             

@@ -1,3 +1,4 @@
+import { PencilIcon } from "@heroicons/react/24/solid";
 import {
     Card,
     CardBody,
@@ -10,34 +11,32 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { readLocalStorage } from '../../utils/helper';
 
-const RegisterLostPet = ({ setChange }) => {
+const UpdatePetDetails = ({ pets, sid }) => {
     const [open, setOpen] = React.useState(false);
     const [response, setResponse] = useState({})
     const [loading, setLoading] = useState(true)
     const handleOpen = () => setOpen((cur) => !cur);
     const navigate = useNavigate();
-    const sid = readLocalStorage("shelterID");
     const token = readLocalStorage("token")
-    // console.log("Bearer " + token)
-    // const [image, setPetImage] = useState("");
-
+    console.log(pets)
     const [formData, setFormData] = useState({
-        type: "",
-        breed: "",
-        colour: "",
-        gender: "",
-        phone: "",
-        email: "",
-        petImage:""
+
+        type: pets.type,
+        breed: pets.breed,
+        colour: pets.colour,
+        gender: pets.gender,
+        birthdate: pets.birthdate,
+        petMedicalHistory:pets.petMedicalHistory,
+        petImage: pets.petImage,
+        shelter: sid,
+        adopted: pets.adopted
     });
-
-
 
     const handleChange = (event) => {
 
         const newData = { ...formData }
         newData[event.target.id] = event.target.value
-        console.log(newData)
+
         setFormData(newData)
     }
 
@@ -46,13 +45,11 @@ const RegisterLostPet = ({ setChange }) => {
         const reader = new FileReader();
         reader.readAsDataURL(image);
         reader.onload = function (e) {
-              console.log(e.target.result)
+            //   console.log(e.target.result)
             const newData = { ...formData }
             newData.petImage = e.target.result
-            console.log(newData)
             setFormData(newData)
-            console.log(formData)
-            
+            //   console.log(typeof (image))
         };
 
         reader.onerror = function () {
@@ -60,52 +57,49 @@ const RegisterLostPet = ({ setChange }) => {
         };
     }
 
-
+    // const token = readLocalStorage("token")
 
     const handleSubmit = (event) => {
 
         event.preventDefault();
 
-       
-        console.log(formData)
-
-        axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/petadopter/lostpet`, formData, {
+        axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/shelter/editPet/${pets.petID}`, formData, {
             headers: {
-                Authorization: "Bearer " + token,
+                Authorization: `Bearer ${token}`,
             }
         })
             .then((res) => {
                 console.log(res)
-                setChange(true)
                 setResponse(res)
                 setLoading(true)
-                toast.success("New Pet added!");
-                // navigate(0)
+                toast.success("Pet Updated!");
+                navigate(0)
+                // setChange(true)
                 handleOpen();
-                setFormData({
-                    type: "",
-                    breed: "",
-                    colour: "",
-                    gender: "",
-                    phone: "",
-                    email: "",
-                    petImage: ""
-                })
+                // setFormData({
+                //     type: "",
+                //     breed: "",
+                //     colour: "",
+                //     gender: "",
+                //     birthdate: "",
+                //     petImage: "",
+                //     adopted: false
+                // })
 
             })
             .catch((err) => {
                 console.log(err)
                 toast.error(err.message)
                 handleOpen();
-                setFormData({
-                    type: "",
-                    breed: "",
-                    colour: "",
-                    gender: "",
-                    phone: "",
-                    email: "",
-                    petImage: ""
-                })
+                // setFormData({
+                //     type: "",
+                //     breed: "",
+                //     colour: "",
+                //     gender: "",
+                //     birthdate: "",
+                //     petImage: "",
+                //     adopted: false
+                // })
             })
     }
 
@@ -113,7 +107,7 @@ const RegisterLostPet = ({ setChange }) => {
 
     return (
         <>
-            <button className="btn btn-orange m-5" onClick={handleOpen}>Add new Pet</button>
+            <button onClick={handleOpen}><PencilIcon className="h-4 w-4" /></button>
             <Dialog
                 size="lg"
                 open={open}
@@ -123,14 +117,7 @@ const RegisterLostPet = ({ setChange }) => {
                 <Card className="mx-auto w-full max-w-[30rem] ">
                     <CardBody className="flex flex-col gap-4">
                         <Typography variant="h4" color="blue-gray">
-                            Register Lost Pet
-                        </Typography>
-                        <Typography
-                            className="mb-3 font-normal"
-                            variant="paragraph"
-                            color="gray"
-                        >
-                            Enter details of new pet
+                            Edit Pet Details
                         </Typography>
 
                         <form method="POST" onSubmit={handleSubmit}>
@@ -159,6 +146,19 @@ const RegisterLostPet = ({ setChange }) => {
                             <div>
 
                                 <label htmlFor="shelterName" className="text-sm font-medium leading-6 text-gray-900 flex">
+                                    Status
+                                </label>
+                                <div className="mt-1">
+                                    <select name="adopted" id="adopted" value={formData.adopted} onChange={handleChange}>
+                                        <option value="true">Adopted</option>
+                                        <option value="false">Not Adopted</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+
+                                <label htmlFor="shelterName" className="text-sm font-medium leading-6 text-gray-900 flex">
                                     Breed
                                 </label>
                                 <div className="mt-1">
@@ -176,6 +176,29 @@ const RegisterLostPet = ({ setChange }) => {
                                 </div>
                             </div>
 
+                            
+
+                            <div>
+
+                                <label htmlFor="shelterName" className="text-sm font-medium leading-6 text-gray-900 flex">
+                                    Medical History
+                                </label>
+                                <div className="mt-1">
+                                    <input
+                                        id="petMedicalHistory"
+                                        name="petMedicalHistory"
+                                        type="text"
+                                        value={formData.petMedicalHistory}
+                                        onChange={handleChange}
+                                        autoComplete="text"
+                                        size="40"
+                                        required
+                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        placeholder='Enter Shelter Name'
+                                    />
+                                </div>
+                            </div>
+
                             <div>
 
                                 <label htmlFor="shelterName" className="text-sm font-medium leading-6 text-gray-900 flex">
@@ -186,7 +209,7 @@ const RegisterLostPet = ({ setChange }) => {
                                         id="colour"
                                         name="colour"
                                         type="text"
-                                        value={formData.name}
+                                        value={formData.colour}
                                         onChange={handleChange}
                                         autoComplete="text"
                                         required
@@ -217,44 +240,24 @@ const RegisterLostPet = ({ setChange }) => {
                             </div>
 
                             <div>
-                                <label htmlFor="email" className="text-sm font-medium leading-6 text-gray-900 flex">
-                                    Email address
+
+                                <label htmlFor="shelterName" className="text-sm font-medium leading-6 text-gray-900 flex">
+                                    Birth Date
                                 </label>
                                 <div className="mt-1">
                                     <input
-                                        id="email"
-                                        name="email"
-                                        type="email"
-                                        value={formData.email}
+                                        id="birthdate"
+                                        name="birthdate"
+                                        type="date"
+                                        value={formData.birthdate}
                                         onChange={handleChange}
-                                        autoComplete="email"
+                                        autoComplete="text"
                                         required
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        placeholder='Your Email Address'
+                                        placeholder='Enter Shelter Name'
                                     />
                                 </div>
                             </div>
-
-                            <div>
-
-                                <label htmlFor="phone" className="text-sm font-medium leading-6 text-gray-900 flex">
-                                    Phone Number
-                                </label>
-                                <div className="mt-1">
-                                    <input
-                                        id="phone"
-                                        name="phone"
-                                        value={formData.phone}
-                                        onChange={handleChange}
-                                        type="tel"
-                                        autoComplete="tel"
-                                        required
-                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        placeholder='Your Phone Number'
-                                    />
-                                </div>
-                            </div>
-
 
                             <div className="">
                                 <label className="block text-sm font-medium leading-6 text-gray-900">Upload Image</label>
@@ -288,4 +291,4 @@ const RegisterLostPet = ({ setChange }) => {
     );
 }
 
-export default RegisterLostPet
+export default UpdatePetDetails

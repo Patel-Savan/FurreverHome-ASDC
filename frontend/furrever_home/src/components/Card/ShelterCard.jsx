@@ -18,7 +18,7 @@ const ShelterCard = ({
         <div className={`rounded-lg p-6 shadow-sm ${className}`}>
             <div className="overflow-hidden rounded-lg">
                 <img
-                    className="w-full cursor-pointer transition duration-200 ease-in-out transform hover:scale-110 rounded-lg h-auto"
+                    className="h-52 w-52 cursor-pointer transition duration-200 ease-in-out transform hover:scale-110 rounded-lg"
                     src={thumbnailSrc}
                     alt={thumbnailAlt}
                 />

@@ -49,7 +49,6 @@ const AddVaccine = ({petId}) => {
         })
             .then((res) => {
                 console.log(res)
-                setLoading(true)
                 toast.success("Successfully Added Pet Vaccine info");
                 navigate(0)
                 handleOpen();

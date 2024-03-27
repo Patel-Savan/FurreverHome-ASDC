@@ -35,7 +35,7 @@ const UpdatePetDetails = ({ pets,setChange }) => {
 
         const newData = { ...formData }
         newData[event.target.id] = event.target.value
-
+ 
         setFormData(newData)
     }
 

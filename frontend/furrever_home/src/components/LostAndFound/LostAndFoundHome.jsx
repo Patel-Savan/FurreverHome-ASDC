@@ -95,7 +95,7 @@ const LostAndFoundHome = () => {
                             loading
                                 ?
                                 pets.map((pet) => {
-                                    
+                                    console.log(pet)
                                     return (
                                         <LostPetCard
                                         key={pet.id}
