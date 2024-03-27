@@ -6,12 +6,14 @@ import com.furreverhome.Furrever_Home.utils.jgravatar.GravatarRating;
 
 public class ChatUtils {
 
+    private final static int gravatarSize = 50;
+
     private ChatUtils() {
     }
 
     public static String getAvatarUrl(String email) {
         Gravatar gravatar = new Gravatar();
-        gravatar.setSize(50);
+        gravatar.setSize(gravatarSize);
         gravatar.setRating(GravatarRating.GENERAL_AUDIENCES);
         gravatar.setDefaultImage(GravatarDefaultImage.IDENTICON);
         return gravatar.getUrl(email);

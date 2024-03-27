@@ -72,6 +72,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     public boolean signup(String appUrl, SignupRequest signupRequest) throws MessagingException {
+        int shelterCheckRole = 2;
+        int petAdopterCheckRole = 1;
+
         if(userRepository.existsByEmail(signupRequest.getEmail())) {
             try {
                 throw new EmailExistsException("User Already Exists");
@@ -85,7 +88,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setVerified(Boolean.FALSE);
         user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
 
-        if (signupRequest.getCheckRole() == 1) {
+        if (signupRequest.getCheckRole() == petAdopterCheckRole) {
             PetAdopter petAdopter = new PetAdopter();
 
             petAdopter.setFirstname(((PetAdopterSignupRequest) signupRequest).getFirstName());
@@ -101,7 +104,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             petAdopter.setUser(result);
 
             petAdopterRepository.save(petAdopter);
-        } else if (signupRequest.getCheckRole() == 2){
+        } else if (signupRequest.getCheckRole() == shelterCheckRole){
             Shelter shelter = new Shelter();
             shelter.setName(((ShelterSignupRequest) signupRequest).getName());
             shelter.setContact(((ShelterSignupRequest) signupRequest).getContact());
@@ -147,7 +150,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new BadCredentialsException("Incorrect username or password");
         }
 
-        var user = userRepository.findByEmail(signinRequest.getEmail()).orElseThrow(() -> new IllegalArgumentException("Invalid email and password"));
+        var user = userRepository.findByEmail(signinRequest.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid email and password"));
         JwtAuthenticationResponse jwtAuthenticationResponse = new JwtAuthenticationResponse();
         if(user.getVerified()) {
             Optional<Shelter> optionalShelter = shelterRepository.findByUserId(user.getId());

@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,10 +39,10 @@ public class NotificationServiceImplTest {
     public void testSendVaccinationReminders_sendsEmails() throws Exception {
         // Arrange
         LocalDate nextVaccinationDate = LocalDate.now().plusDays(7);
-        List<PetVaccinationInfo> dueVaccinations = List.of(
-                PetDataGenerator.createMockPetVaccinationInfo(1L, "Dog", "Labrador", LocalDate.now().minusDays(30), nextVaccinationDate),
-                PetDataGenerator.createMockPetVaccinationInfo(2L, "Dog", "Labrador", LocalDate.now().minusDays(30), nextVaccinationDate)
-        );
+
+        List<PetVaccinationInfo> dueVaccinations = new ArrayList<>();
+        dueVaccinations.add(PetDataGenerator.createMockPetVaccinationInfo(1L, "Dog", "Labrador", LocalDate.now().minusDays(30), nextVaccinationDate));
+        dueVaccinations.add(PetDataGenerator.createMockPetVaccinationInfo(2L, "Dog", "Labrador", LocalDate.now().minusDays(30), nextVaccinationDate));
         when(petVaccinationInfoRepository.findAllWithNextVaccinationDueBetween(any(LocalDate.class), any(LocalDate.class)))
                 .thenReturn(dueVaccinations);
         doNothing().when(emailService).sendEmail(anyString(), anyString(), anyString(), eq(false));
@@ -70,10 +71,9 @@ public class NotificationServiceImplTest {
     public void testSendVaccinationReminders_handlesEmailSendingErrors() throws Exception {
         // Arrange
         LocalDate nextVaccinationDate = LocalDate.now().plusDays(7);
-        List<PetVaccinationInfo> dueVaccinations = List.of(
-                PetDataGenerator.createMockPetVaccinationInfo(1L, "Dog", "Labrador", LocalDate.now().minusDays(30), nextVaccinationDate),
-                PetDataGenerator.createMockPetVaccinationInfo(2L, "Dog", "Labrador", LocalDate.now().minusDays(30), nextVaccinationDate)
-        );
+        List<PetVaccinationInfo> dueVaccinations = new ArrayList<>();
+        dueVaccinations.add(PetDataGenerator.createMockPetVaccinationInfo(1L, "Dog", "Labrador", LocalDate.now().minusDays(30), nextVaccinationDate));
+        dueVaccinations.add(PetDataGenerator.createMockPetVaccinationInfo(2L, "Dog", "Labrador", LocalDate.now().minusDays(30), nextVaccinationDate));
         when(petVaccinationInfoRepository.findAllWithNextVaccinationDueBetween(any(LocalDate.class), any(LocalDate.class)))
                 .thenReturn(dueVaccinations);
 
