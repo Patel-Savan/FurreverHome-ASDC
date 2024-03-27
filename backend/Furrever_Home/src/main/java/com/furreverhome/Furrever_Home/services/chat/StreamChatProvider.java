@@ -17,6 +17,9 @@ import static com.furreverhome.Furrever_Home.services.chat.ChatUtils.getAvatarUr
 @RequiredArgsConstructor
 public class StreamChatProvider implements ChatProviderService {
 
+    private final String CHATPETUSERIDCONSTANT = "petuser";
+    private final String CHATSHELTERUSERIDCONSTANT = "shelteruser";
+
     @Value("${io.getstream.chat.apiKey}")
     private String apiKey;
 
@@ -28,9 +31,9 @@ public class StreamChatProvider implements ChatProviderService {
     @Override
     public void createChatChannel(PetAdopter petAdopter, Shelter shelter, String channelId) {
         // Upsert both users
-        var petStreamUser = upsertUser(getPetChatUserId(petAdopter.getId()), petAdopter.getFirstname(),
+        var petStreamUser = upsertUser(CHATPETUSERIDCONSTANT, petAdopter.getFirstname(),
                 getAvatarUrl(petAdopter.getUser().getEmail()));
-        var shelterStreamUser = upsertUser(getPetChatUserId(shelter.getId()), shelter.getName(),
+        var shelterStreamUser = upsertUser(CHATSHELTERUSERIDCONSTANT, shelter.getName(),
                 getAvatarUrl(shelter.getUser().getEmail()));
 
         try {
@@ -87,15 +90,5 @@ public class StreamChatProvider implements ChatProviderService {
     @Override
     public String getToken(String userId, Date expiresAt, Date issuedAt) {
         return User.createToken(userId, expiresAt, issuedAt);
-    }
-
-    @Override
-    public String getPetChatUserId(long userId) {
-        return "testpetuser1";
-    }
-
-    @Override
-    public String getShelterChatUserId(long userId) {
-        return "testshelteruser1";
     }
 }

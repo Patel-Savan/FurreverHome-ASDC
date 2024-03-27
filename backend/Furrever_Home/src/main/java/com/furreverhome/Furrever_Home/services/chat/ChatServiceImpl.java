@@ -33,6 +33,9 @@ public class ChatServiceImpl implements ChatService {
     private final PetAdopterRepository petAdopterRepository;
     private final ShelterRepository shelterRepository;
 
+    private final String CHATPETUSERIDCONSTANT = "petuser";
+    private final String CHATSHELTERUSERIDCONSTANT = "shelteruser";
+
 
     @Override
     public ChatCredentialsResponse createChatSession(long fromUserId, long toUserId){
@@ -122,11 +125,11 @@ public class ChatServiceImpl implements ChatService {
         String avatarUrl;
 
         if (fromUser.getRole() == Role.PETADOPTER) {
-            userId = chatProviderService.getPetChatUserId(petAdopter.getId());
+            userId = CHATPETUSERIDCONSTANT;
             avatarUrl = getAvatarUrl(petAdopter.getUser().getEmail());
             token = chatProviderService.getToken(userId, calendar.getTime(), null);
         } else {
-            userId = chatProviderService.getShelterChatUserId(shelter.getId());
+            userId = CHATSHELTERUSERIDCONSTANT;
             avatarUrl = getAvatarUrl(shelter.getUser().getEmail());
 
             token = chatProviderService.getToken(userId, calendar.getTime(), null);
