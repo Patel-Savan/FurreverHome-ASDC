@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import {
   Avatar, Menu,
@@ -93,17 +93,19 @@ const Header = () => {
               <div className='flex gap-2'>
 
 
-
-
-
-
                 {
                   userToken.userRole === "SHELTER"
                     ?
                     (
                       <Menu>
                         <MenuHandler>
-                          <button><Avatar src={user.imageBase64} alt="avatar" size="md" /></button>
+                          <button>
+                            <img
+                              alt="user 5"
+                              src={user.imageBase64}
+                              class="relative inline-block h-12 w-12 rounded-full border-2 border-white object-cover object-center hover:z-10 focus:z-10"
+                            />
+                          </button>
                         </MenuHandler>
                         <MenuList>
                           <MenuItem>

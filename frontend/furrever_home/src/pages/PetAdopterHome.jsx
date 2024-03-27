@@ -36,7 +36,7 @@ const PetAdopterHome = () => {
     })
       .then(response => {
         console.log(response.data)
-        saveLocalStorage("User", JSON.stringify(response.data));
+        // saveLocalStorage("User", JSON.stringify(response.data));
         setSearchQuery(response.data.city)
         // console.log(filter + "=" + searchQuery);
         setUserCity(response.data.city)

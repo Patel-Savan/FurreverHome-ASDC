@@ -28,7 +28,7 @@ import PublicRoutes from './PublicRoutes'
 const Router = () => {
     return (
         <Routes>
-            <Route path="/" element={<Layout><Home /></Layout>} />
+            <Route path="/" element={<Home />} />
 
             <Route path="/login" element={<Login />} />
 

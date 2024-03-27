@@ -123,7 +123,7 @@ const PetsTable = ({ pets,setChange }) => {
                 return (
 
                     <div className="flex gap-4">
-                        <UpdatePetDetails pets={param.row} sid={sid} />
+                        <UpdatePetDetails pets={param.row} sid={sid} setChange={setChange} />
                         <button variant="text" onClick={() => { deletePet(param.row.petID) }}>
                             <TrashIcon className="h-4 w-4 text-red-600" />
                         </button>

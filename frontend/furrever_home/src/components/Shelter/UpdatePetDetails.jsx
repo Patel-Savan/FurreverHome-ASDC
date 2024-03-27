@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { readLocalStorage } from '../../utils/helper';
 
-const UpdatePetDetails = ({ pets, sid }) => {
+const UpdatePetDetails = ({ pets, sid,setChange }) => {
     const [open, setOpen] = React.useState(false);
     const [response, setResponse] = useState({})
     const [loading, setLoading] = useState(true)
@@ -72,32 +72,33 @@ const UpdatePetDetails = ({ pets, sid }) => {
                 setResponse(res)
                 setLoading(true)
                 toast.success("Pet Updated!");
-                navigate(0)
+                // navigate(0)
+                setChange(true)
                 handleOpen();
-                setFormData({
-                    type: "",
-                    breed: "",
-                    colour: "",
-                    gender: "",
-                    birthdate: "",
-                    petImage: "",
-                    adopted: false
-                })
+                // setFormData({
+                //     type: "",
+                //     breed: "",
+                //     colour: "",
+                //     gender: "",
+                //     birthdate: "",
+                //     petImage: "",
+                //     adopted: false
+                // })
 
             })
             .catch((err) => {
                 console.log(err)
                 toast.error(err.message)
                 handleOpen();
-                setFormData({
-                    type: "",
-                    breed: "",
-                    colour: "",
-                    gender: "",
-                    birthdate: "",
-                    petImage: "",
-                    adopted: false
-                })
+                // setFormData({
+                //     type: "",
+                //     breed: "",
+                //     colour: "",
+                //     gender: "",
+                //     birthdate: "",
+                //     petImage: "",
+                //     adopted: false
+                // })
             })
     }
 
