@@ -28,13 +28,22 @@ public class StreamChatProvider implements ChatProviderService {
     @Override
     public void createChatChannel(PetAdopter petAdopter, Shelter shelter, String channelId) {
         // Upsert both users
-        var petStreamUser = upsertUser(getPetChatUserId(petAdopter.getId()), petAdopter.getFirstname(),
-                getAvatarUrl(petAdopter.getUser().getEmail()));
-        var shelterStreamUser = upsertUser(getPetChatUserId(shelter.getId()), shelter.getName(),
-                getAvatarUrl(shelter.getUser().getEmail()));
+        String petAdopterUserId = getPetChatUserId(petAdopter.getId());
+        String petAdopterUsername = petAdopter.getFirstname();
+        String petAdopterAvatarUrl = getAvatarUrl(petAdopter.getUser().getEmail());
+        var petStreamUser = upsertUser(petAdopterUserId, petAdopterUsername, petAdopterAvatarUrl);
+
+        String shelterUserId = getPetChatUserId(shelter.getId());
+        String shelterUsername = shelter.getName();
+        String shelterAvatarUrl = getAvatarUrl(shelter.getUser().getEmail());
+        var shelterStreamUser = upsertUser(shelterUserId, shelterUsername, shelterAvatarUrl);
 
         try {
-            createStreamChannel(petStreamUser, shelterStreamUser, new UserRoleEntities(shelter, petAdopter), channelId, getAvatarUrl("furrever_" + channelId + "@furrever.ca"));
+            createStreamChannel(petStreamUser,
+                    shelterStreamUser,
+                    new UserRoleEntities(shelter, petAdopter),
+                    channelId,
+                    getAvatarUrl("furrever_" + channelId + "@furrever.ca"));
         } catch (StreamException e) {
             // Duplicate is a false positive so allow it.
             if (!e.getLocalizedMessage().contains("Duplicate")) {

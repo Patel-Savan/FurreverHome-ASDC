@@ -137,7 +137,7 @@ public class ShelterServiceTest {
         petAdopter.setId(1L);
         Optional<Pet> optionalPet = Optional.of(pet);
         when(petRepository.findById(petId)).thenReturn(optionalPet);
-        when(adopterPetRequestsRepository.findByPet(pet)).thenReturn(Collections.singletonList(petAdopter));
+        when(adopterPetRequestsRepository.findPetAdoptersByPet(pet)).thenReturn(Collections.singletonList(petAdopter));
         PetAdoptionRequestResponseDto result = shelterService.getPetAdoptionRequests(petId);
         assertNotNull(result);
         assertEquals(petId, result.getPetID());

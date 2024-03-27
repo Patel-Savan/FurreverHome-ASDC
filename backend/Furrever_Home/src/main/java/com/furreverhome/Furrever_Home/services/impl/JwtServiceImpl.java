@@ -24,6 +24,7 @@ import java.util.function.Function;
 public class JwtServiceImpl implements JwtService {
 
     private final UserRepository userRepository;
+    private final int tokenPeriod = 1000 * 60 * 60 * 2;
 
     public JwtAuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
         String userEmail = extractUserName(refreshTokenRequest.getToken());
@@ -44,14 +45,14 @@ public class JwtServiceImpl implements JwtService {
     public String generateToken(UserDetails userDetails) {
         return Jwts.builder().setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 2))
+                .setExpiration(new Date(System.currentTimeMillis() + tokenPeriod))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
     }
 
     public String generateRefreshToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 60400000))
+                .setExpiration(new Date(System.currentTimeMillis() + tokenPeriod))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
     }
 

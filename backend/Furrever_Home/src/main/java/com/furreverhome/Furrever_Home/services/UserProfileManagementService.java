@@ -18,7 +18,8 @@ public class UserProfileManagementService {
     private final UserProfileMapper userProfileMapper;
 
     public UpdateUserProfileResponseDto updateUserProfile(Long userId, UpdateUserProfileRequestDto updateUserProfileRequestDto) {
-        PetAdopter petAdopter = petAdopterRepository.findByUserId(userId)
+        PetAdopter petAdopter;
+        petAdopter = petAdopterRepository.findByUserId(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
         PetAdopter updatedPetAdopter = userProfileMapper.toPetAdopterEntity(updateUserProfileRequestDto, petAdopter);
@@ -28,14 +29,16 @@ public class UserProfileManagementService {
     }
 
     public UpdateUserProfileResponseDto getUserProfile(Long userId) {
-        PetAdopter petAdopter = petAdopterRepository.findByUserId(userId)
+        PetAdopter petAdopter;
+        petAdopter = petAdopterRepository.findByUserId(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
         return userProfileMapper.toUpdateUserProfileResponseDto(petAdopter);
     }
 
     public UpdateShelterProfileResponseDto updateShelterProfile(Long shelterId, UpdateShelterProfileRequestDto updateShelterProfileRequestDto) {
-        Shelter shelter = shelterRepository.findByUserId(shelterId)
+        Shelter shelter;
+        shelter = shelterRepository.findByUserId(shelterId)
                 .orElseThrow(() -> new EntityNotFoundException("Shelter not found"));
 
         Shelter updatedShelter = userProfileMapper.toShelterEntity(updateShelterProfileRequestDto, shelter);
@@ -45,7 +48,8 @@ public class UserProfileManagementService {
     }
 
     public UpdateShelterProfileResponseDto getShelterProfile(Long shelterId) {
-        Shelter shelter = shelterRepository.findByUserId(shelterId)
+        Shelter shelter;
+        shelter = shelterRepository.findByUserId(shelterId)
                 .orElseThrow(() -> new EntityNotFoundException("Shelter not found"));
 
         return userProfileMapper.toUpdateShelterProfileResponseDto(shelter);
