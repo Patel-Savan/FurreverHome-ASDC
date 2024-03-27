@@ -24,6 +24,7 @@ import PrivateRoutesAdmin from './PrivateRoutesAdmin'
 import PrivateRoutesAdopter from './PrivateRoutesAdopter'
 import PrivateRoutesShelter from './PrivateRoutesShelter'
 import PublicRoutes from './PublicRoutes'
+import PetAdoptionRequests from '../components/Pet/PetAdoptionRequests'
 
 const Router = () => {
     return (
@@ -56,6 +57,7 @@ const Router = () => {
                     <Route path="/shelter/home" element={<Layout><ShelterHome /></Layout>} />
                     <Route path="/shelter/profile" element={<Layout><ShelterProfile /></Layout>} />
                     <Route path="/shelter/pet" element={<Layout><PetForShelter /></Layout>} />
+                    <Route path="/shelter/pet/petadoptionrequest" element={<Layout><PetAdoptionRequests/></Layout>}/>
                     <Route path="/chat/shelter" element={<Layout><ShelterChat /></Layout>} />
                 </Route>
             </Route>
