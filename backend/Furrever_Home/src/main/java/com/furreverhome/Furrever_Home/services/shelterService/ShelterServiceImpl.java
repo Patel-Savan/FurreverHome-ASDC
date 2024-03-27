@@ -31,6 +31,11 @@ public class ShelterServiceImpl implements ShelterService{
     @Autowired
     AdopterPetRequestsRepository adopterPetRequestsRepository;
 
+    /**
+     * Service method to register a new pet.
+     * @param registerPetRequest Request object containing information to register the pet.
+     * @return PetDto representing the registered pet details.
+     */
     public PetDto registerPet(RegisterPetRequest registerPetRequest){
         Pet pet = new Pet();
         pet.setType(registerPetRequest.getType());
@@ -50,6 +55,13 @@ public class ShelterServiceImpl implements ShelterService{
         return mapPetToDto(pet);
     }
 
+    /**
+     * Service method to edit pet details.
+     * @param petID ID of the pet to edit.
+     * @param updatePetRequest Request object containing updated pet information.
+     * @return PetDto representing the updated pet details.
+     * @throws RuntimeException if the pet with the specified ID is not found.
+     */
     public PetDto editPet(Long petID, RegisterPetRequest updatePetRequest){
         Optional<Pet> optionalPet = petRepository.findById(petID);
         if (optionalPet.isPresent()){
@@ -62,6 +74,11 @@ public class ShelterServiceImpl implements ShelterService{
         }
     }
 
+    /**
+     * helper method to check and update the required pet fields
+     * @param pet
+     * @param updatePetRequest
+     */
     private void updatePetFields(Pet pet, RegisterPetRequest updatePetRequest) {
         if (updatePetRequest.getType() != null) {
             pet.setType(updatePetRequest.getType());
@@ -86,6 +103,12 @@ public class ShelterServiceImpl implements ShelterService{
         }
     }
 
+    /**
+     * Service method to delete a pet from the database.
+     * @param petId ID of the pet to delete.
+     * @return GenericResponse indicating the success or failure of the deletion operation.
+     * @throws RuntimeException if the pet with the specified ID is not found.
+     */
     public GenericResponse deletePet(Long petId) {
         if (petRepository.existsById(petId)) {
             petRepository.deleteById(petId);
@@ -95,6 +118,12 @@ public class ShelterServiceImpl implements ShelterService{
         }
     }
 
+    /**
+     * Service method to retrieve a list of pets belonging to a specific shelter.
+     * @param shelterID ID of the shelter whose pets are to be retrieved.
+     * @return List of PetDto representing pets belonging to the specified shelter.
+     * @throws RuntimeException if the shelter with the specified ID is not found.
+     */
     public List<PetDto> getPetsForShelter(Long shelterID) {
         Optional<Shelter> optionalShelter = shelterRepository.findById(shelterID);
         if (optionalShelter.isPresent()){
@@ -108,6 +137,11 @@ public class ShelterServiceImpl implements ShelterService{
         }
     }
 
+    /**
+     * util method to map pet attributes to petDto
+     * @param pet
+     * @return mapped petDto
+     */
     private PetDto mapPetToDto(Pet pet) {
         PetDto petDto = new PetDto();
         petDto.setPetID(pet.getPetID());
@@ -123,6 +157,12 @@ public class ShelterServiceImpl implements ShelterService{
         return petDto;
     }
 
+    /**
+     * Service method to change the adoption status of a pet.
+     * @param petId ID of the pet whose adoption status is to be changed.
+     * @param status New adoption status ("Adopted" or "Not Adopted").
+     * @return true if the adoption status is successfully changed, false otherwise.
+     */
     @Override
     public boolean changeAdoptedStatus(Long petId, String status) {
         Optional<Pet> optionalPet = petRepository.findById(petId);
@@ -139,10 +179,18 @@ public class ShelterServiceImpl implements ShelterService{
         return false;
     }
 
+    /**
+     * Service method to retrieve all adoption requests made for a particular pet.
+     * @param petID ID of the pet for which adoption requests are to be retrieved.
+     * @return PetAdoptionRequestResponseDto containing information about adoption requests for the specified pet.
+     * @throws RuntimeException if the pet with the specified ID is not found.
+     */
     public PetAdoptionRequestResponseDto getPetAdoptionRequests(Long petID){
+        //checking whether the pet with given id is present or not
         Optional<Pet> optionalPet = petRepository.findById(petID);
         if (optionalPet.isPresent()){
             Pet pet = optionalPet.get();
+            //getting a list of all the petadopters (users) that requested to adopt the pet
             List<PetAdopter> petAdopters = adopterPetRequestsRepository.findPetAdoptersByPet(pet);
             PetAdoptionRequestResponseDto petAdoptionRequestResponseDto = new PetAdoptionRequestResponseDto();
             petAdoptionRequestResponseDto.setPetID(petID);

@@ -30,7 +30,12 @@ public class PetServiceImpl implements PetService {
 
     private final PetVaccinationInfoRepository petVaccinationInfoRepository;
 
-
+    /**
+     * Service method to retrieve all information about a particular pet.
+     * @param petID The ID of the pet.
+     * @return PetDto containing information about the specified pet.
+     * @throws RuntimeException if the pet with the specified ID is not found.
+     */
     public PetDto getPetInfo(Long petID) {
         Optional<Pet> optionalPet = petRepository.findById(petID);
         if (optionalPet.isPresent()) {
@@ -41,6 +46,13 @@ public class PetServiceImpl implements PetService {
         }
     }
 
+    /**
+     * Service method to add vaccination details for a particular pet.
+     * @param petVaccineDto Object containing vaccination details.
+     * @param petID The ID of the pet.
+     * @return GenericResponse indicating the success or failure of adding vaccination details.
+     * @throws RuntimeException if the pet with the specified ID is not found.
+     */
     public GenericResponse addVaccinationDetails(PetVaccineDto petVaccineDto, Long petID) {
         Optional<Pet> optionalPet = petRepository.findById(petID);
         if (optionalPet.isPresent()) {
@@ -62,6 +74,10 @@ public class PetServiceImpl implements PetService {
         }
     }
 
+    /**
+     * Helper method to update pet vaccination notification information.
+     * @param pet The pet for which vaccination notification information is to be updated.
+     */
     private void updatePetVaccinationNotificationInfo(Pet pet) {
         Date today = new Date();
         Optional<PetVaccination> petVaccination = petVaccinationRepository.findFirstByPetAndDateGreaterThanOrderByDateAsc(pet, today);
@@ -82,6 +98,11 @@ public class PetServiceImpl implements PetService {
     }
     //---------------------------UTILS----------------------------
 
+    /**
+     * Helper method to map pet attributes to PetDto.
+     * @param pet The pet entity to be mapped.
+     * @return PetDto containing mapped pet attributes.
+     */
     private PetDto mapPetToDto(Pet pet) {
         PetDto petDto = new PetDto();
         petDto.setPetID(pet.getPetID());

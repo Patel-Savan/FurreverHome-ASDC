@@ -10,9 +10,10 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface AdopterPetRequestsRepository extends JpaRepository<AdopterPetRequests, Long> {
+
+    // selecting all the adopters that made a request for a particular pet
     @Query("SELECT ap.petAdopter FROM AdopterPetRequests ap WHERE ap.pet = :pet")
     List<PetAdopter> findPetAdoptersByPet(@Param("pet") Pet pet);
-
 
     boolean existsByPetAndPetAdopter(Pet pet, PetAdopter petAdopter);
 }
