@@ -38,7 +38,7 @@ public class ChatServiceImpl implements ChatService {
 
 
     @Override
-    public ChatCredentialsResponse createChatSession(long fromUserId, long toUserId){
+    public ChatCredentialsResponse createChatSession(long fromUserId, long toUserId) {
         // Validate users
         var fromUser = validateUserExists(fromUserId);
         var toUser = validateUserExists(toUserId);
