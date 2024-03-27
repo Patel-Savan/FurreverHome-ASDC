@@ -10,8 +10,10 @@ const ShelterCard = ({
     contact,
     userId,
     shelterId,
-    handleClick
+    handleClick,
+    shelterData
 }) => {
+    
     return (
         <div className={`rounded-lg p-6 shadow-sm ${className}`}>
             <div className="overflow-hidden rounded-lg">
@@ -34,7 +36,7 @@ const ShelterCard = ({
                 Contact : {contact}
             </p>
             {/* <Link to="/adopter/shelter/1"> */}
-            <button className='btn btn-outline' onClick={() => handleClick(shelterId, userId)}>
+            <button className='btn btn-outline' onClick={() => handleClick(shelterId, userId,shelterData)}>
                 Details
             </button>
             {/* </Link> */}

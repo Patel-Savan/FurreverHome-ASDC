@@ -14,9 +14,10 @@ import { deleteLocalStorage, readLocalStorage } from '../utils/helper';
 import Modal from './Modal/Modal';
 import ImgLogo from '/img/logo/LogoWithText_NoBG.png';
 
-const Header = () => {
+const Header = ({user}) => {
   const userToken = verifyAuthentication()
-  const user = JSON.parse(readLocalStorage("User"))
+  console.log(user)
+  // const user = JSON.parse(readLocalStorage("User"))
   console.log(userToken)
   const navigate = useNavigate();
 
@@ -102,7 +103,7 @@ const Header = () => {
                           <button>
                             <img
                               alt="user 5"
-                              src={user.imageBase64}
+                              src={user.image}
                               class="relative inline-block h-12 w-12 rounded-full border-2 border-white object-cover object-center hover:z-10 focus:z-10"
                             />
                           </button>

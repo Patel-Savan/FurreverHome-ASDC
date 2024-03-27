@@ -187,11 +187,12 @@ const PetAdopterHome = () => {
     setSearchQuery(event.target.value);
   }
 
-  const handleShelterClick = (shelterId, userId) => {
+  const handleShelterClick = (shelterId, userId,shelter1) => {
     console.log(userId)
     navigate(`/adopter/shelter/${shelterId}`, {
       state: {
-        userId: userId
+        userId: userId,
+        shelter: shelter1
       }
     })
   }
@@ -264,9 +265,11 @@ const PetAdopterHome = () => {
           {filter === "Shelter" &&
             data
               .map((shelter) => {
+                console.log(shelter)
                 return (
                   <ShelterCard
                     className="bg-[#f3faff]"
+                    shelterData={shelter}
                     heading={shelter.name}
                     city={shelter.city}
                     thumbnailSrc={shelter.image}
@@ -281,10 +284,11 @@ const PetAdopterHome = () => {
               })}
           {filter === "Pet" &&
             data.map((pet) => {
+              console.log(pet)
               return (
-
+                 
                 <PetCard
-                  key={pet.petID}
+                  key={pet.petId}
                   className="bg-[#f3faff]"
                   type={pet.type}
                   breed={pet.breed}
@@ -293,7 +297,7 @@ const PetAdopterHome = () => {
                   shelterName={pet.shelterName}
                   shelterCity={pet.shelterCity}
                   shelterContact={pet.shelterContact}
-                  petId={pet.petID}
+                  petId={pet.petId}
                   handleClick={handlePetClick}
                 />)
             })

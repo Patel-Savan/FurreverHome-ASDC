@@ -97,17 +97,18 @@ const LostAndFoundHome = () => {
                                 pets.map((pet) => {
                                     
                                     return (
-                                        <PetCard
-                                            key={pet.petId}
-                                            className="bg-[#f3faff]"
-                                            type={pet.type}
-                                            breed={pet.breed}
-                                            age={pet.age}
-                                            thumbnailSrc={pet.petImage}
-                                            shelterName={pet.shelterName}
-                                            shelterCity={pet.shelterCity}
-                                            shelterContact={pet.shelterContact}
-                                            petId={pet.petId}
+                                        <LostPetCard
+                                        key={pet.id}
+                                        id={pet.id}
+                                        className="bg-[#f3faff]"
+                                        type={pet.type}
+                                        breed={pet.breed}
+                                        colour={pet.colour}
+                                        gender={pet.gender}
+                                        phone={pet.phone}
+                                        email={pet.email}
+                                        petImage={pet.petImage}
+                                        tab = "1"
                                         // onClick={handlePetClick}
 
                                         />)

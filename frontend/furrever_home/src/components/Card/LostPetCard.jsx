@@ -10,7 +10,8 @@ const PetCard = ({
     email,
     petImage,
     id,
-    setChange
+    setChange,
+    tab
 }) => {
 
     const pet = {
@@ -42,12 +43,14 @@ const PetCard = ({
                 {breed}
             </h5>
             <p className="font-normal text-gray-500 cursor-pointer text-lg duration-300 transition hover:text-[#FA5252] mt-2">
-                Email:  {email}
+                Email:  <a href={`mailto:${email}`}>{email}</a>
             </p>
             <p className="font-normal text-gray-500 cursor-pointer text-lg duration-300 transition hover:text-[#FA5252] mt-2">
                 Phone:  {phone}
             </p>
-            <UpdateLostPet pets={pet} setChange={setChange} />
+
+            {tab === "1" ?  <></>: <UpdateLostPet pets={pet} setChange={setChange} />}
+            
         </div>
     )
 }

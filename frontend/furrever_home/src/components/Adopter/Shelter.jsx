@@ -36,6 +36,7 @@ const Shelter = () => {
             .then(() => {
                 setLoading(true)
                 setShelter(response.data)
+                console.log(response.data)
             }
             )
             .catch(error => {
@@ -74,10 +75,10 @@ const Shelter = () => {
 
                                     <div className="flex flex-col items-center">
 
-                                        <img src={shelter.imageBase64} className="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0">
+                                        <img src={state.shelter.image} className="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0">
 
                                         </img>
-                                        <h1 className="text-xl font-bold">{shelter.name}</h1>
+                                        <h1 className="text-xl font-bold">{state.shelter.name}</h1>
                                         {/* <p className="text-gray-700">Capacity: {user.capacity}</p> */}
                                         <div className="mt-6 flex flex-wrap gap-4 justify-center">
                                             <Link to={`/chat/${id}`}>
@@ -89,10 +90,10 @@ const Shelter = () => {
                                     <div className="flex flex-col">
                                         <span className="text-gray-700 uppercase tracking-wider mb-2">Address</span>
                                         <ul>
-                                            <li className="mb-2">Address: {shelter.address}</li>
-                                            <li className="mb-2">City: {shelter.city}</li>
-                                            <li className="mb-2">Country: {shelter.country}</li>
-                                            <li className="mb-2">Zipcode: {shelter.zipcode}</li>
+                                            <li className="mb-2">Address: {state.shelter.address}</li>
+                                            <li className="mb-2">City: {state.shelter.city}</li>
+                                            <li className="mb-2">Country: {state.shelter.country}</li>
+                                            <li className="mb-2">Zipcode: {state.shelter.zipcode}</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -106,6 +107,7 @@ const Shelter = () => {
                                             pets.length > 0
                                                 ?
                                                 pets.map((pet) => {
+                                                    console.log(pet)
                                                     return (
                                                         <PetCard
                                                             key={pet.petID}
@@ -114,9 +116,9 @@ const Shelter = () => {
                                                             breed={pet.breed}
                                                             age={pet.age}
                                                             thumbnailSrc={pet.petImage}
-                                                            shelterName={pet.shelterName}
-                                                            shelterCity={pet.shelterCity}
-                                                            shelterContact={pet.shelterContact}
+                                                            shelterName={pet.shelter.name}
+                                                            shelterCity={pet.shelter.city}
+                                                            shelterContact={pet.shelter.contact}
                                                             petId={pet.petId}
                                                             handleClick={() => navigate("/adopter/pet", {
                                                                 state: {

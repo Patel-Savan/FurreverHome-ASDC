@@ -26,7 +26,7 @@ const ShelterHome = ({ children }) => {
       .then(response => {
         setPets(response.data)
         console.log(response.data)
-        setLoading(true)
+        // setLoading(true)
         console.log(pets)
 
       })

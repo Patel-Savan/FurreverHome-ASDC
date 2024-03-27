@@ -10,7 +10,7 @@ const PetCard = ({
     petId,
     handleClick
 }) => {
-
+    
     const thumbnailAlt = "Alternate Image"
     return (
         <div className={`rounded-lg p-6 shadow-sm ${className}`}>
