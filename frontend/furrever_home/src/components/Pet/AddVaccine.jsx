@@ -113,8 +113,20 @@ const AddVaccine = ({petId}) => {
                             </div>
 
                             <div>
+                                <label htmlFor="lastName" className="text-sm font-medium leading-6 text-gray-900 flex">
+                                   Is Vaccine given or not ?
+                                </label>
+                                <div className="mt-1">
+                                    <select name="adopted" id="adopted" value={formData.vaccineGiven} onChange={handleChange}>
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
                             <label htmlFor="shelterName" className="text-sm font-medium leading-6 text-gray-900 flex">
-                                Date
+                                Date on which vaccine should be given
                             </label>
                             <div className="mt-1">
                                 <input

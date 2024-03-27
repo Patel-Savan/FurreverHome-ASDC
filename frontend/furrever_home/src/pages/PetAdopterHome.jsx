@@ -321,7 +321,7 @@ const PetAdopterHome = () => {
                   shelterName={pet.shelterName}
                   shelterCity={pet.shelterCity}
                   shelterContact={pet.shelterContact}
-                  petId={pet.petID}
+                  petId={pet.petId}
                   handleClick={handlePetClick}
                 />)
             })
