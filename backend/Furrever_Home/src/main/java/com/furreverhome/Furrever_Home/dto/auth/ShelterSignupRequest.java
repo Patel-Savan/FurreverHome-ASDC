@@ -1,15 +1,12 @@
-package com.furreverhome.Furrever_Home.dto;
+package com.furreverhome.Furrever_Home.dto.auth;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.furreverhome.Furrever_Home.dto.auth.SignupRequest;
 import lombok.Data;
-
-import java.time.LocalDateTime;
 
 @Data
 @JsonTypeName("shelter")
-public class ShelterSignupRequest extends SignupRequest{
+public class ShelterSignupRequest extends SignupRequest {
     private String name;
 
     private Long capacity;

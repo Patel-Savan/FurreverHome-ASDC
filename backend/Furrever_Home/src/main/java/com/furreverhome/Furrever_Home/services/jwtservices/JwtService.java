@@ -1,7 +1,7 @@
-package com.furreverhome.Furrever_Home.services;
+package com.furreverhome.Furrever_Home.services.jwtservices;
 
-import com.furreverhome.Furrever_Home.dto.JwtAuthenticationResponse;
-import com.furreverhome.Furrever_Home.dto.RefreshTokenRequest;
+import com.furreverhome.Furrever_Home.dto.auth.JwtAuthenticationResponse;
+import com.furreverhome.Furrever_Home.dto.auth.RefreshTokenRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Map;

@@ -1,9 +1,9 @@
-package com.furreverhome.Furrever_Home.services;
+package com.furreverhome.Furrever_Home.services.authenticationServices;
 
-import com.furreverhome.Furrever_Home.dto.JwtAuthenticationResponse;
-import com.furreverhome.Furrever_Home.dto.RefreshTokenRequest;
-import com.furreverhome.Furrever_Home.dto.SigninRequest;
+import com.furreverhome.Furrever_Home.dto.auth.JwtAuthenticationResponse;
+import com.furreverhome.Furrever_Home.dto.auth.SigninRequest;
 import com.furreverhome.Furrever_Home.dto.*;
+import com.furreverhome.Furrever_Home.dto.auth.SignupRequest;
 import com.furreverhome.Furrever_Home.dto.user.PasswordDto;
 import jakarta.mail.MessagingException;
 

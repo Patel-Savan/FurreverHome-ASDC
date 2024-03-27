@@ -1,8 +1,8 @@
 package com.furreverhome.Furrever_Home.config;
 
 
-import com.furreverhome.Furrever_Home.services.JwtService;
-import com.furreverhome.Furrever_Home.services.UserService;
+import com.furreverhome.Furrever_Home.services.jwtservices.JwtService;
+import com.furreverhome.Furrever_Home.services.jwtservices.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

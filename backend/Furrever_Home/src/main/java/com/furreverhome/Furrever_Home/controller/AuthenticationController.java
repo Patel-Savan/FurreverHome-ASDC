@@ -1,19 +1,19 @@
 package com.furreverhome.Furrever_Home.controller;
 
-import com.furreverhome.Furrever_Home.dto.*;
-import com.furreverhome.Furrever_Home.services.JwtService;
+import com.furreverhome.Furrever_Home.dto.auth.SignupRequest;
+import com.furreverhome.Furrever_Home.services.jwtservices.JwtService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.servlet.view.RedirectView;
 import com.furreverhome.Furrever_Home.config.FrontendConfigurationProperties;
 import com.furreverhome.Furrever_Home.dto.GenericResponse;
-import com.furreverhome.Furrever_Home.dto.JwtAuthenticationResponse;
-import com.furreverhome.Furrever_Home.dto.RefreshTokenRequest;
-import com.furreverhome.Furrever_Home.dto.SigninRequest;
+import com.furreverhome.Furrever_Home.dto.auth.JwtAuthenticationResponse;
+import com.furreverhome.Furrever_Home.dto.auth.RefreshTokenRequest;
+import com.furreverhome.Furrever_Home.dto.auth.SigninRequest;
 import com.furreverhome.Furrever_Home.dto.user.PasswordDto;
 import com.furreverhome.Furrever_Home.dto.user.ResetEmailRequest;
-import com.furreverhome.Furrever_Home.services.AuthenticationService;
+import com.furreverhome.Furrever_Home.services.authenticationServices.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import java.net.URLEncoder;

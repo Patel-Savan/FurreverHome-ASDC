@@ -1,4 +1,4 @@
-package com.furreverhome.Furrever_Home.dto;
+package com.furreverhome.Furrever_Home.dto.petadopter;
 
 import com.furreverhome.Furrever_Home.enums.Role;
 import lombok.Data;

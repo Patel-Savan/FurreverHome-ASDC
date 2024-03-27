@@ -1,12 +1,10 @@
 package com.furreverhome.Furrever_Home.unittests.services.impl;
 
-import com.furreverhome.Furrever_Home.dto.JwtAuthenticationResponse;
-import com.furreverhome.Furrever_Home.dto.RefreshTokenRequest;
+import com.furreverhome.Furrever_Home.dto.auth.JwtAuthenticationResponse;
+import com.furreverhome.Furrever_Home.dto.auth.RefreshTokenRequest;
 import com.furreverhome.Furrever_Home.entities.User;
 import com.furreverhome.Furrever_Home.repository.UserRepository;
-import com.furreverhome.Furrever_Home.services.impl.JwtServiceImpl;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import com.furreverhome.Furrever_Home.services.jwtservices.JwtServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,7 +13,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;

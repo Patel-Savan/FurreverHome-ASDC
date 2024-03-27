@@ -1,10 +1,9 @@
-package com.furreverhome.Furrever_Home.services.impl;
+package com.furreverhome.Furrever_Home.services.jwtservices;
 
-import com.furreverhome.Furrever_Home.dto.JwtAuthenticationResponse;
-import com.furreverhome.Furrever_Home.dto.RefreshTokenRequest;
+import com.furreverhome.Furrever_Home.dto.auth.JwtAuthenticationResponse;
+import com.furreverhome.Furrever_Home.dto.auth.RefreshTokenRequest;
 import com.furreverhome.Furrever_Home.entities.User;
 import com.furreverhome.Furrever_Home.repository.UserRepository;
-import com.furreverhome.Furrever_Home.services.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

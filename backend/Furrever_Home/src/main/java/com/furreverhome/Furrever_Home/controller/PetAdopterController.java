@@ -2,7 +2,7 @@ package com.furreverhome.Furrever_Home.controller;
 
 import com.furreverhome.Furrever_Home.dto.Pet.PetAdoptionRequestDto;
 import com.furreverhome.Furrever_Home.dto.Pet.PetDto;
-import com.furreverhome.Furrever_Home.dto.PetAdopterDto;
+import com.furreverhome.Furrever_Home.dto.petadopter.PetAdopterDto;
 import com.furreverhome.Furrever_Home.dto.lostpet.LostPetDto;
 import com.furreverhome.Furrever_Home.dto.lostpet.LostPetResponseDtoListDto;
 import com.furreverhome.Furrever_Home.dto.lostpet.RegisterLostPetDto;
@@ -15,12 +15,7 @@ import com.furreverhome.Furrever_Home.services.petadopterservices.PetAdopterServ
 import com.furreverhome.Furrever_Home.services.shelterService.ShelterService;
 import jakarta.validation.Valid;
 import com.furreverhome.Furrever_Home.services.petservice.PetService;
-import com.furreverhome.Furrever_Home.services.petservice.PetServiceImpl;
-import com.furreverhome.Furrever_Home.services.petservice.PetService;
-import com.furreverhome.Furrever_Home.services.petservice.PetServiceImpl;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

@@ -2,7 +2,7 @@ package com.furreverhome.Furrever_Home.services.petadopterservices.impl;
 
 import com.furreverhome.Furrever_Home.dto.GenericResponse;
 import com.furreverhome.Furrever_Home.dto.Pet.PetAdoptionRequestDto;
-import com.furreverhome.Furrever_Home.dto.PetAdopterDto;
+import com.furreverhome.Furrever_Home.dto.petadopter.PetAdopterDto;
 import com.furreverhome.Furrever_Home.dto.petadopter.*;
 import com.furreverhome.Furrever_Home.entities.*;
 import com.furreverhome.Furrever_Home.exception.UserNotFoundException;

@@ -2,6 +2,7 @@ package com.furreverhome.Furrever_Home.services.authenticationServices;
 
 
 import com.furreverhome.Furrever_Home.dto.*;
+import com.furreverhome.Furrever_Home.dto.auth.*;
 import com.furreverhome.Furrever_Home.dto.user.PasswordDto;
 import com.furreverhome.Furrever_Home.entities.PasswordResetToken;
 import com.furreverhome.Furrever_Home.entities.PetAdopter;
@@ -9,13 +10,11 @@ import com.furreverhome.Furrever_Home.entities.Shelter;
 import com.furreverhome.Furrever_Home.entities.User;
 import com.furreverhome.Furrever_Home.enums.Role;
 import com.furreverhome.Furrever_Home.exception.EmailExistsException;
-import com.furreverhome.Furrever_Home.exception.GlobalExceptionHandler;
 import com.furreverhome.Furrever_Home.repository.PasswordTokenRepository;
 import com.furreverhome.Furrever_Home.repository.PetAdopterRepository;
 import com.furreverhome.Furrever_Home.repository.ShelterRepository;
 import com.furreverhome.Furrever_Home.repository.UserRepository;
-import com.furreverhome.Furrever_Home.services.AuthenticationService;
-import com.furreverhome.Furrever_Home.services.JwtService;
+import com.furreverhome.Furrever_Home.services.jwtservices.JwtService;
 import com.furreverhome.Furrever_Home.services.emailservice.EmailService;
 import jakarta.annotation.PostConstruct;
 import jakarta.mail.MessagingException;
@@ -31,7 +30,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service

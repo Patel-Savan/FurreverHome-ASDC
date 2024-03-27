@@ -1,6 +1,6 @@
 package com.furreverhome.Furrever_Home.entities;
 
-import com.furreverhome.Furrever_Home.dto.PetAdopterDto;
+import com.furreverhome.Furrever_Home.dto.petadopter.PetAdopterDto;
 import com.furreverhome.Furrever_Home.enums.Role;
 import jakarta.persistence.*;
 import lombok.Data;

@@ -1,11 +1,11 @@
-package com.furreverhome.Furrever_Home.dto;
+package com.furreverhome.Furrever_Home.dto.auth;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Data;
 
 @Data
 @JsonTypeName("petadopter")
-public class PetAdopterSignupRequest extends SignupRequest{
+public class PetAdopterSignupRequest extends SignupRequest {
 
     private String firstName;
 

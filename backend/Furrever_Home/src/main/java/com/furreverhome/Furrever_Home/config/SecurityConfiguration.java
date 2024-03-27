@@ -2,7 +2,7 @@ package com.furreverhome.Furrever_Home.config;
 
 
 import com.furreverhome.Furrever_Home.enums.Role;
-import com.furreverhome.Furrever_Home.services.UserService;
+import com.furreverhome.Furrever_Home.services.jwtservices.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

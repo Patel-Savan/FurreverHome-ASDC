@@ -1,7 +1,6 @@
-package com.furreverhome.Furrever_Home.services.impl;
+package com.furreverhome.Furrever_Home.services.jwtservices;
 
 import com.furreverhome.Furrever_Home.repository.UserRepository;
-import com.furreverhome.Furrever_Home.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

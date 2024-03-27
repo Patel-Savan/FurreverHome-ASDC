@@ -1,4 +1,4 @@
-package com.furreverhome.Furrever_Home.dto;
+package com.furreverhome.Furrever_Home.dto.auth;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;

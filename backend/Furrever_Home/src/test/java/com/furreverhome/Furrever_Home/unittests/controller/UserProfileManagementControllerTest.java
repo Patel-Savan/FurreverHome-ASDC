@@ -7,7 +7,7 @@ import com.furreverhome.Furrever_Home.dto.profile.UpdateShelterProfileResponseDt
 import com.furreverhome.Furrever_Home.dto.profile.UpdateUserProfileRequestDto;
 import com.furreverhome.Furrever_Home.dto.profile.UpdateUserProfileResponseDto;
 import com.furreverhome.Furrever_Home.exception.GlobalExceptionHandler;
-import com.furreverhome.Furrever_Home.services.UserProfileManagementService;
+import com.furreverhome.Furrever_Home.services.userprofilemanagementservice.UserProfileManagementService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

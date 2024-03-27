@@ -1,4 +1,4 @@
-package com.furreverhome.Furrever_Home.services;
+package com.furreverhome.Furrever_Home.services.jwtservices;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 

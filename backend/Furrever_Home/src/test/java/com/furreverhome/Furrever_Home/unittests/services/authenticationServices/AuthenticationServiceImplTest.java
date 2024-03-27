@@ -1,6 +1,10 @@
 package com.furreverhome.Furrever_Home.unittests.services.authenticationServices;
 
 import com.furreverhome.Furrever_Home.dto.*;
+import com.furreverhome.Furrever_Home.dto.auth.JwtAuthenticationResponse;
+import com.furreverhome.Furrever_Home.dto.auth.PetAdopterSignupRequest;
+import com.furreverhome.Furrever_Home.dto.auth.ShelterSignupRequest;
+import com.furreverhome.Furrever_Home.dto.auth.SigninRequest;
 import com.furreverhome.Furrever_Home.dto.user.PasswordDto;
 import com.furreverhome.Furrever_Home.entities.PasswordResetToken;
 import com.furreverhome.Furrever_Home.entities.PetAdopter;
@@ -17,18 +21,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.furreverhome.Furrever_Home.entities.User;
 import com.furreverhome.Furrever_Home.repository.UserRepository;
-import com.furreverhome.Furrever_Home.services.JwtService;
+import com.furreverhome.Furrever_Home.services.jwtservices.JwtService;
 
 import java.util.Optional;
 

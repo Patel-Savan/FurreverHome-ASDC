@@ -1,4 +1,4 @@
-package com.furreverhome.Furrever_Home.dto;
+package com.furreverhome.Furrever_Home.dto.auth;
 
 import lombok.Data;
 

@@ -5,7 +5,7 @@ import com.furreverhome.Furrever_Home.entities.PetAdopter;
 import com.furreverhome.Furrever_Home.entities.Shelter;
 import com.furreverhome.Furrever_Home.repository.PetAdopterRepository;
 import com.furreverhome.Furrever_Home.repository.ShelterRepository;
-import com.furreverhome.Furrever_Home.services.UserProfileManagementService;
+import com.furreverhome.Furrever_Home.services.userprofilemanagementservice.UserProfileManagementService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

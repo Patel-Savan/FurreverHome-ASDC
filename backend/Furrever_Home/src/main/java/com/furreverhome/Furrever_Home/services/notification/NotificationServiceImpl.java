@@ -4,7 +4,6 @@ import com.furreverhome.Furrever_Home.entities.Pet;
 import com.furreverhome.Furrever_Home.entities.PetVaccinationInfo;
 import com.furreverhome.Furrever_Home.entities.Shelter;
 import com.furreverhome.Furrever_Home.repository.PetVaccinationInfoRepository;
-import com.furreverhome.Furrever_Home.services.NotificationService;
 import com.furreverhome.Furrever_Home.services.emailservice.EmailService;
 import jakarta.mail.MessagingException;
 import org.slf4j.Logger;

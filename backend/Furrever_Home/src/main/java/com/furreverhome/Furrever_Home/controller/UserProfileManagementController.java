@@ -4,7 +4,7 @@ import com.furreverhome.Furrever_Home.dto.profile.UpdateShelterProfileRequestDto
 import com.furreverhome.Furrever_Home.dto.profile.UpdateShelterProfileResponseDto;
 import com.furreverhome.Furrever_Home.dto.profile.UpdateUserProfileRequestDto;
 import com.furreverhome.Furrever_Home.dto.profile.UpdateUserProfileResponseDto;
-import com.furreverhome.Furrever_Home.services.UserProfileManagementService;
+import com.furreverhome.Furrever_Home.services.userprofilemanagementservice.UserProfileManagementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

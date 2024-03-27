@@ -9,7 +9,7 @@ import com.furreverhome.Furrever_Home.entities.User;
 import com.furreverhome.Furrever_Home.exception.UserNotFoundException;
 import com.furreverhome.Furrever_Home.repository.LostPetRepository;
 import com.furreverhome.Furrever_Home.repository.UserRepository;
-import com.furreverhome.Furrever_Home.services.JwtService;
+import com.furreverhome.Furrever_Home.services.jwtservices.JwtService;
 import com.furreverhome.Furrever_Home.services.petadopterservices.LostPetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;

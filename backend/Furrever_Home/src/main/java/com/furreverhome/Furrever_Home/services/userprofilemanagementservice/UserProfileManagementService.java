@@ -1,4 +1,4 @@
-package com.furreverhome.Furrever_Home.services;
+package com.furreverhome.Furrever_Home.services.userprofilemanagementservice;
 
 import com.furreverhome.Furrever_Home.dto.profile.*;
 import com.furreverhome.Furrever_Home.entities.PetAdopter;
