@@ -54,33 +54,35 @@ public class ShelterServiceImpl implements ShelterService{
         Optional<Pet> optionalPet = petRepository.findById(petID);
         if (optionalPet.isPresent()){
             Pet pet = optionalPet.get();
-
-            if (updatePetRequest.getType()!=null){
-                pet.setType(updatePetRequest.getType());
-            }
-            if (updatePetRequest.getBreed()!=null){
-                pet.setBreed(updatePetRequest.getBreed());
-            }
-            if (updatePetRequest.getColour()!=null){
-                pet.setColour(updatePetRequest.getColour());
-            }
-            if (updatePetRequest.getGender()!=null){
-                pet.setGender(updatePetRequest.getGender());
-            }
-            if (updatePetRequest.getBirthdate()!=null){
-                pet.setBirthdate(updatePetRequest.getBirthdate());
-            }
-            if (updatePetRequest.getPetImage()!=null){
-                pet.setPetImage(updatePetRequest.getPetImage());
-            }
-            if (updatePetRequest.getPetMedicalHistory()!=null){
-                pet.setPetMedicalHistory(updatePetRequest.getPetMedicalHistory());
-            }
+            updatePetFields(pet, updatePetRequest);
             petRepository.save(pet);
-
             return mapPetToDto(pet);
         }else {
             throw new RuntimeException("Pet with ID "+petID+" not found");
+        }
+    }
+
+    private void updatePetFields(Pet pet, RegisterPetRequest updatePetRequest) {
+        if (updatePetRequest.getType() != null) {
+            pet.setType(updatePetRequest.getType());
+        }
+        if (updatePetRequest.getBreed() != null) {
+            pet.setBreed(updatePetRequest.getBreed());
+        }
+        if (updatePetRequest.getColour() != null) {
+            pet.setColour(updatePetRequest.getColour());
+        }
+        if (updatePetRequest.getGender() != null) {
+            pet.setGender(updatePetRequest.getGender());
+        }
+        if (updatePetRequest.getBirthdate() != null) {
+            pet.setBirthdate(updatePetRequest.getBirthdate());
+        }
+        if (updatePetRequest.getPetImage() != null) {
+            pet.setPetImage(updatePetRequest.getPetImage());
+        }
+        if (updatePetRequest.getPetMedicalHistory() != null) {
+            pet.setPetMedicalHistory(updatePetRequest.getPetMedicalHistory());
         }
     }
 

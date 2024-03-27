@@ -22,6 +22,8 @@ public class NotificationServiceImpl implements NotificationService {
     private final PetVaccinationInfoRepository petVaccinationInfoRepository;
     private final EmailService emailService;
 
+    private final int notificationPeriod = 7;
+
     public NotificationServiceImpl(PetVaccinationInfoRepository petVaccinationInfoRepository, EmailService emailService) {
         this.petVaccinationInfoRepository = petVaccinationInfoRepository;
         this.emailService = emailService;
@@ -36,7 +38,7 @@ public class NotificationServiceImpl implements NotificationService {
     public void sendVaccinationReminders() {
 
         LocalDate today = LocalDate.now();
-        LocalDate nextWeek = today.plusDays(7);
+        LocalDate nextWeek = today.plusDays(notificationPeriod);
 
         List<PetVaccinationInfo> dueVaccinations = petVaccinationInfoRepository.findAllWithNextVaccinationDueBetween(today, nextWeek);
 

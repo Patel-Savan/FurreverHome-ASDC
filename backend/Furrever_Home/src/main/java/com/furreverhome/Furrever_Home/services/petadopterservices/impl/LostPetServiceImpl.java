@@ -27,9 +27,10 @@ public class LostPetServiceImpl implements LostPetService {
     private final UserRepository userRepository;
     private final LostPetRepository lostPetRepository;
     private final JwtService jwtService;
+    private final int authHeaderSubstring = 7;
     @Override
     public LostPet registerLostPet(String authorizationHeader, RegisterLostPetDto registerLostPetDto) {
-        String jwt = authorizationHeader.substring(7);
+        String jwt = authorizationHeader.substring(authHeaderSubstring);
         String username = jwtService.extractUserName(jwt);
         Optional<User> user = userRepository.findByEmail(username);
         if(user.isPresent()) {
