@@ -163,7 +163,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             jwtAuthenticationResponse.setRefreshToken(refreshToken);
             jwtAuthenticationResponse.setUserRole(user.getRole());
             jwtAuthenticationResponse.setUserId(user.getId());
-            if(optionalShelter.isPresent()) {
+            if(isShelterAccepted(user.getId())) {
                 jwtAuthenticationResponse.setShelterId(optionalShelter.get().getId());
             }
             if(optionalPetAdopter.isPresent()) {
@@ -174,6 +174,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         jwtAuthenticationResponse.setVerified(user.getVerified());
         return jwtAuthenticationResponse;
+    }
+
+    public boolean isShelterAccepted (long userId) {
+        Optional<Shelter> optionalShelter = shelterRepository.findByUserId(userId);
+        if(optionalShelter.isPresent()) {
+            Shelter shelter = optionalShelter.get();
+            if(shelter.isAccepted()) {
+                return true;
+            } else {
+                throw new RuntimeException("Admin approval pending..");
+            }
+        }
+        return false;
     }
 
     public boolean verifyByEmail(String email) {
