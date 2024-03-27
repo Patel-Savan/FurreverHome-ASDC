@@ -62,18 +62,19 @@ public class ChatServiceImpl implements ChatService {
         var entities = determineRolesAndGetEntities(user);
 
         // Upsert both users
-        String shelterUserId = entities.petAdopter().getId().toString();
-        String shelterUsername = entities.petAdopter().getFirstname();
-        String shelterImageUrl = getAvatarUrl(entities.petAdopter().getUser().getEmail());
         if (entities.petAdopter() != null) {
-            chatProviderService.addUser(shelterUserId, shelterUsername, shelterImageUrl);
+            chatProviderService.addUser(
+                    entities.petAdopter().getId().toString(),
+                    entities.petAdopter().getFirstname(),
+                    getAvatarUrl(entities.petAdopter().getUser().getEmail())
+            );
         }
-
-        String petAdopterUserId = entities.shelter().getId().toString();
-        String petAdopterUsername = entities.shelter().getName();
-        String petAdopterImageUrl = getAvatarUrl(entities.shelter().getUser().getEmail());
         if (entities.shelter() != null) {
-            chatProviderService.addUser(petAdopterUserId, petAdopterUsername, petAdopterImageUrl);
+            chatProviderService.addUser(
+                    entities.shelter().getId().toString(),
+                    entities.shelter().getName(),
+                    getAvatarUrl(entities.shelter().getUser().getEmail())
+            );
         }
 
         return generateTokenForUser(user, entities.petAdopter(), entities.shelter(), null);
