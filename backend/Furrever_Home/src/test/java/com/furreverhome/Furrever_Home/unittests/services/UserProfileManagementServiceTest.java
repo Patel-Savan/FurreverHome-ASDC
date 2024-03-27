@@ -1,10 +1,11 @@
-package com.furreverhome.Furrever_Home.services;
+package com.furreverhome.Furrever_Home.unittests.services;
 
 import com.furreverhome.Furrever_Home.dto.profile.*;
 import com.furreverhome.Furrever_Home.entities.PetAdopter;
 import com.furreverhome.Furrever_Home.entities.Shelter;
 import com.furreverhome.Furrever_Home.repository.PetAdopterRepository;
 import com.furreverhome.Furrever_Home.repository.ShelterRepository;
+import com.furreverhome.Furrever_Home.services.UserProfileManagementService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,5 +1,6 @@
-package com.furreverhome.Furrever_Home.controller;
+package com.furreverhome.Furrever_Home.unittests.controller;
 
+import com.furreverhome.Furrever_Home.controller.ChatController;
 import com.furreverhome.Furrever_Home.dto.chat.ChatCredentialsResponse;
 import com.furreverhome.Furrever_Home.repository.ChatService;
 import org.junit.jupiter.api.BeforeEach;

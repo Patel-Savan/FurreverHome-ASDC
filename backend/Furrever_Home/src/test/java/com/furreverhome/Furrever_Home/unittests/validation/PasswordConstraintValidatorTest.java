@@ -1,5 +1,6 @@
-package com.furreverhome.Furrever_Home.validation;
+package com.furreverhome.Furrever_Home.unittests.validation;
 
+import com.furreverhome.Furrever_Home.validation.PasswordConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,9 +1,10 @@
-package com.furreverhome.Furrever_Home.services.adminservices.impl;
+package com.furreverhome.Furrever_Home.unittests.services.adminservices.impl;
 
 import com.furreverhome.Furrever_Home.entities.Shelter;
 import com.furreverhome.Furrever_Home.entities.User;
 import com.furreverhome.Furrever_Home.repository.ShelterRepository;
 import com.furreverhome.Furrever_Home.repository.UserRepository;
+import com.furreverhome.Furrever_Home.services.adminservices.impl.AdminServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

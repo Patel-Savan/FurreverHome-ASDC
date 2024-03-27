@@ -1,4 +1,4 @@
-package com.furreverhome.Furrever_Home.services.emailservice;
+package com.furreverhome.Furrever_Home.unittests.services.emailservice;
 
 import com.furreverhome.Furrever_Home.services.emailservice.EmailService;
 import org.junit.jupiter.api.BeforeEach;

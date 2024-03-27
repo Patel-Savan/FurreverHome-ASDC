@@ -1,6 +1,7 @@
-package com.furreverhome.Furrever_Home.controller;
+package com.furreverhome.Furrever_Home.unittests.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.furreverhome.Furrever_Home.controller.ShelterController;
 import com.furreverhome.Furrever_Home.dto.GenericResponse;
 import com.furreverhome.Furrever_Home.dto.Pet.PetAdoptionRequestResponseDto;
 import com.furreverhome.Furrever_Home.dto.Pet.PetDto;

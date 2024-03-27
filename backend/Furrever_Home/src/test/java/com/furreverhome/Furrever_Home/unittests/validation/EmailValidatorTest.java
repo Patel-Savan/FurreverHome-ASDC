@@ -1,5 +1,6 @@
-package com.furreverhome.Furrever_Home.validation;
+package com.furreverhome.Furrever_Home.unittests.validation;
 
+import com.furreverhome.Furrever_Home.validation.EmailValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

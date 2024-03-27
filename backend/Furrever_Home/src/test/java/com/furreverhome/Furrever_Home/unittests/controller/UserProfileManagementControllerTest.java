@@ -1,6 +1,7 @@
-package com.furreverhome.Furrever_Home.controller;
+package com.furreverhome.Furrever_Home.unittests.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.furreverhome.Furrever_Home.controller.UserProfileManagementController;
 import com.furreverhome.Furrever_Home.dto.profile.UpdateShelterProfileRequestDto;
 import com.furreverhome.Furrever_Home.dto.profile.UpdateShelterProfileResponseDto;
 import com.furreverhome.Furrever_Home.dto.profile.UpdateUserProfileRequestDto;

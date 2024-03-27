@@ -1,6 +1,7 @@
-package com.furreverhome.Furrever_Home.controller;
+package com.furreverhome.Furrever_Home.unittests.controller;
 
 import com.furreverhome.Furrever_Home.config.FrontendConfigurationProperties;
+import com.furreverhome.Furrever_Home.controller.AuthenticationController;
 import com.furreverhome.Furrever_Home.dto.JwtAuthenticationResponse;
 import com.furreverhome.Furrever_Home.dto.RefreshTokenRequest;
 import com.furreverhome.Furrever_Home.dto.SigninRequest;
