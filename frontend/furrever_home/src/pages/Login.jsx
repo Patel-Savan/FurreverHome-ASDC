@@ -33,7 +33,7 @@ const Login = () => {
         .then(response => {
 
           if (response.data.token === null) {
-            toast.info("Verification Pending");
+            toast.info("Email Verification Pending");
           }
           else {
             console.log(response);
@@ -64,7 +64,7 @@ const Login = () => {
 
         })
         .catch(error => {
-          toast.error("Incorrect Username or Password");
+          toast.error(error.message);
         })
     }
     else {

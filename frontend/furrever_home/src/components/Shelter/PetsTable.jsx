@@ -69,14 +69,12 @@ const PetsTable = ({ pets,setChange }) => {
             field: 'petImage',
             headerName: 'Pet',
             width: 150,
-            editable: true,
             renderCell: (params) => <Avatar src={params.value} onClick={() => handlePetClick(params.row.petID)} />
         },
         {
             field: 'adopted',
             headerName: 'Status',
             width: 150,
-            editable: true,
             renderCell: (param) => {
                 return (
                     param.value ? <Chip color="green" value="Adopted" /> : <Chip color="cyan" value="Not Adopted" />
@@ -89,31 +87,29 @@ const PetsTable = ({ pets,setChange }) => {
             field: 'type',
             headerName: 'Type',
             width: 110,
-            editable: true,
         },
         {
             field: 'breed',
             headerName: 'Breed',
             width: 110,
-            editable: true,
         },
         {
             field: 'colour',
             headerName: 'Colour',
             width: 110,
-            editable: true,
         },
         {
             field: 'gender',
             headerName: 'Gender',
             width: 110,
-            editable: true,
         },
         {
             field: 'birthdate',
             headerName: 'BirthDate',
             width: 110,
-            editable: true,
+            renderCell:(param)=>{
+                return param.value.substring(0,10)
+            }
         },
         {
             field: "",
