@@ -2,7 +2,7 @@
 stages:
   - build
   - test
-  - quality
+  # - quality
   - publish
   - deploy
 
@@ -45,18 +45,18 @@ test:
     - cd backend/Furrever_Home
     - mvn test
 
-quality:
-  stage: quality
-  image: openjdk:17-alpine
-  script:
-    - echo "Compiling the project"
-    - mkdir smells/
-    - java -version
-    - java -jar $CI_PROJECT_DIR/backend/.gitlab/DesigniteJava.jar -i $CI_PROJECT_DIR -o $CI_PROJECT_DIR/smells/ -d
-  artifacts:
-    paths:
-      - smells/
-      - $CI_PROJECT_DIR
+# quality:
+#   stage: quality
+#   image: openjdk:17-alpine
+#   script:
+#     - echo "Compiling the project"
+#     - mkdir smells/
+#     - java -version
+#     - java -jar $CI_PROJECT_DIR/backend/.gitlab/DesigniteJava.jar -i $CI_PROJECT_DIR -o $CI_PROJECT_DIR/smells/ -d
+#   artifacts:
+#     paths:
+#       - smells/
+#       - $CI_PROJECT_DIR
 
 publish:
   image: docker:latest
