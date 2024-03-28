@@ -1,22 +1,44 @@
 package com.furreverhome.Furrever_Home.integrationtests;
 
-import com.furreverhome.Furrever_Home.ApiTestUtils;
+import com.furreverhome.Furrever_Home.dto.auth.SigninRequest;
+import io.restassured.response.Response;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.test.context.ContextConfiguration;
 
-// Correct static imports for io.restassured.RestAssured and org.hamcrest.Matchers
 import static io.restassured.RestAssured.given;
-
+@SpringBootTest
+@ContextConfiguration
 class AdminIntegrationTest {
-
     private String token;
+    public String serverLink = "http://172.17.0.170:";
+    @Value("${server.port}")
+    public String port;
 
     /**
      * Sets up the necessary authentication token before each test method.
      */
     @BeforeEach
     public void setUp() {
-        token = ApiTestUtils.obtainAccessToken("admin@gmail.com", "Jp@32padhiyar");
+        SigninRequest signinRequest = new SigninRequest();
+        signinRequest.setEmail("admin@gmail.com");
+        signinRequest.setPassword("Jp@32padhiyar");
+        // Send POST request to login endpoint
+        Response response = given()
+                .header("Content-Type", "application/json")
+                .body(signinRequest)
+                .post(serverLink+port+"/api/auth/signin");
+
+        // Check if the response body is not empty and is a proper JSON
+        if(response.body().asString().trim().isEmpty() || !response.contentType().contains("application/json")) {
+            throw new IllegalStateException("Response body is empty or not JSON: " + response.body().asString());
+        }
+
+        System.out.println(response.asString());
+        // Extract token from response
+        token = response.jsonPath().getString("token");
     }
 
     /**
@@ -27,12 +49,9 @@ class AdminIntegrationTest {
      */
     @Test
     public void testGetAllShelterSuccessThenOK(){
-//        when().get("http://localhost:8080/api/admin/shelters").then().statusCode(200);
-//        given().auth().preemptive().basic("admin@gmail.com", "Jp@32padhiyar")
-//                .when().get("http://localhost:8080/api/admin/shelters")
-//                .then().statusCode(200);
+        System.out.println(serverLink+port);
         given().header("Authorization", "Bearer " + token)
-                .when().get("http://localhost:8080/api/admin/shelters")
+                .when().get(serverLink+port + "/api/admin/shelters")
                 .then().statusCode(200);
     }
 }
