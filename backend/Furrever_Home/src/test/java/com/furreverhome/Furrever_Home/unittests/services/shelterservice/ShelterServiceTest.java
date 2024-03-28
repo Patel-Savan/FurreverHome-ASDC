@@ -1,4 +1,4 @@
-package com.furreverhome.Furrever_Home.unittests.services;
+package com.furreverhome.Furrever_Home.unittests.services.shelterservice;
 
 import com.furreverhome.Furrever_Home.dto.GenericResponse;
 import com.furreverhome.Furrever_Home.dto.Pet.PetAdoptionRequestResponseDto;

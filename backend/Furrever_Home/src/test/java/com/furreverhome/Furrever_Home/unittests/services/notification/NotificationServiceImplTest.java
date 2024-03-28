@@ -1,4 +1,4 @@
-package com.furreverhome.Furrever_Home.unittests.services;
+package com.furreverhome.Furrever_Home.unittests.services.notification;
 
 import com.furreverhome.Furrever_Home.PetDataGenerator;
 import com.furreverhome.Furrever_Home.entities.PetVaccinationInfo;
