@@ -18,6 +18,11 @@ const PetDetail = ({
   const [reqExist,setReqExist] = useState(false)
   const sid = readLocalStorage("shelterID")
 
+  console.log(pet)
+
+  const [isAdopted,setIsAdopted] = useState(false)
+
+
   const navigate = useNavigate()
  
 
@@ -88,9 +93,10 @@ const PetDetail = ({
             <div>
 
             { role === "PETADOPTER" ?
+                pet.adopted ? <p className="flex items-center fonr-bold text-red-500 gap-1">This pet is already adopted</p> :
                 reqExist ? <p className="flex items-center fonr-bold text-green-500 gap-1">You have sent request for this pet </p> : <button type="button" onClick={handleAdoptionRequest} className="btn btn-orange mx-auto lg:h-10 sm:h-15">Adopt</button> 
                 : 
-
+                pet.adopted ? <p className="flex items-center fonr-bold text-red-500 gap-1">This pet is already adopted</p> :
                   
 
                 <>

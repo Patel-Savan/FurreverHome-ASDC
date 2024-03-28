@@ -49,17 +49,17 @@ const PetAdoptionRequests = () => {
         { field: 'phone_number', headerName: 'Contact', width: 150 },
         { field: 'address', headerName: 'Address', width: 200 },
         { field: 'city', headerName: 'City', width: 150 },
-        {
-            field: 'chat',
-            headerName: 'Chat',
-            width: 100,
-            renderCell: (params) => (
-                <Avatar
-                    onClick={() => handleChatClick(params.row.adopterId)}
-                    alt="Chat"
-                />
-            )
-        }
+        // {
+        //     field: 'chat',
+        //     headerName: 'Chat',
+        //     width: 100,
+        //     renderCell: (params) => (
+        //         <Avatar
+        //             onClick={() => handleChatClick(params.row.adopterId)}
+        //             alt="Chat"
+        //         />
+        //     )
+        // }
     ];
 
     return (

@@ -19,7 +19,8 @@ const PetForAdopter = () => {
       colour:"",
       petMedicalHistory:"",
       petImage:"",
-      petID:""
+      petID:"",
+      adopted:""
     })
     const [shelter,setShelter] = useState({
       name:"",
@@ -50,7 +51,8 @@ const PetForAdopter = () => {
           colour:response.data.colour,
           petMedicalHistory:response.data.petMedicalHistory,
           petImage:response.data.petImage,
-          petID:response.data.petID
+          petID:response.data.petID,
+          adopted:response.data.adopted
         })
 
         const res = response.data.shelter
