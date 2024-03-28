@@ -18,7 +18,7 @@ const UpdatePetDetails = ({ pets,setChange }) => {
     const handleOpen = () => setOpen((cur) => !cur);
     const navigate = useNavigate();
     const token = readLocalStorage("token")
-    console.log(pets)
+
     const [formData, setFormData] = useState({
 
         type: pets.type,
@@ -44,12 +44,11 @@ const UpdatePetDetails = ({ pets,setChange }) => {
         const reader = new FileReader();
         reader.readAsDataURL(image);
         reader.onload = function (e) {
-              console.log(e.target.result)
             const newData = { ...formData }
             newData.petImage = e.target.result
-            console.log(newData)
+
             setFormData(newData)
-            console.log(formData)
+
             
         };
 
@@ -70,7 +69,7 @@ const UpdatePetDetails = ({ pets,setChange }) => {
             }
         })
             .then((res) => {
-                console.log(res)
+
                 setResponse(res)
                 setLoading(true)
                 setChange(true)
@@ -106,7 +105,7 @@ const UpdatePetDetails = ({ pets,setChange }) => {
             })
     }
 
-    // console.log(pets.petId)
+
 
     return (
         <>

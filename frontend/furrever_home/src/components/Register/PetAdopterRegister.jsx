@@ -48,7 +48,7 @@ const PetAdopterRegister = () => {
         ...formData
       })
         .then((res) => {
-          console.log(res)
+
           setResponse(res)
           setLoading(false)
           toast.info("Verify Your Email!");

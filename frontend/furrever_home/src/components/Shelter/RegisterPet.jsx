@@ -18,7 +18,7 @@ const RegisterPet = ({setChange}) => {
     const navigate = useNavigate();
     const sid = readLocalStorage("shelterID");
     const token = readLocalStorage("token")
-    console.log("Bearer " + token)
+
     const [image, setPetImage] = useState("");
 
     const [formData, setFormData] = useState({
@@ -43,10 +43,10 @@ const RegisterPet = ({setChange}) => {
         const reader = new FileReader();
         reader.readAsDataURL(image);
         reader.onload = function (e) {
-            console.log(e.target.result)
+
 
             setPetImage(e.target.result)
-            //   console.log(typeof (image))
+
         };
 
         reader.onerror = function () {
@@ -69,7 +69,7 @@ const RegisterPet = ({setChange}) => {
             shelter: sid,
             petImage: image
         }
-        console.log(data)
+
 
         axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/shelter/registerPet`, data, {
             headers: {
@@ -77,7 +77,7 @@ const RegisterPet = ({setChange}) => {
             }
         })
             .then((res) => {
-                console.log(res)
+
                 setResponse(res)
                 setLoading(true)
                 toast.success("New Pet added!");
@@ -95,7 +95,6 @@ const RegisterPet = ({setChange}) => {
 
             })
             .catch((err) => {
-                console.log(err)
                 toast.error(err.message)
                 handleOpen();
                 setFormData({

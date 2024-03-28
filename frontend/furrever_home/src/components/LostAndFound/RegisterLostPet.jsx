@@ -18,7 +18,7 @@ const RegisterLostPet = ({ setChange }) => {
     const navigate = useNavigate();
     const sid = readLocalStorage("shelterID");
     const token = readLocalStorage("token")
-    // console.log("Bearer " + token)
+
     // const [image, setPetImage] = useState("");
 
     const [formData, setFormData] = useState({
@@ -37,7 +37,7 @@ const RegisterLostPet = ({ setChange }) => {
 
         const newData = { ...formData }
         newData[event.target.id] = event.target.value
-        console.log(newData)
+
         setFormData(newData)
     }
 
@@ -46,17 +46,17 @@ const RegisterLostPet = ({ setChange }) => {
         const reader = new FileReader();
         reader.readAsDataURL(image);
         reader.onload = function (e) {
-              console.log(e.target.result)
+
             const newData = { ...formData }
             newData.petImage = e.target.result
-            console.log(newData)
+
             setFormData(newData)
-            console.log(formData)
+
             
         };
 
         reader.onerror = function () {
-            console.log(reader.error);
+
         };
     }
 
@@ -66,8 +66,7 @@ const RegisterLostPet = ({ setChange }) => {
 
         event.preventDefault();
 
-       
-        console.log(formData)
+
 
         axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/petadopter/lostpet`, formData, {
             headers: {
@@ -75,7 +74,6 @@ const RegisterLostPet = ({ setChange }) => {
             }
         })
             .then((res) => {
-                console.log(res)
                 setChange(true)
                 setResponse(res)
                 setLoading(true)

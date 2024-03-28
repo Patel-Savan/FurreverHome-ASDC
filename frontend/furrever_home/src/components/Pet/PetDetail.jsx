@@ -17,7 +17,7 @@ const PetDetail = ({
   const token = readLocalStorage("token")
   const [reqExist,setReqExist] = useState(false)
   const sid = readLocalStorage("shelterID")
-  console.log(role)
+
   const navigate = useNavigate()
  
 
@@ -56,7 +56,6 @@ const PetDetail = ({
       toast.success("Adoption request sent")
     })
     .catch(error => {
-      console.log(petId + " " + petAdopterID)
       console.log(error)
       toast.error("Cannot send request, Please Try again later")
     })

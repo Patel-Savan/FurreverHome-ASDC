@@ -3,7 +3,6 @@ const verifyAuthentication = () => {
 
     const user = localStorage.getItem('token')
     const userRole = localStorage.getItem('role')
-    console.log(userRole)
 
     if (user) {
         return { user, userRole }

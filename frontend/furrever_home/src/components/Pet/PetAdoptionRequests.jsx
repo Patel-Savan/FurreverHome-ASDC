@@ -16,7 +16,7 @@ const PetAdoptionRequests = () => {
 
     const token=readLocalStorage("token")
     const location = useLocation();
-    console.log(location)
+
     const petId = location.state.id;
     const [adopters,setAdopters] = useState([])
 
@@ -28,8 +28,8 @@ const PetAdoptionRequests = () => {
             }
         })
         .then(response=>{
-            console.log(response)
-            console.log(response.data.petAdopters)
+
+
             setAdopters(response.data.petAdopters)
         })
         .catch(error=>{

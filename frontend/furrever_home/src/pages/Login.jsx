@@ -26,7 +26,7 @@ const Login = () => {
     event.preventDefault();
 
     errors = validatePassword(password);
-    console.log(errors)
+
 
     if (errors.length === 0) {
       axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/signin`, { email, password })
@@ -36,7 +36,7 @@ const Login = () => {
             toast.info("Email Verification Pending");
           }
           else {
-            console.log(response);
+
             toast.success("Login Successfull")
             saveLocalStorage("id", response.data.userId)
             saveLocalStorage("token", response.data.token)
@@ -64,7 +64,8 @@ const Login = () => {
 
         })
         .catch(error => {
-          toast.error(error.message);
+
+          toast.error(error.response.data.message);
         })
     }
     else {

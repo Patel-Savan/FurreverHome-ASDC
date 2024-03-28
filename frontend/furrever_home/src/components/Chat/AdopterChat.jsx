@@ -60,7 +60,7 @@ const AdopterChat = () => {
   };
 
   const initChat = async (data) => {
-    console.log(data)
+
     const client = StreamChat.getInstance(data.apiKey);
 
     await client.connectUser(
@@ -91,7 +91,7 @@ const AdopterChat = () => {
       }
     })
       .then(response => {
-        console.log(response.data)
+
         // setData(response.data)       
         return response.data
       })

@@ -7,9 +7,7 @@ export default defineConfig(({ mode }) => {
 
   const env = loadEnv(mode, process.cwd(), '')
 
-  // console.log(App ENV: >>> ${JSON.stringify(env.VITE_BACKEND_BASE_URL)});
-  // console.log(App ENV SERVER PORT: >>> ${JSON.stringify(env.SERVER_PORT)});
-  // console.log(App ENV APP PORT: >>> ${JSON.stringify(env.APP_PORT)});
+
   
   return {
     plugins: [react()],

@@ -16,9 +16,7 @@ import ImgLogo from '/img/logo/LogoWithText_NoBG.png';
 
 const Header = ({user}) => {
   const userToken = verifyAuthentication()
-  console.log(user)
-  // const user = JSON.parse(readLocalStorage("User"))
-  console.log(userToken)
+
   const navigate = useNavigate();
 
 

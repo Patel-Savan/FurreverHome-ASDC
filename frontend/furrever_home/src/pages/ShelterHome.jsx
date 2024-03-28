@@ -15,7 +15,7 @@ const ShelterHome = ({ children }) => {
   const [pets, setPets] = useState([])
   const sid = readLocalStorage("shelterID");
   const id = readLocalStorage("id");
-  console.log(id)
+
 
   const getPet = () => {
     axios.get(`${baseurl}/shelter/${sid}/pets`, {
@@ -25,9 +25,8 @@ const ShelterHome = ({ children }) => {
     })
       .then(response => {
         setPets(response.data)
-        console.log(response.data)
-        // setLoading(true)
-        console.log(pets)
+
+
 
       })
       .catch(error => {
@@ -43,7 +42,6 @@ const ShelterHome = ({ children }) => {
       }
     })
       .then(response => {
-        console.log(response.data)
         saveLocalStorage("User", JSON.stringify(response.data));
       })
       .catch(error => {
@@ -52,7 +50,7 @@ const ShelterHome = ({ children }) => {
 
     getPet()
 
-  }, [pets.length,change])
+  }, [change])
 
 
 

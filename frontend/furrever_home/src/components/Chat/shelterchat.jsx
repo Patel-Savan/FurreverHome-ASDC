@@ -31,7 +31,7 @@ const ShelterChat = () => {
   const User = JSON.parse(readLocalStorage("User"))
   const baseurl = `${import.meta.env.VITE_BACKEND_BASE_URL}`
 
-  console.log(User)
+
 
   const filters = {
     type: "messaging",
@@ -41,7 +41,7 @@ const ShelterChat = () => {
 
   const initChat = async (data) => {
     const client = StreamChat.getInstance(data.apiKey);
-    console.log(data)
+
     await client.connectUser(
       {
         id: data.userChatId,
@@ -63,7 +63,7 @@ const ShelterChat = () => {
       }
     })
       .then(response => {
-        console.log(response.data)
+
         saveLocalStorage("User", JSON.stringify(response.data));
         setLoading(true)
       })
@@ -77,7 +77,7 @@ const ShelterChat = () => {
       }
     })
       .then(response => {
-        console.log(response.data)
+
         // setData(response.data)       
         return response.data
       })

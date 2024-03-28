@@ -48,8 +48,7 @@ const LostAndFoundHome = () => {
         })
             .then((response) => {
                 setParticularPet(response.data.lostPetDtoList);
-                console.log(response.data.lostPetDtoList)
-                console.log(response)
+
                 setParticularLoading(true);
             });
     }, [change])
@@ -95,7 +94,6 @@ const LostAndFoundHome = () => {
                             loading
                                 ?
                                 pets.map((pet) => {
-                                    console.log(pet)
                                     return (
                                         <LostPetCard
                                         key={pet.id}
@@ -130,7 +128,7 @@ const LostAndFoundHome = () => {
                             particularloading
                                 ?
                                 particularPet.map((pet) => {
-                                    console.log(pet)
+
                                     return (
                                         <LostPetCard
                                             key={pet.id}

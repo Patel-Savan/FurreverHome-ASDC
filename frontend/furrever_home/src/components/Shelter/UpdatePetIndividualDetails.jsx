@@ -1,4 +1,4 @@
-import { PencilIcon } from "@heroicons/react/24/solid";
+import { PencilIcon } from "@heroicons/react/24/solid";pets.fil
 import {
     Card,
     CardBody,
@@ -6,7 +6,7 @@ import {
     Typography
 } from "@material-tailwind/react";
 import axios from 'axios';
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { readLocalStorage } from '../../utils/helper';
@@ -18,7 +18,24 @@ const UpdatePetDetails = ({ pets, sid }) => {
     const handleOpen = () => setOpen((cur) => !cur);
     const navigate = useNavigate();
     const token = readLocalStorage("token")
-    console.log(pets)
+
+
+    useEffect(() => {
+        setFormData({
+
+            type: pets.type,
+            breed: pets.breed,
+            colour: pets.colour,
+            gender: pets.gender,
+            birthdate: pets.birthdate,
+            petMedicalHistory:pets.petMedicalHistory,
+            petImage: pets.petImage,
+            shelter: sid,
+            adopted: pets.adopted
+        })
+
+    },[pets])
+
     const [formData, setFormData] = useState({
 
         type: pets.type,
@@ -31,6 +48,7 @@ const UpdatePetDetails = ({ pets, sid }) => {
         shelter: sid,
         adopted: pets.adopted
     });
+
 
     const handleChange = (event) => {
 
@@ -45,11 +63,11 @@ const UpdatePetDetails = ({ pets, sid }) => {
         const reader = new FileReader();
         reader.readAsDataURL(image);
         reader.onload = function (e) {
-            //   console.log(e.target.result)
+
             const newData = { ...formData }
             newData.petImage = e.target.result
             setFormData(newData)
-            //   console.log(typeof (image))
+
         };
 
         reader.onerror = function () {
@@ -57,7 +75,7 @@ const UpdatePetDetails = ({ pets, sid }) => {
         };
     }
 
-    // const token = readLocalStorage("token")
+
 
     const handleSubmit = (event) => {
 
@@ -69,7 +87,6 @@ const UpdatePetDetails = ({ pets, sid }) => {
             }
         })
             .then((res) => {
-                console.log(res)
                 setResponse(res)
                 setLoading(true)
                 toast.success("Pet Updated!");
@@ -88,7 +105,6 @@ const UpdatePetDetails = ({ pets, sid }) => {
 
             })
             .catch((err) => {
-                console.log(err)
                 toast.error(err.message)
                 handleOpen();
                 // setFormData({

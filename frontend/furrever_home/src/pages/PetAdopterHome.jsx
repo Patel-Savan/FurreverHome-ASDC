@@ -35,15 +35,14 @@ const PetAdopterHome = () => {
       }
     })
       .then(response => {
-        console.log(response.data)
+
         // saveLocalStorage("User", JSON.stringify(response.data));
         setSearchQuery(response.data.city)
-        // console.log(filter + "=" + searchQuery);
         setUserCity(response.data.city)
         return response.data.city
       })
       .then((city) => {
-        console.log(city)
+
         axios.post(`${baseurl}/searchshelter`, {
           city: city
         }, {
@@ -53,7 +52,7 @@ const PetAdopterHome = () => {
         })
           .then(response => {
             setData(response.data.shelterResponseDtoList)
-            console.log(response.data)
+
           })
           .catch(error => {
             toast.error("Cannot load data")
@@ -84,7 +83,7 @@ const PetAdopterHome = () => {
         })
           .then(response => {
             setData(response.data)
-            console.log(response.data)
+
           })
           .catch(error => {
             toast.error("Cannot get All Shelters")
@@ -102,13 +101,13 @@ const PetAdopterHome = () => {
         })
           .then(response => {
             setData(response.data.shelterResponseDtoList)
-            console.log(response.data.shelterResponseDtoList)
+
           })
           .catch(error => {
             toast.error("Cannot load data")
           })
 
-        console.log(type + "=" + searchQuery)
+
 
       }
     }
@@ -123,12 +122,12 @@ const PetAdopterHome = () => {
       })
         .then(response => {
           setData(response.data.petResponseDtoList)
-          console.log(response.data.petResponseDtoList)
+
         })
         .catch(error => {
           toast.error("Cannot load data")
         })
-      console.log(type + "=" + searchQuery)
+
 
     }
   }
@@ -145,7 +144,7 @@ const PetAdopterHome = () => {
       })
         .then(response => {
           setData(response.data.shelterResponseDtoList)
-          console.log(response.data)
+
         })
         .catch(error => {
           toast.error("Cannot load data")
@@ -163,7 +162,7 @@ const PetAdopterHome = () => {
       })
         .then(response => {
           setData(response.data.petResponseDtoList)
-          console.log(response.data.petResponseDtoList)
+
         })
         .catch(error => {
           toast.error("Cannot load data")
@@ -188,7 +187,7 @@ const PetAdopterHome = () => {
   }
 
   const handleShelterClick = (shelterId, userId,shelter1) => {
-    console.log(userId)
+
     navigate(`/adopter/shelter/${shelterId}`, {
       state: {
         userId: userId,
@@ -265,7 +264,6 @@ const PetAdopterHome = () => {
           {filter === "Shelter" &&
             data
               .map((shelter) => {
-                console.log(shelter)
                 return (
                   <ShelterCard
                     className="bg-[#f3faff]"
@@ -284,7 +282,6 @@ const PetAdopterHome = () => {
               })}
           {filter === "Pet" &&
             data.map((pet) => {
-              console.log(pet)
               return (
                  
                 <PetCard

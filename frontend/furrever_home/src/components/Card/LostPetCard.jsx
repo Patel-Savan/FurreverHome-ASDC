@@ -25,7 +25,7 @@ const PetCard = ({
         id,
 
     }
-    console.log(id)
+
     const thumbnailAlt = "Alternate Image"
     return (
         <div className={`rounded-lg p-6 shadow-sm ${className}`}>

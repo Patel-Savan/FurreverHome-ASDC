@@ -10,7 +10,7 @@ const Shelter = () => {
 
     const { id } = useParams()
     const { state } = useLocation()
-    console.log(state)
+
     const [shelter, setShelter] = useState({})
     const [pets, setPets] = useState({})
     const [loading, setLoading] = useState(false)
@@ -36,7 +36,6 @@ const Shelter = () => {
             .then(() => {
                 setLoading(true)
                 setShelter(response.data)
-                console.log(response.data)
             }
             )
             .catch(error => {
@@ -107,7 +106,6 @@ const Shelter = () => {
                                             pets.length > 0
                                                 ?
                                                 pets.map((pet) => {
-                                                    console.log(pet)
                                                     return (
                                                         <PetCard
                                                             key={pet.petID}

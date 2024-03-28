@@ -19,7 +19,7 @@ const ShelterTable = () => {
     const baseurl = `${import.meta.env.VITE_BACKEND_BASE_URL}/admin`;
     const token = readLocalStorage("token")
     const id = readLocalStorage("id");
-    console.log(id)
+
     const navigate = useNavigate();
 
     const [search, setSearch] = useState('');
@@ -41,8 +41,6 @@ const ShelterTable = () => {
             width: 150,
             editable: true,
             renderCell: (param) => {
-                console.log(param.row.verified)
-                console.log(param.value)
                 return (
                     (!param.row.accepted && !param.value) ? <Chip color="blue" value="Pending" /> : (param.row.accepted) ? <Chip color="green" value="Verified" /> : <Chip color="red" value="Rejected" />
                 )
@@ -113,8 +111,6 @@ const ShelterTable = () => {
 
 
     const approve = (id) => {
-        console.log(shelters[id - 1].email)
-        console.log(id)
         axios.get(`${baseurl}/shelter/${shelters[id - 1].email}/Approve`, {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -154,7 +150,6 @@ const ShelterTable = () => {
             .then(response => {
                 setShelters(response.data)
                 setLoading(true)
-                // saveLocalStorage("User",JSON.stringify(response.data));
             })
             .catch(error => {
                 console.log(error);

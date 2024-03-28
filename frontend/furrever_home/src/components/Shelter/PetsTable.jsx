@@ -40,9 +40,10 @@ const PetsTable = ({ pets,setChange }) => {
             }
         })
             .then(response => {
-                setPets(response.data)
-                setLoading(true)
-                console.log(pets)
+                // setPets(response.data)
+                // setLoading(true)
+                // setChange(true)
+                navigate(0)
 
             })
             .catch(error => {
@@ -173,7 +174,13 @@ const PetsTable = ({ pets,setChange }) => {
 
 
             <DataGrid
-                rows={pets}
+                rows={pets.filter((val) => {
+
+                    return(
+                        (val.type.toLowerCase().includes(search) || val.breed.toLowerCase().includes(search) || val.colour.toLowerCase().includes(search) ) && val
+                    )
+                }
+                    )}
                 getRowId={(row) => row.petID}
                 columns={columns}
                 initialState={{

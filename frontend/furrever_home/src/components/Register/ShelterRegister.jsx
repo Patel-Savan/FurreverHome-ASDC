@@ -45,9 +45,9 @@ const ShelterRegister = () => {
     const reader = new FileReader();
     reader.readAsDataURL(image);
     reader.onload = function (e) {
-      console.log(e.target.result)
+
       setImage(e.target.result)
-      console.log(typeof (image))
+
     };
 
     reader.onerror = function () {
@@ -57,7 +57,6 @@ const ShelterRegister = () => {
 
   const handleLicense = (image) => {
 
-    console.log(image)
 
 
     const reader = new FileReader();
@@ -100,14 +99,14 @@ const ShelterRegister = () => {
 
       axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/auth/signup`, data)
         .then((res) => {
-          console.log(res)
+
           setResponse(res)
           setLoading(false)
           toast.info("Your Shelter Verification is Pending!");
           navigate("/login")
         })
         .catch((err) => {
-          console.log(err)
+
           setError(err)
           toast.error(err.message)
         })

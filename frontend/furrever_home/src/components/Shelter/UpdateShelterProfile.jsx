@@ -44,11 +44,11 @@ const UpdateShelterProfile = ({ shelter }) => {
         const reader = new FileReader();
         reader.readAsDataURL(image);
         reader.onload = function (e) {
-            //   console.log(e.target.result)
+
             const newData = { ...formData }
             newData.imageBase64 = e.target.result
             setFormData(newData)
-            //   console.log(typeof (image))
+
         };
 
         reader.onerror = function () {
@@ -68,7 +68,6 @@ const UpdateShelterProfile = ({ shelter }) => {
             }
         })
             .then((res) => {
-                console.log(res)
                 setLoading(true)
                 deleteLocalStorage("User")
                 saveLocalStorage("User", JSON.stringify(res.data))
@@ -107,7 +106,7 @@ const UpdateShelterProfile = ({ shelter }) => {
 
     return (
         <>
-            <button className="btn btn-orange m-5 lg:h-15 sm:h-20" onClick={handleOpen}>Update Profile</button>
+            <button className="btn btn-orange m-5 " onClick={handleOpen}>Update Profile</button>
             <Dialog
                 size="lg"
                 open={open}

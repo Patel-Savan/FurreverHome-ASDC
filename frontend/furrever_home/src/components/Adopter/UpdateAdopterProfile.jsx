@@ -5,17 +5,31 @@ import {
     Typography
 } from "@material-tailwind/react";
 import axios from 'axios';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { deleteLocalStorage, readLocalStorage, saveLocalStorage } from '../../utils/helper';
 
-const UpdateAdopterProfile = ({ id, token }) => {
-    const [open, setOpen] = React.useState(false);
+const UpdateAdopterProfile = ({ user }) => {
+    const [open, setOpen] = useState(false);
     const [response, setResponse] = useState({})
     const [loading, setLoading] = useState(true)
     const handleOpen = () => setOpen((cur) => !cur);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        setFormData({
+
+            firstName: user.firstName,
+            lastName: user.lastName,
+            phoneNumber: user.phoneNumber,
+            address: user.address,
+            city: user.city,
+            country: user.country,
+            zipcode: user.zipcode
+        })
+
+    },[user])
 
 
     const [formData, setFormData] = useState({
@@ -27,6 +41,9 @@ const UpdateAdopterProfile = ({ id, token }) => {
         country: "",
         zipcode: ""
     });
+
+
+
 
     const handleChange = (event) => {
 
@@ -48,36 +65,21 @@ const UpdateAdopterProfile = ({ id, token }) => {
             }
         })
             .then((res) => {
-                console.log(res)
+
                 setLoading(true)
                 deleteLocalStorage("User")
                 saveLocalStorage("User", JSON.stringify(res.data))
                 toast.success("Successfully Updated User info");
-                navigate("/adopter/home")
+                // navigate("/adopter/home")
+                navigate(0)
                 handleOpen();
-                setFormData({
-                    firstName: "",
-                    lastName: "",
-                    phoneNumber: "",
-                    address: "",
-                    city: "",
-                    country: "",
-                    zipcode: ""
-                })
+
             })
             .catch((err) => {
                 console.log(err)
                 toast.error(err.message)
                 handleOpen();
-                setFormData({
-                    age: "",
-                    type: "",
-                    breed: "",
-                    colour: "",
-                    gender: "",
-                    birthdate: "",
-                    petImage: ""
-                })
+
             })
     }
 
@@ -85,7 +87,7 @@ const UpdateAdopterProfile = ({ id, token }) => {
 
     return (
         <>
-            <button className="btn btn-orange m-5 lg:h-15 sm:h-20" onClick={handleOpen}>Update Profile</button>
+            <button className="btn btn-orange m-5 " onClick={handleOpen}>Update Profile</button>
             <Dialog
                 size="lg"
                 open={open}
