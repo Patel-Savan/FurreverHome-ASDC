@@ -11,6 +11,12 @@ public class ChatUtils {
     private ChatUtils() {
     }
 
+    /**
+     * Generates the URL for the Gravatar avatar associated with the given email address.
+     *
+     * @param email The email address used to generate the Gravatar URL.
+     * @return The URL of the Gravatar avatar.
+     */
     public static String getAvatarUrl(String email) {
         Gravatar gravatar = new Gravatar();
         gravatar.setSize(gravatarSize);

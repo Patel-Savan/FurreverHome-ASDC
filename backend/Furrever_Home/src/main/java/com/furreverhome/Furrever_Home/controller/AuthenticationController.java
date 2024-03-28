@@ -36,12 +36,23 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
     private final FrontendConfigurationProperties frontendConfigurationProperties;
 
-
+    /**
+     * Handles user signup.
+     * @param request The HTTP servlet request.
+     * @param signupRequest The signup request object.
+     * @return ResponseEntity containing the result of the signup operation.
+     * @throws MessagingException if an error occurs during email sending.
+     */
     @PostMapping("/signup")
     public ResponseEntity<?> signup(HttpServletRequest request, @RequestBody SignupRequest signupRequest) throws MessagingException {
         return ResponseEntity.ok(authenticationService.signup(getAppUrl(request), signupRequest));
     }
 
+    /**
+     * Handles email verification.
+     * @param email The email to verify.
+     * @return RedirectView to the login page if successful, otherwise ResponseEntity.notFound().
+     */
     @GetMapping("/verify/{email}")
     public Object verifyByEmail(@PathVariable String email) {
         if (authenticationService.verifyByEmail(email)) {
@@ -50,16 +61,32 @@ public class AuthenticationController {
         return ResponseEntity.notFound();
     }
 
+    /**
+     * Handles user signin.
+     * @param signinRequest The signin request object.
+     * @return ResponseEntity containing the JWT authentication response.
+     */
     @PostMapping("/signin")
     public ResponseEntity<JwtAuthenticationResponse> signin (@RequestBody SigninRequest signinRequest) {
         return ResponseEntity.ok(authenticationService.signin(signinRequest));
     }
 
+    /**
+     * Handles token refresh.
+     * @param refreshTokenRequest The refresh token request object.
+     * @return ResponseEntity containing the JWT authentication response.
+     */
     @PostMapping("/refresh")
     public ResponseEntity<JwtAuthenticationResponse> refresh (@RequestBody RefreshTokenRequest refreshTokenRequest) {
         return ResponseEntity.ok(jwtService.refreshToken(refreshTokenRequest));
     }
 
+    /**
+     * Handles password reset request.
+     * @param request The HTTP servlet request.
+     * @param resetEmailRequest The reset email request object.
+     * @return ResponseEntity containing the result of the password reset operation.
+     */
     @PostMapping("/forgetPassword")
     public ResponseEntity<GenericResponse> reset (
         final HttpServletRequest request,
@@ -68,6 +95,11 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.resetByEmail(getAppUrl(request), resetEmailRequest.email()));
     }
 
+    /**
+     * Redirects to the change password page.
+     * @param token The reset password token.
+     * @return RedirectView to the appropriate page based on token validation result.
+     */
     @GetMapping("/redirectChangePassword")
     public RedirectView showChangePasswordPage(@RequestParam("token") String token) {
         String result = authenticationService.validatePasswordResetToken(token);
@@ -91,16 +123,31 @@ public class AuthenticationController {
         }
     }
 
+    /**
+     * Handles password reset.
+     * @param passwordDto The password DTO object.
+     * @return GenericResponse containing the result of the password reset operation.
+     */
     @PostMapping("/resetPassword")
     public GenericResponse resetPassword(@Valid @RequestBody PasswordDto passwordDto) {
         return authenticationService.resetPassword(passwordDto);
     }
 
+    /**
+     * Handles password update.
+     * @param passwordDto The password DTO object.
+     * @return GenericResponse containing the result of the password update operation.
+     */
     @PostMapping("/updatePassword")
     public GenericResponse changeUserPassword(@Valid @RequestBody PasswordDto passwordDto) {
         return authenticationService.updateUserPassword(passwordDto);
     }
 
+    /**
+     * Retrieves the application URL.
+     * @param request The HTTP servlet request.
+     * @return The application URL.
+     */
     private String getAppUrl(HttpServletRequest request) {
         return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
     }
