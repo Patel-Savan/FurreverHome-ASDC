@@ -33,5 +33,5 @@ public class ShelterResponseDto {
 
     private boolean rejected;
 
-    private User user;
+    private Long userId;
 }
