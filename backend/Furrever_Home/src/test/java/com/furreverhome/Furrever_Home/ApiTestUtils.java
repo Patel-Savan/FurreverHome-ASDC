@@ -6,6 +6,14 @@ import static io.restassured.RestAssured.given;
 
 public class ApiTestUtils {
 
+    /**
+     * Obtains an access token by sending a POST request to the login endpoint with the provided email and password.
+     *
+     * @param email    The email of the user.
+     * @param password The password of the user.
+     * @return The access token obtained from the response.
+     * @throws IllegalStateException If the response body is empty, not in JSON format, or if the token is not found in the response body.
+     */
     public static String obtainAccessToken(String email, String password) {
         // Set base URI before running the test
         RestAssured.baseURI = "http://localhost:8080";

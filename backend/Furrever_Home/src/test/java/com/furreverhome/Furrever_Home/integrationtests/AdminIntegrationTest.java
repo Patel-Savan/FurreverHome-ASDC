@@ -11,12 +11,20 @@ class AdminIntegrationTest {
 
     private String token;
 
+    /**
+     * Sets up the necessary authentication token before each test method.
+     */
     @BeforeEach
     public void setUp() {
         token = ApiTestUtils.obtainAccessToken("admin@gmail.com", "Jp@32padhiyar");
     }
 
-
+    /**
+     * Tests the getAllShelterSuccessThenOK integration scenario.
+     * Verifies that when a request is made to get all shelters with valid authentication,
+     * the response status code is 200 (OK).
+     *
+     */
     @Test
     public void testGetAllShelterSuccessThenOK(){
 //        when().get("http://localhost:8080/api/admin/shelters").then().statusCode(200);
