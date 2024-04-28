@@ -69,7 +69,7 @@ public class PetServiceImpl implements PetService {
                 petVaccination.setDate(petVaccineDto.getDate());
                 petVaccination.setVaccineGiven(petVaccineDto.isVaccineGiven());
                 petVaccinationRepository.save(petVaccination);
-                updatePetVaccinationNotificationInfo(pet);
+//                updatePetVaccinationNotificationInfo(pet);
                 return new GenericResponse("Vaccination added.");
             }
         } else {
@@ -94,6 +94,7 @@ public class PetServiceImpl implements PetService {
                     .orElse(new PetVaccinationInfo()); // Create a new one if not found
 
             petVaccinationInfo.setPetID(pet.getPetID()); // This is redundant for an update, but necessary for an insert
+            petVaccinationInfo.setPet(pet); // This correctly links the PetVaccinationInfo to the Pet.
             LocalDate nextVaccinationDate = nextVaccination.getDate().toInstant()
                     .atZone(ZoneId.systemDefault())
                     .toLocalDate();
